@@ -65,10 +65,10 @@ USE BankDB;
 
 -- Thêm dữ liệu Users (Nhân viên)
 INSERT INTO Users (Username, Password, FirstName, LastName, Email, Phone, Address, Permission) VALUES
-('admin', 'admin123', 'Nguyễn', 'Quản Trị', 'admin@bank.com', '0901234567', '123 Đường ABC, TP.HCM', 1),
-('manager', 'manager123', 'Trần', 'Giám Đốc', 'manager@bank.com', '0902345678', '456 Đường DEF, TP.HCM', 2),
-('cashier1', 'cashier123', 'Lê', 'Thu Ngân', 'cashier1@bank.com', '0903456789', '789 Đường GHI, TP.HCM', 3),
-('teller1', 'teller123', 'Phạm', 'Giao Dịch', 'teller1@bank.com', '0904567890', '321 Đường JKL, TP.HCM', 4);
+('admin', 'admin123', 'Nguyễn', 'Quản Trị', 'admin@bank.com', '0901234567', '123 Đường ABC, TP.HCM', -1),
+('manager', 'manager123', 'Trần', 'Giám Đốc', 'manager@bank.com', '0902345678', '456 Đường DEF, TP.HCM', 1047579),
+('cashier1', 'cashier123', 'Lê', 'Thu Ngân', 'cashier1@bank.com', '0903456789', '789 Đường GHI, TP.HCM', 11273),
+('teller1', 'teller123', 'Phạm', 'Giao Dịch', 'teller1@bank.com', '0904567890', '321 Đường JKL, TP.HCM', 3081);
 
 -- Thêm dữ liệu Clients (Khách hàng)
 INSERT INTO Clients (FirstName, LastName, Email, Phone, Address, DateOfBirth, NationalID, AccountNumber, PinCode, Balance) VALUES

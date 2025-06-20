@@ -50,14 +50,11 @@ CREATE TABLE LoginRegisters (
 -- Tạo bảng TransferLogs
 CREATE TABLE TransferLogs (
     TransferID INT AUTO_INCREMENT PRIMARY KEY,
+    TransferDate DATETIME DEFAULT CURRENT_TIMESTAMP,
     FromAccountNumber VARCHAR(20),
     ToAccountNumber VARCHAR(20),
     Amount DECIMAL(15,2) NOT NULL,
-    TransferDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Description TEXT,
-    TransferType ENUM('Transfer', 'Deposit', 'Withdraw') NOT NULL,
-    ProcessedByUserID INT,
-    FOREIGN KEY (ProcessedByUserID) REFERENCES Users(UserID)
+    PerformedBy VARCHAR(50)
 );
 
 -- SeedData.sql
@@ -68,7 +65,9 @@ INSERT INTO Users (Username, Password, FirstName, LastName, Email, Phone, Addres
 ('admin', 'admin123', 'Nguyễn', 'Quản Trị', 'admin@bank.com', '0901234567', '123 Đường ABC, TP.HCM', -1),
 ('manager', 'manager123', 'Trần', 'Giám Đốc', 'manager@bank.com', '0902345678', '456 Đường DEF, TP.HCM', 1047579),
 ('cashier1', 'cashier123', 'Lê', 'Thu Ngân', 'cashier1@bank.com', '0903456789', '789 Đường GHI, TP.HCM', 11273),
-('teller1', 'teller123', 'Phạm', 'Giao Dịch', 'teller1@bank.com', '0904567890', '321 Đường JKL, TP.HCM', 3081);
+('teller1', 'teller123', 'Phạm', 'Giao Dịch', 'teller1@bank.com', '0904567890', '321 Đường JKL, TP.HCM', 3081),
+('auditor', 'auditor123', 'Đỗ', 'Kiểm Toán', 'auditor@bank.com', '0906666666', '789 Đường MNO, TP.HCM', 8192),
+('support', 'support123', 'Vũ', 'Hỗ Trợ', 'support@bank.com', '0907777777', '987 Đường PQR, TP.HCM', 64);
 
 -- Thêm dữ liệu Clients (Khách hàng)
 INSERT INTO Clients (FirstName, LastName, Email, Phone, Address, DateOfBirth, NationalID, AccountNumber, PinCode, Balance) VALUES
@@ -76,7 +75,9 @@ INSERT INTO Clients (FirstName, LastName, Email, Phone, Address, DateOfBirth, Na
 ('Trần', 'Thị Bình', 'tranthibinh@email.com', '0922222222', '200 Nguyễn Huệ, Q1, TP.HCM', '1985-08-20', '987654321', 'ACC002', '2345', 3500000.00),
 ('Lê', 'Hoàng Cường', 'lehoangcuong@email.com', '0933333333', '300 Đồng Khởi, Q1, TP.HCM', '1992-12-10', '456789123', 'ACC003', '3456', 7500000.00),
 ('Phạm', 'Thị Dung', 'phamthidung@email.com', '0944444444', '400 Hai Bà Trưng, Q3, TP.HCM', '1988-03-25', '789123456', 'ACC004', '4567', 2800000.00),
-('Hoàng', 'Văn Em', 'hoangvanem@email.com', '0955555555', '500 Cách Mạng Tháng 8, Q10, TP.HCM', '1995-07-08', '321654987', 'ACC005', '5678', 4200000.00);
+('Hoàng', 'Văn Em', 'hoangvanem@email.com', '0955555555', '500 Cách Mạng Tháng 8, Q10, TP.HCM', '1995-07-08', '321654987', 'ACC005', '5678', 4200000.00),
+('Ngô', 'Thanh Phong', 'ngothanhphong@email.com', '0966666666', '600 Lạc Long Quân, Q11, TP.HCM', '1991-09-15', '852741963', 'ACC006', '6789', 6300000.00),
+('Đặng', 'Thúy Hà', 'dangthuyha@email.com', '0977777777', '700 Pasteur, Q3, TP.HCM', '1987-11-20', '963852741', 'ACC007', '7890', 8100000.00);
 
 -- Thêm dữ liệu LoginRegisters (Lịch sử đăng nhập mẫu)
 INSERT INTO LoginRegisters (UserID, Username, LoginDateTime, IPAddress) VALUES
@@ -86,9 +87,11 @@ INSERT INTO LoginRegisters (UserID, Username, LoginDateTime, IPAddress) VALUES
 (4, 'teller1', '2025-06-20 09:15:00', '192.168.1.103');
 
 -- Thêm dữ liệu TransferLogs (Giao dịch mẫu)
-INSERT INTO TransferLogs (FromAccountNumber, ToAccountNumber, Amount, Description, TransferType, ProcessedByUserID) VALUES
-('ACC001', 'ACC002', 500000.00, 'Chuyển tiền cho bạn', 'Transfer', 3),
-('ACC003', 'ACC004', 1000000.00, 'Thanh toán hóa đơn', 'Transfer', 4),
-(NULL, 'ACC001', 2000000.00, 'Nộp tiền mặt', 'Deposit', 3),
-('ACC002', NULL, 300000.00, 'Rút tiền mặt', 'Withdraw', 4),
-('ACC005', 'ACC001', 750000.00, 'Hoàn tiền', 'Transfer', 3);
+INSERT INTO TransferLogs (TransferDate, FromAccountNumber, ToAccountNumber, Amount, PerformedBy) VALUES
+('2025-06-20 10:00:00', 'ACC001', 'ACC002', 500000.00, 'cashier1'),
+('2025-06-20 10:30:00', 'ACC003', 'ACC004', 1000000.00, 'teller1'),
+('2025-06-20 11:00:00', NULL, 'ACC001', 2000000.00, 'cashier1'),
+('2025-06-20 11:30:00', 'ACC002', NULL, 300000.00, 'teller1'),
+('2025-06-20 12:00:00', 'ACC005', 'ACC001', 750000.00, 'cashier1'),
+('2025-06-22 14:00:00', 'ACC005', 'ACC006', 150000.00, 'cashier1'),
+('2025-06-22 15:30:00', 'ACC006', NULL, 50000.00, 'teller1');

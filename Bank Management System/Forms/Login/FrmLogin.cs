@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BankBusinessLayer;
+using Bank_Management_System.Forms.Register;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace Bank_Management_System
@@ -86,6 +87,12 @@ namespace Bank_Management_System
                 txtPassword.PasswordChar = '*';
                 _EyeMode = enEyeMode.Hide;
             }
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            FrmRegister frm = new FrmRegister();
+            frm.ShowDialog();
         }
 
         private void FrmLogin_Load(object sender, EventArgs e)

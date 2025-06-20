@@ -240,6 +240,7 @@
     <Compile Include="Forms\Login\FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Register\FrmRegister.cs" />
     <Compile Include="FrmMainMenu.cs">
       <SubType>Form</SubType>
     </Compile>

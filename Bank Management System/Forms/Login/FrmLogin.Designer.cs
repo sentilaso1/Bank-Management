@@ -39,6 +39,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnHide = new System.Windows.Forms.Button();
             this.lblAttempts = new System.Windows.Forms.Label();
+            this.btnRegister = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -119,6 +120,21 @@
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            //
+            // btnRegister
+            //
+            this.btnRegister.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnRegister.FlatAppearance.BorderSize = 0;
+            this.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRegister.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRegister.ForeColor = System.Drawing.Color.White;
+            this.btnRegister.Location = new System.Drawing.Point(396, 278);
+            this.btnRegister.Name = "btnRegister";
+            this.btnRegister.Size = new System.Drawing.Size(100, 36);
+            this.btnRegister.TabIndex = 8;
+            this.btnRegister.Text = "Register";
+            this.btnRegister.UseVisualStyleBackColor = false;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
             // label3
             // 
@@ -165,6 +181,7 @@
             this.Controls.Add(this.lblAttempts);
             this.Controls.Add(this.btnHide);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtPassword);
@@ -195,5 +212,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnHide;
         private System.Windows.Forms.Label lblAttempts;
+        private System.Windows.Forms.Button btnRegister;
     }
 }

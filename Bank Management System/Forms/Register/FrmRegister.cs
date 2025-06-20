@@ -1,6 +1,8 @@
 using System;
 using System.Windows.Forms;
 using BankBusinessLayer;
+using Bank_Management_System;
+using Bank_Management_System.Forms.Transactions;
 
 namespace Bank_Management_System.Forms.Register
 {
@@ -117,7 +119,11 @@ namespace Bank_Management_System.Forms.Register
             user.LastName = txtLastName.Text.Trim();
             user.Email = txtEmail.Text.Trim();
             user.PhoneNumber = txtPhone.Text.Trim();
-            user.Permission = 0;
+            user.Permission =
+                (int)FrmMainMenu.enMainMenuPermissions.enHome |
+                (int)FrmMainMenu.enMainMenuPermissions.enTransactions |
+                (int)FrmTransactions.enTransactions.enDeposit |
+                (int)FrmTransactions.enTransactions.enWithdraw;
 
             if (user.Save())
             {

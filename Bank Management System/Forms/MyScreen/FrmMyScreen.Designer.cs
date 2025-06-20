@@ -61,7 +61,7 @@
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(149, 15);
             this.lblName.TabIndex = 4;
-            this.lblName.Text = "Name: Mahdi Moqdad";
+            this.lblName.Text = "Name: Senti";
             this.lblName.Click += new System.EventHandler(this.lblName_Click);
             // 
             // pbMyPhoto
@@ -119,7 +119,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(235, 30);
             this.label1.TabIndex = 6;
-            this.label1.Text = "This project was developed as\r\n a hobby to learn C# and WinForms.";
+            this.label1.Text = "This project was project.";
             // 
             // FrmMyScreen
             // 

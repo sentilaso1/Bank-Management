@@ -242,5 +242,10 @@ namespace Bank_Management_System
         {
 
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

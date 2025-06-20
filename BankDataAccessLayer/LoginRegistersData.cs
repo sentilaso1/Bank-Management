@@ -13,7 +13,7 @@ namespace BankDataAccessLayer
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"Select LoginDateTime, Username, Password, Permissions 
+            string query = @"Select LoginDateTime, Username, Password, Permission
                             from LoginRegisters
                             Join Users on LoginRegisters.UserID = Users.UserID";
 

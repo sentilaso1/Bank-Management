@@ -1,0 +1,153 @@
+<UserControl x:Class="BankManagementSystem.WPF.Views.AddNewUserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="➕ Add New System User" FontSize="20" FontWeight="Bold" Foreground="#4CAF50"/>
+                <TextBlock Text="Create a new user account with appropriate permissions" FontSize="14" Foreground="Gray"/>
+            </StackPanel>
+
+            <!-- Tabs -->
+            <TabControl Grid.Row="1">
+                <!-- Basic Information Tab -->
+                <TabItem Header="👤 Basic Information">
+                    <Grid Margin="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="User ID:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="UserIdTextBox" Height="25" Margin="0,5"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Username:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox Grid.Row="0" Grid.Column="4" x:Name="UsernameTextBox" Height="25" Margin="0,5"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="First Name:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="FirstNameTextBox" Height="25" Margin="0,10,0,5"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="Last Name:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                        <TextBox Grid.Row="1" Grid.Column="4" x:Name="LastNameTextBox" Height="25" Margin="0,10,0,5"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Email:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="EmailTextBox" Height="25" Margin="0,10,0,5"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="Phone:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                        <TextBox Grid.Row="2" Grid.Column="4" x:Name="PhoneTextBox" Height="25" Margin="0,10,0,5"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Password:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                        <PasswordBox Grid.Row="3" Grid.Column="1" x:Name="PasswordBox" Height="25" Margin="0,10,0,5"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="Confirm Password:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                        <PasswordBox Grid.Row="3" Grid.Column="4" x:Name="ConfirmPasswordBox" Height="25" Margin="0,10,0,5"/>
+                    </Grid>
+                </TabItem>
+
+                <!-- Role & Permissions Tab -->
+                <TabItem Header="🔐 Role & Permissions">
+                    <Grid Margin="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Grid.Row="0" Header="User Role" Margin="0,0,0,15">
+                            <StackPanel Margin="10">
+                                <RadioButton Content="👑 Administrator - Full system access" x:Name="AdminRoleRadio" GroupName="UserRole" Margin="0,5"/>
+                                <RadioButton Content="👤 Manager - User and client management" x:Name="ManagerRoleRadio" GroupName="UserRole" Margin="0,5"/>
+                                <RadioButton Content="💰 Cashier - Transaction processing only" x:Name="CashierRoleRadio" GroupName="UserRole" Margin="0,5" IsChecked="True"/>
+                                <RadioButton Content="👁️ Viewer - Read-only access" x:Name="ViewerRoleRadio" GroupName="UserRole" Margin="0,5"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="1" Header="Specific Permissions">
+                            <ScrollViewer>
+                                <StackPanel Margin="10">
+                                    <TextBlock Text="Client Management:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <CheckBox Content="Add new clients" x:Name="AddClientPermission" Margin="20,2"/>
+                                    <CheckBox Content="Update client information" x:Name="UpdateClientPermission" Margin="20,2"/>
+                                    <CheckBox Content="Delete clients" x:Name="DeleteClientPermission" Margin="20,2"/>
+
+                                    <TextBlock Text="Transaction Management:" FontWeight="Bold" Margin="0,15,0,5"/>
+                                    <CheckBox Content="Process deposits" x:Name="DepositPermission" Margin="20,2"/>
+                                    <CheckBox Content="Process withdrawals" x:Name="WithdrawPermission" Margin="20,2"/>
+                                    <CheckBox Content="Process transfers" x:Name="TransferPermission" Margin="20,2"/>
+
+                                    <TextBlock Text="User Management:" FontWeight="Bold" Margin="0,15,0,5"/>
+                                    <CheckBox Content="Add new users" x:Name="AddUserPermission" Margin="20,2"/>
+                                    <CheckBox Content="Update users" x:Name="UpdateUserPermission" Margin="20,2"/>
+                                    <CheckBox Content="Delete users" x:Name="DeleteUserPermission" Margin="20,2"/>
+
+                                    <TextBlock Text="Reports & Analytics:" FontWeight="Bold" Margin="0,15,0,5"/>
+                                    <CheckBox Content="View financial reports" x:Name="ViewReportsPermission" Margin="20,2"/>
+                                    <CheckBox Content="Export data" x:Name="ExportDataPermission" Margin="20,2"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+
+                <!-- Account Settings Tab -->
+                <TabItem Header="⚙️ Account Settings">
+                    <Grid Margin="15">
+                        <StackPanel>
+                            <GroupBox Header="Account Status">
+                                <StackPanel Margin="10">
+                                    <CheckBox Content="Account is active" x:Name="IsActiveCheckBox" IsChecked="True"/>
+                                    <CheckBox Content="Force password change on first login" x:Name="ForcePasswordChangeCheckBox" IsChecked="True"/>
+                                    <CheckBox Content="Account never expires" x:Name="NeverExpiresCheckBox"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <GroupBox Header="Security Settings" Margin="0,15,0,0">
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Password Expiry (days):" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="PasswordExpiryTextBox" Text="90" Height="25" Width="100" HorizontalAlignment="Left"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Max Login Attempts:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="MaxLoginAttemptsTextBox" Text="3" Height="25" Width="100" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+                                </Grid>
+                            </GroupBox>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="💾 Create User" Width="120" Height="35" Margin="5" 
+                        Click="CreateUser_Click" Background="#4CAF50" Foreground="White"/>
+                <Button Content="🔄 Clear Form" Width="100" Height="35" Margin="5" Click="ClearForm_Click"/>
+                <Button Content="❌ Cancel" Width="80" Height="35" Margin="5" Click="Cancel_Click"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

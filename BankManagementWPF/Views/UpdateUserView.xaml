@@ -1,0 +1,80 @@
+<UserControl x:Class="BankManagementSystem.WPF.Views.UpdateUserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="✏️ Update User Information" FontSize="20" FontWeight="Bold" Foreground="#2196F3"/>
+            <TextBlock Text="Modify existing user account and permissions" FontSize="14" Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- Search -->
+        <GroupBox Grid.Row="1" Header="Find User" Margin="0,0,0,20">
+            <StackPanel Margin="10">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Username:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="SearchUsernameTextBox" Width="200" Height="25"/>
+                    <Button Content="Search" Width="80" Height="30" Margin="10,0,0,0" Click="Search_Click"/>
+                </StackPanel>
+                <TextBlock x:Name="SearchErrorTextBlock" Foreground="Red" Visibility="Collapsed"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Update Form -->
+        <Grid Grid.Row="2" Margin="0,0,0,10" x:Name="FormGrid" IsEnabled="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="User ID:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="0" Grid.Column="1" x:Name="UserIdTextBox" IsReadOnly="True" Background="#F0F0F0"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="Username:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="0" Grid.Column="4" x:Name="UsernameTextBox"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="First Name:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="FirstNameTextBox"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="Last Name:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="4" x:Name="LastNameTextBox"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Email:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="EmailTextBox"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="3" Text="Phone:" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="2" Grid.Column="4" x:Name="PhoneTextBox"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Permission:" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="PermissionComboBox" Width="150">
+                <ComboBoxItem Content="Administrator"/>
+                <ComboBoxItem Content="Manager"/>
+                <ComboBoxItem Content="Cashier"/>
+                <ComboBoxItem Content="Viewer"/>
+            </ComboBox>
+        </Grid>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Update" Width="100" Height="35" Margin="5" x:Name="UpdateButton" Click="Update_Click" IsEnabled="False" Background="#2196F3" Foreground="White"/>
+            <Button Content="Clear" Width="80" Height="35" Margin="5" Click="Clear_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

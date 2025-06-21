@@ -452,7 +452,17 @@ namespace BankDataAccessLayer
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"select AccountNumber, FirstName, LastName, Balance From Clients";
+            string query = @"SELECT c.AccountNumber,
+                                  CONCAT(c.FirstName, ' ', c.LastName) AS ClientFullName,
+                                  c.Email,
+                                  c.Phone,
+                                  c.Balance,
+                                  (SELECT MAX(t.TransferDate)
+                                     FROM TransferLogs t
+                                    WHERE t.FromAccountNumber = c.AccountNumber
+                                       OR t.ToAccountNumber = c.AccountNumber) AS LastTransactionDate,
+                                  CASE WHEN c.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS Status
+                             FROM Clients c";
 
             MySqlCommand command = new MySqlCommand(query, connection);
 

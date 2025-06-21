@@ -1,5 +1,4 @@
 using System.Windows;
-// WinForms namespaces removed during WPF migration
 using BankManagementSystem.WPF.Views;
 
 namespace BankManagementSystem.WPF.Views

@@ -20,5 +20,7 @@
         <Page Include="Views/DeleteClientView.xaml" />
         <Page Include="Views/FindClientView.xaml" />
         <Page Include="Views/ClientsListView.xaml" />
+        <Page Include="Views/TransactionsView.xaml" />
+        <Page Include="Views/DepositView.xaml" />
     </ItemGroup>
 </Project>

@@ -27,6 +27,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void btnTransactions_Click(object sender, RoutedEventArgs e)
         {
+            MainContent.Content = new TransactionsView();
         }
 
         private void btnLoginRegisters_Click(object sender, RoutedEventArgs e)

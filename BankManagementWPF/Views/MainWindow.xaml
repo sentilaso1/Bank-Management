@@ -1,7 +1,7 @@
 <Window x:Class="BankManagementSystem.WPF.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Bank Management" Height="450" Width="1000">
+        Title="Bank Management" Height="450" Width="800">
     <DockPanel>
         <StackPanel DockPanel.Dock="Left" Width="150" Background="SteelBlue">
             <Button x:Name="btnHome" Content="Home" Click="btnHome_Click" Margin="5"/>

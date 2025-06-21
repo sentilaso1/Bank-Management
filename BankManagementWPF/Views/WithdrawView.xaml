@@ -1,0 +1,78 @@
+<UserControl x:Class="BankManagementSystem.WPF.Views.WithdrawView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="💸 Withdraw Money" FontSize="20" FontWeight="Bold" Foreground="#F44336"/>
+            <TextBlock Text="Remove money from client account" FontSize="14" Foreground="Gray"/>
+            <TextBlock Text="⚠️ Ensure sufficient balance before withdrawal" FontSize="12" Foreground="#FF9800" FontWeight="Bold" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Account Search -->
+        <GroupBox Grid.Row="1" Header="Select Account" Margin="0,0,0,20">
+            <StackPanel Margin="10">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Account Number:" VerticalAlignment="Center" Width="120"/>
+                    <TextBox x:Name="AccountNumberTextBox" Width="200" Height="25"/>
+                    <Button Content="Find Account" Width="100" Height="30" Margin="10,0,0,0" Click="FindAccount_Click"/>
+                </StackPanel>
+
+                <Border x:Name="AccountInfoBorder" Background="#FFF8F0" Padding="10" Margin="0,10,0,0" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock x:Name="ClientNameTextBlock" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Current Balance: " FontWeight="Bold"/>
+                            <TextBlock x:Name="CurrentBalanceTextBlock" FontWeight="Bold" Foreground="#2E7D32"/>
+                        </StackPanel>
+                        <TextBlock x:Name="BalanceWarningTextBlock" Foreground="#F44336" FontWeight="Bold"
+                                   Text="⚠️ Low balance - withdraw carefully" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Withdrawal Form -->
+        <GroupBox Grid.Row="2" Header="Withdrawal Information" x:Name="WithdrawFormGroup" IsEnabled="False">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Withdrawal Amount:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox x:Name="WithdrawAmountTextBox" Width="200" Height="25" Margin="0,5" TextChanged="WithdrawAmount_TextChanged"/>
+                    <TextBlock x:Name="MaxAmountTextBlock" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="Gray" FontStyle="Italic"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Description:" VerticalAlignment="Top" Margin="0,10,10,0"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="DescriptionTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,10,0,5"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Balance After:" VerticalAlignment="Center" Margin="0,10,10,0"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="NewBalanceTextBlock" FontWeight="Bold" VerticalAlignment="Center" Margin="0,10,0,0"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="ValidationMessageTextBlock" Foreground="#F44336" FontWeight="Bold" Margin="0,10,0,0" Visibility="Collapsed"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Process Withdrawal" Width="130" Height="35" Margin="5" Click="ProcessWithdraw_Click" x:Name="ProcessWithdrawButton" IsEnabled="False" Background="#F44336" Foreground="White"/>
+            <Button Content="Clear Form" Width="100" Height="35" Margin="5" Click="ClearForm_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

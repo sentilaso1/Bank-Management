@@ -1,0 +1,7 @@
+<UserControl x:Class="BankManagementSystem.WPF.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="20">
+        <TextBlock Text="Home" FontSize="24"/>
+    </Grid>
+</UserControl>

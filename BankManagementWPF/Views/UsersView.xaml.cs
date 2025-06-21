@@ -18,12 +18,12 @@ namespace BankManagementSystem.WPF.Views
 
         private void UpdateUser_Click(object sender, RoutedEventArgs e)
         {
-            UserContentArea.Content = new TextBlock { Text = "Update user view not implemented." };
+            UserContentArea.Content = new UpdateUserView();
         }
 
         private void DeleteUser_Click(object sender, RoutedEventArgs e)
         {
-            UserContentArea.Content = new TextBlock { Text = "Delete user view not implemented." };
+            UserContentArea.Content = new DeleteUserView();
         }
 
         private void FindUser_Click(object sender, RoutedEventArgs e)

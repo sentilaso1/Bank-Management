@@ -1,9 +1,5 @@
 using System.Windows;
-using Bank_Management_System.Forms.Users;
-using Bank_Management_System.Forms.Clients;
-using Bank_Management_System.Forms.Transactions;
-using Bank_Management_System.Forms.LoginRegisters;
-using Bank_Management_System.Forms.Home;
+using BankManagementSystem.WPF.Views;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -22,7 +18,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void btnClients_Click(object sender, RoutedEventArgs e)
         {
-            // Placeholder for Clients view conversion
+            MainContent.Content = new ClientsView();
         }
 
         private void btnUsers_Click(object sender, RoutedEventArgs e)

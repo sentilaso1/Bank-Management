@@ -9,10 +9,12 @@
     <ProjectReference Include="../BankBusinessLayer/BankBusinessLayer.csproj" />
     <ProjectReference Include="../BankDataAccessLayer/BankDataAccessLayer.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml" />
-    <Page Include="Views/LoginWindow.xaml" />
-    <Page Include="Views/MainWindow.xaml" />
-    <Page Include="Views/HomeView.xaml" />
-  </ItemGroup>
+    <ItemGroup>
+        <ApplicationDefinition Include="App.xaml" />
+        <Page Include="Views/LoginWindow.xaml" />
+        <Page Include="Views/MainWindow.xaml" />
+        <Page Include="Views/HomeView.xaml" />
+        <Page Include="Views/ClientsView.xaml" />
+        <Page Include="Views/AddNewClientView.xaml" />
+    </ItemGroup>
 </Project>

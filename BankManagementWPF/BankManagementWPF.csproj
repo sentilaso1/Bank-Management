@@ -21,7 +21,7 @@
         <Page Include="Views/FindClientView.xaml" />
         <Page Include="Views/ClientsListView.xaml" />
         <Page Include="Views/TransactionsView.xaml" />
-        <Page Include="Views/DepositView.xaml" />
+        <Page Include="Views/DepositView.xaml" /
         <Page Include="Views/WithdrawView.xaml" />
         <Page Include="Views/TransferView.xaml" />
     </ItemGroup>

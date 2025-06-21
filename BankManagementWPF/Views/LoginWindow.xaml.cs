@@ -28,6 +28,11 @@ namespace BankManagementSystem.WPF.Views
             window.ShowDialog();
         }
 
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         public async void Login()
         {
             Global.CurrentUser = User.FindUserByUsernameAndPassword(txtUsername.Text, txtPassword.Password);

@@ -33,7 +33,7 @@ namespace BankManagementSystem.WPF.Views
                 return;
             }
 
-            ClientNameTextBlock.Text = _client.FullName;
+            ClientNameTextBlock.Text = _client.FirstName;
             CurrentBalanceTextBlock.Text = $"Current Balance: {_client.Balance:C}";
             AccountInfoBorder.Visibility = Visibility.Visible;
             DepositFormGroup.IsEnabled = true;

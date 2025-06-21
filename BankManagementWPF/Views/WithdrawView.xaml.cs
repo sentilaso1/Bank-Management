@@ -34,7 +34,7 @@ namespace BankManagementSystem.WPF.Views
                 return;
             }
 
-            ClientNameTextBlock.Text = _client.FullName;
+            ClientNameTextBlock.Text = _client.FirstName;
             CurrentBalanceTextBlock.Text = _client.Balance.ToString("C");
             _currentBalance = _client.Balance;
             MaxAmountTextBlock.Text = $"Max: {_currentBalance:C}";

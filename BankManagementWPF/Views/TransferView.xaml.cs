@@ -31,7 +31,7 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Failed to load source account.", "Find", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            FromClientNameTextBlock.Text = _fromClient.FullName;
+            FromClientNameTextBlock.Text = _fromClient.FirstName;
             FromBalanceTextBlock.Text = _fromClient.Balance.ToString("C");
             FromAccountInfoBorder.Visibility = Visibility.Visible;
             EnableTransferDetails();
@@ -53,7 +53,7 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Failed to load destination account.", "Find", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            ToClientNameTextBlock.Text = _toClient.FullName;
+            ToClientNameTextBlock.Text = _toClient.FirstName;
             ToBalanceTextBlock.Text = _toClient.Balance.ToString("C");
             ToAccountInfoBorder.Visibility = Visibility.Visible;
             EnableTransferDetails();

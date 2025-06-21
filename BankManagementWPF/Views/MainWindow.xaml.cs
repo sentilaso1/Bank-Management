@@ -1,4 +1,5 @@
 using System.Windows;
+using BankBusinessLayer;
 using BankManagementSystem.WPF.Views;
 
 namespace BankManagementSystem.WPF.Views

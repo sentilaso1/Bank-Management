@@ -1,6 +1,7 @@
 <UserControl x:Class="BankManagementSystem.WPF.Views.AddNewUserView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White">
     <ScrollViewer>
         <Grid Margin="20">
             <Grid.RowDefinitions>
@@ -63,7 +64,7 @@
                 </TabItem>
 
                 <!-- Role & Permissions Tab -->
-                <TabItem Header="🔐 Role & Permissions">
+                <TabItem Header="Role &amp; Permissions">
                     <Grid Margin="15">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -97,7 +98,7 @@
                                     <CheckBox Content="Update users" x:Name="UpdateUserPermission" Margin="20,2"/>
                                     <CheckBox Content="Delete users" x:Name="DeleteUserPermission" Margin="20,2"/>
 
-                                    <TextBlock Text="Reports & Analytics:" FontWeight="Bold" Margin="0,15,0,5"/>
+                                    <TextBlock Text="Reports &amp; Analytics:" FontWeight="Bold" Margin="0,15,0,5"/>
                                     <CheckBox Content="View financial reports" x:Name="ViewReportsPermission" Margin="20,2"/>
                                     <CheckBox Content="Export data" x:Name="ExportDataPermission" Margin="20,2"/>
                                 </StackPanel>

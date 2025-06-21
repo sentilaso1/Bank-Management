@@ -1,0 +1,42 @@
+<UserControl x:Class="BankManagementSystem.WPF.Views.ClientsListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header and Refresh -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="All Clients" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+            <Button Content="Refresh" Width="80" Height="30" Margin="20,0,0,0" Click="Refresh_Click"/>
+        </StackPanel>
+
+        <!-- Filter Options -->
+        <GroupBox Grid.Row="1" Header="Filter Options" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <TextBlock Text="Filter by:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox x:Name="FilterComboBox" Width="150" SelectedIndex="0">
+                    <ComboBoxItem Content="All Clients"/>
+                    <ComboBoxItem Content="Active Accounts"/>
+                    <ComboBoxItem Content="High Balance (>10000)"/>
+                </ComboBox>
+                <Button Content="Apply Filter" Width="100" Height="25" Margin="10,0,0,0" Click="ApplyFilter_Click"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Clients DataGrid -->
+        <DataGrid Grid.Row="2" x:Name="ClientsDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Account Number" Binding="{Binding AccountNumber}" Width="120"/>
+                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="150"/>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="150"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="120"/>
+                <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

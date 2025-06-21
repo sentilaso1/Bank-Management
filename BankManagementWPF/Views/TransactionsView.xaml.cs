@@ -17,12 +17,12 @@ namespace BankManagementSystem.WPF.Views
 
         private void Withdraw_Click(object sender, RoutedEventArgs e)
         {
-            TransactionContentArea.Content = new TextBlock { Text = "Withdraw view not implemented." };
+            TransactionContentArea.Content = new WithdrawView();
         }
 
         private void Transfer_Click(object sender, RoutedEventArgs e)
         {
-            TransactionContentArea.Content = new TextBlock { Text = "Transfer view not implemented." };
+            TransactionContentArea.Content = new TransferView();
         }
 
         private void TransferLogs_Click(object sender, RoutedEventArgs e)

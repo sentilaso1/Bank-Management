@@ -30,5 +30,8 @@
         <Page Include="Views/AddNewUserView.xaml" />
         <Page Include="Views/UpdateUserView.xaml" />
         <Page Include="Views/DeleteUserView.xaml" />
+        <Page Include="Views/FindUserView.xaml" />
+        <Page Include="Views/UsersListView.xaml" />
+        <Page Include="Views/PermissionsView.xaml" />
     </ItemGroup>
 </Project>

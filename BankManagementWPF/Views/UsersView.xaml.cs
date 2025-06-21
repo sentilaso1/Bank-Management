@@ -28,7 +28,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void FindUser_Click(object sender, RoutedEventArgs e)
         {
-            UserContentArea.Content = new TextBlock { Text = "Find user view not implemented." };
+            UserContentArea.Content = new FindUserView();
         }
 
         private void UsersList_Click(object sender, RoutedEventArgs e)
@@ -38,7 +38,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void Permissions_Click(object sender, RoutedEventArgs e)
         {
-            UserContentArea.Content = new TextBlock { Text = "Permissions view not implemented." };
+            UserContentArea.Content = new PermissionsView();
         }
 
         private void UserAnalytics_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void LoadUsersList()
         {
-            UserContentArea.Content = new TextBlock { Text = "Users list view not implemented." };
+            UserContentArea.Content = new UsersListView();
         }
     }
 }

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>BankManagementSystem.WPF</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../BankBusinessLayer/BankBusinessLayer.csproj" />
+    <ProjectReference Include="../BankDataAccessLayer/BankDataAccessLayer.csproj" />
+  </ItemGroup>
+    <ItemGroup>
+        <ApplicationDefinition Include="App.xaml" />
+        <Page Include="Views/LoginWindow.xaml" />
+        <Page Include="Views/MainWindow.xaml" />
+        <Page Include="Views/HomeView.xaml" />
+        <Page Include="Views/ClientsView.xaml" />
+        <Page Include="Views/AddNewClientView.xaml" />
+        <Page Include="Views/UpdateClientView.xaml" />
+        <Page Include="Views/DeleteClientView.xaml" />
+        <Page Include="Views/FindClientView.xaml" />
+        <Page Include="Views/ClientsListView.xaml" />
+        <Page Include="Views/TransactionsView.xaml" />
+        <Page Include="Views/DepositView.xaml" />
+    </ItemGroup>
+</Project>

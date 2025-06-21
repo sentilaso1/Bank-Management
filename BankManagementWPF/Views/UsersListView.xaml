@@ -1,0 +1,108 @@
+<UserControl x:Class="BankManagementSystem.WPF.Views.UsersListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="📋 All System Users" FontSize="20" FontWeight="Bold" Foreground="#9C27B0"/>
+            <TextBlock Text="Complete list of system users with management options" FontSize="14" Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- Quick Stats -->
+        <Border Grid.Row="1" Background="#F3E5F5" Padding="15" Margin="0,0,0,15" CornerRadius="5">
+            <UniformGrid Columns="5">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="👑" FontSize="20" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Administrators" FontWeight="Bold" HorizontalAlignment="Center" FontSize="12"/>
+                    <TextBlock x:Name="AdminCountTextBlock" FontSize="16" Foreground="#F44336" HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="👤" FontSize="20" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Managers" FontWeight="Bold" HorizontalAlignment="Center" FontSize="12"/>
+                    <TextBlock x:Name="ManagerCountTextBlock" FontSize="16" Foreground="#FF9800" HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="💰" FontSize="20" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Cashiers" FontWeight="Bold" HorizontalAlignment="Center" FontSize="12"/>
+                    <TextBlock x:Name="CashierCountTextBlock" FontSize="16" Foreground="#4CAF50" HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="👁️" FontSize="20" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Viewers" FontWeight="Bold" HorizontalAlignment="Center" FontSize="12"/>
+                    <TextBlock x:Name="ViewerCountTextBlock" FontSize="16" Foreground="#2196F3" HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="🔒" FontSize="20" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Locked" FontWeight="Bold" HorizontalAlignment="Center" FontSize="12"/>
+                    <TextBlock x:Name="LockedCountTextBlock" FontSize="16" Foreground="#9E9E9E" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </UniformGrid>
+        </Border>
+
+        <!-- Filter and Actions Bar -->
+        <GroupBox Grid.Row="2" Header="🔧 Filter & Actions" Margin="0,0,0,15">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Text="Filter by Role:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="RoleFilterComboBox" Width="120" SelectedIndex="0" SelectionChanged="RoleFilter_Changed">
+                        <ComboBoxItem Content="All Roles"/>
+                        <ComboBoxItem Content="Administrator"/>
+                        <ComboBoxItem Content="Manager"/>
+                        <ComboBoxItem Content="Cashier"/>
+                        <ComboBoxItem Content="Viewer"/>
+                    </ComboBox>
+
+                    <TextBlock Text="Status:" VerticalAlignment="Center" Margin="20,0,10,0"/>
+                    <ComboBox x:Name="StatusFilterComboBox" Width="100" SelectedIndex="0" SelectionChanged="StatusFilter_Changed">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="Active"/>
+                        <ComboBoxItem Content="Locked"/>
+                        <ComboBoxItem Content="Expired"/>
+                    </ComboBox>
+
+                    <TextBox x:Name="SearchTextBox" Width="200" Height="25" Margin="20,0,10,0"
+                             Text="Search users..." Foreground="Gray"
+                             GotFocus="Search_GotFocus" LostFocus="Search_LostFocus" TextChanged="Search_TextChanged"/>
+
+                    <Button Content="🔄 Refresh" Width="80" Height="30" Click="Refresh_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button Content="➕ Add User" Width="90" Height="30" Click="AddUser_Click" Background="#4CAF50" Foreground="White"/>
+                    <Button Content="📊 Export List" Width="90" Height="30" Margin="10,0,0,0" Click="ExportList_Click" Background="#2196F3" Foreground="White"/>
+                    <Button Content="🔒 Bulk Lock" Width="90" Height="30" Margin="10,0,0,0" Click="BulkLock_Click" Background="#FF9800" Foreground="White"/>
+                    <Button Content="🔓 Bulk Unlock" Width="90" Height="30" Margin="10,0,0,0" Click="BulkUnlock_Click" Background="#4CAF50" Foreground="White"/>
+                    <Button Content="📈 Analytics" Width="90" Height="30" Margin="10,0,0,0" Click="Analytics_Click" Background="#9C27B0" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <!-- Users DataGrid -->
+        <DataGrid Grid.Row="3" x:Name="UsersDataGrid" AutoGenerateColumns="False" 
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  SelectionMode="Extended" AlternatingRowBackground="#F9F9F9">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected, Mode=TwoWay}" Width="50"/>
+                <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="120"/>
+                <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="180"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

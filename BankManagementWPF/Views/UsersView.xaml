@@ -1,0 +1,47 @@
+<UserControl x:Class="BankManagementSystem.WPF.Views.UsersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header with security notice -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,30">
+            <TextBlock Text="👥 User Management System" FontSize="24" FontWeight="Bold" Foreground="#673AB7"/>
+            <TextBlock Text="Manage system users, roles and permissions" FontSize="14" Foreground="Gray"/>
+            <Border Background="#FFF3E0" Padding="10" Margin="0,10,0,0" CornerRadius="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🔐" FontSize="16" VerticalAlignment="Center"/>
+                    <TextBlock Text="Security Notice: User management requires administrator privileges" 
+                               FontWeight="Bold" Foreground="#FF9800" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- User management actions -->
+        <UniformGrid Grid.Row="1" Columns="4" Rows="2" Margin="0,0,0,20">
+            <Button Content="➕ Add New User" Height="70" Margin="8" Click="AddNewUser_Click"
+                    Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold"/>
+            <Button Content="✏️ Update User" Height="70" Margin="8" Click="UpdateUser_Click"
+                    Background="#2196F3" Foreground="White" FontSize="14" FontWeight="Bold"/>
+            <Button Content="🗑️ Delete User" Height="70" Margin="8" Click="DeleteUser_Click"
+                    Background="#F44336" Foreground="White" FontSize="14" FontWeight="Bold"/>
+            <Button Content="🔍 Find User" Height="70" Margin="8" Click="FindUser_Click"
+                    Background="#FF9800" Foreground="White" FontSize="14" FontWeight="Bold"/>
+            <Button Content="📋 Users List" Height="70" Margin="8" Click="UsersList_Click"
+                    Background="#9C27B0" Foreground="White" FontSize="14" FontWeight="Bold"/>
+            <Button Content="🔐 Permissions" Height="70" Margin="8" Click="Permissions_Click"
+                    Background="#607D8B" Foreground="White" FontSize="14" FontWeight="Bold"/>
+            <Button Content="📊 User Analytics" Height="70" Margin="8" Click="UserAnalytics_Click"
+                    Background="#795548" Foreground="White" FontSize="14" FontWeight="Bold"/>
+            <Button Content="🔒 Security Logs" Height="70" Margin="8" Click="SecurityLogs_Click"
+                    Background="#E91E63" Foreground="White" FontSize="14" FontWeight="Bold"/>
+        </UniformGrid>
+
+        <!-- Content area -->
+        <ContentControl Grid.Row="2" x:Name="UserContentArea" />
+    </Grid>
+</UserControl>

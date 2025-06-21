@@ -26,5 +26,7 @@
         <Page Include="Views/TransferView.xaml" />
         <Page Include="Views/TransferLogsView.xaml" />
         <Page Include="Views/TotalBalancesView.xaml" />
+        <Page Include="Views/UsersView.xaml" />
+        <Page Include="Views/AddNewUserView.xaml" />
     </ItemGroup>
 </Project>

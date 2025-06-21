@@ -18,20 +18,17 @@ namespace BankManagementSystem.WPF.Views
 
         private void UpdateClient_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: load UpdateClientView when implemented
-            MessageBox.Show("UpdateClientView not implemented yet.");
+            ClientContentArea.Content = new UpdateClientView();
         }
 
         private void DeleteClient_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: load DeleteClientView when implemented
-            MessageBox.Show("DeleteClientView not implemented yet.");
+            ClientContentArea.Content = new DeleteClientView();
         }
 
         private void FindClient_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: load FindClientView when implemented
-            MessageBox.Show("FindClientView not implemented yet.");
+            ClientContentArea.Content = new FindClientView();
         }
 
         private void ClientsList_Click(object sender, RoutedEventArgs e)
@@ -41,8 +38,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void LoadClientsListView()
         {
-            // TODO: replace with ClientsListView when implemented
-            ClientContentArea.Content = new TextBlock { Text = "Clients list not implemented yet." };
+            ClientContentArea.Content = new ClientsListView();
         }
     }
 }

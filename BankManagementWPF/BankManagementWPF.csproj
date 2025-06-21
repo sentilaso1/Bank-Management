@@ -16,5 +16,9 @@
         <Page Include="Views/HomeView.xaml" />
         <Page Include="Views/ClientsView.xaml" />
         <Page Include="Views/AddNewClientView.xaml" />
+        <Page Include="Views/UpdateClientView.xaml" />
+        <Page Include="Views/DeleteClientView.xaml" />
+        <Page Include="Views/FindClientView.xaml" />
+        <Page Include="Views/ClientsListView.xaml" />
     </ItemGroup>
 </Project>

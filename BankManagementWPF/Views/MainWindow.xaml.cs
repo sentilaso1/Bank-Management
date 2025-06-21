@@ -34,6 +34,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void btnLoginRegisters_Click(object sender, RoutedEventArgs e)
         {
+            MainContent.Content = new LoginRegistersView();
         }
 
         private void btnLogout_Click(object sender, RoutedEventArgs e)

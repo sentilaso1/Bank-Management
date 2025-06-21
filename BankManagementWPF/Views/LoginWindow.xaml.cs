@@ -1,6 +1,6 @@
 using System.Windows;
 using BankBusinessLayer;
-using Bank_Management_System.Forms.Register;
+using BankManagementSystem.WPF.Views;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -21,8 +21,11 @@ namespace BankManagementSystem.WPF.Views
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            FrmRegister frm = new FrmRegister();
-            frm.ShowDialog();
+            var window = new AddNewUserWindow
+            {
+                Owner = this
+            };
+            window.ShowDialog();
         }
 
         public async void Login()

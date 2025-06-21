@@ -28,6 +28,7 @@
         <Page Include="Views/TotalBalancesView.xaml" />
         <Page Include="Views/UsersView.xaml" />
         <Page Include="Views/AddNewUserView.xaml" />
+        <Page Include="Views/AddNewUserWindow.xaml" />
         <Page Include="Views/UpdateUserView.xaml" />
         <Page Include="Views/DeleteUserView.xaml" />
         <Page Include="Views/FindUserView.xaml" />

@@ -18,7 +18,7 @@ namespace BankDataAccessLayer
         private static readonly string User =
             Environment.GetEnvironmentVariable("BANK_DB_USER") ?? "root";
         private static readonly string Password =
-            Environment.GetEnvironmentVariable("BANK_DB_PASSWORD") ?? string.Empty;
+            Environment.GetEnvironmentVariable("BANK_DB_PASSWORD") ?? "senti123";
 
         public static string ConnectionString =>
             $"Server={Server};Port={Port};Database={Database};Uid={User};Pwd={Password};Charset=utf8mb4;SslMode=Required;";

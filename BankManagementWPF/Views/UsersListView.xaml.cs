@@ -17,7 +17,14 @@ namespace BankManagementSystem.WPF.Views
         public UsersListView()
         {
             InitializeComponent();
+            // Sử dụng Loaded event thay vì gọi LoadData() trực tiếp
+            this.Loaded += UsersListView_Loaded;
+        }
+
+        private void UsersListView_Loaded(object sender, RoutedEventArgs e)
+        {
             LoadData();
+            this.Loaded -= UsersListView_Loaded; // Unsubscribe để tránh gọi nhiều lần
         }
 
         private class UserRow
@@ -31,16 +38,29 @@ namespace BankManagementSystem.WPF.Views
 
         private void LoadData()
         {
-            DataTable dt = User.GetAllUsers();
-            _rows = dt.AsEnumerable().Select(r => new UserRow
+            try
             {
-                Username = r.Field<string>("Username"),
-                FullName = r.Field<string>("FirstName") + " " + r.Field<string>("LastName"),
-                Email = r.Field<string>("Email"),
-                Role = PermissionToRole(r.Field<int>("Permission"))
-            }).ToList();
-            UsersDataGrid.ItemsSource = _rows;
-            UpdateStats();
+                DataTable dt = User.GetAllUsers();
+                _rows = dt.AsEnumerable().Select(r => new UserRow
+                {
+                    Username = r.Field<string>("Username") ?? string.Empty,
+                    FullName = (r.Field<string>("FirstName") ?? "") + " " + (r.Field<string>("LastName") ?? ""),
+                    Email = r.Field<string>("Email") ?? string.Empty,
+                    Role = PermissionToRole(r.Field<int?>("Permission") ?? 0)
+                }).ToList();
+
+                if (UsersDataGrid != null)
+                {
+                    UsersDataGrid.ItemsSource = _rows;
+                }
+
+                UpdateStats();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading users: {ex.Message}", "Error",
+                               MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private static string PermissionToRole(int p) => p switch
@@ -53,11 +73,21 @@ namespace BankManagementSystem.WPF.Views
 
         private void UpdateStats()
         {
-            AdminCountTextBlock.Text = _rows.Count(r => r.Role == "Administrator").ToString();
-            ManagerCountTextBlock.Text = _rows.Count(r => r.Role == "Manager").ToString();
-            CashierCountTextBlock.Text = _rows.Count(r => r.Role == "Cashier").ToString();
-            ViewerCountTextBlock.Text = _rows.Count(r => r.Role == "Viewer").ToString();
-            LockedCountTextBlock.Text = "0"; // no status info
+            // Thêm null check cho tất cả TextBlock
+            if (AdminCountTextBlock != null)
+                AdminCountTextBlock.Text = _rows.Count(r => r.Role == "Administrator").ToString();
+
+            if (ManagerCountTextBlock != null)
+                ManagerCountTextBlock.Text = _rows.Count(r => r.Role == "Manager").ToString();
+
+            if (CashierCountTextBlock != null)
+                CashierCountTextBlock.Text = _rows.Count(r => r.Role == "Cashier").ToString();
+
+            if (ViewerCountTextBlock != null)
+                ViewerCountTextBlock.Text = _rows.Count(r => r.Role == "Viewer").ToString();
+
+            if (LockedCountTextBlock != null)
+                LockedCountTextBlock.Text = "0"; // no status info
         }
 
         private void RoleFilter_Changed(object sender, SelectionChangedEventArgs e)
@@ -77,7 +107,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void Search_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (SearchTextBox.Text == "Search users...")
+            if (SearchTextBox != null && SearchTextBox.Text == "Search users...")
             {
                 SearchTextBox.Text = string.Empty;
                 SearchTextBox.Foreground = SystemColors.ControlTextBrush;
@@ -86,7 +116,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void Search_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            if (SearchTextBox != null && string.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
                 SearchTextBox.Text = "Search users...";
                 SearchTextBox.Foreground = System.Windows.Media.Brushes.Gray;
@@ -95,19 +125,42 @@ namespace BankManagementSystem.WPF.Views
 
         private void ApplyFilters()
         {
-            IEnumerable<UserRow> query = _rows;
-            if (RoleFilterComboBox.SelectedIndex > 0)
+            // Kiểm tra null cho tất cả controls trước khi sử dụng
+            if (RoleFilterComboBox == null || SearchTextBox == null || UsersDataGrid == null)
             {
-                string role = ((ComboBoxItem)RoleFilterComboBox.SelectedItem).Content.ToString();
-                query = query.Where(r => r.Role == role);
+                return; // Thoát sớm nếu controls chưa sẵn sàng
             }
-            if (!string.IsNullOrWhiteSpace(SearchTextBox.Text) && SearchTextBox.Text != "Search users...")
+
+            try
             {
-                query = query.Where(r => r.Username.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase)
-                                       || r.FullName.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase)
-                                       || r.Email.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase));
+                IEnumerable<UserRow> query = _rows;
+
+                if (RoleFilterComboBox.SelectedIndex > 0 && RoleFilterComboBox.SelectedItem != null)
+                {
+                    string role = ((ComboBoxItem)RoleFilterComboBox.SelectedItem).Content?.ToString() ?? "";
+                    if (!string.IsNullOrEmpty(role))
+                    {
+                        query = query.Where(r => r.Role == role);
+                    }
+                }
+
+                // Dòng code đã sửa với null check
+                if (SearchTextBox != null && !string.IsNullOrWhiteSpace(SearchTextBox.Text) && SearchTextBox.Text != "Search users...")
+                {
+                    string searchText = SearchTextBox.Text;
+                    query = query.Where(r =>
+                        (r.Username?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (r.FullName?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (r.Email?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false));
+                }
+
+                UsersDataGrid.ItemsSource = query.ToList();
             }
-            UsersDataGrid.ItemsSource = query.ToList();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying filters: {ex.Message}", "Error",
+                               MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
@@ -122,15 +175,33 @@ namespace BankManagementSystem.WPF.Views
 
         private void ExportList_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new() { Filter = "CSV|*.csv" };
-            if (dlg.ShowDialog() == true)
+            try
             {
-                var sb = new StringBuilder();
-                sb.AppendLine("Username,FullName,Email,Role");
-                foreach (UserRow row in UsersDataGrid.ItemsSource as IEnumerable<UserRow>)
-                    sb.AppendLine($"{row.Username},{row.FullName},{row.Email},{row.Role}");
-                File.WriteAllText(dlg.FileName, sb.ToString());
-                MessageBox.Show("Export completed", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (UsersDataGrid?.ItemsSource == null)
+                {
+                    MessageBox.Show("No data to export", "Export", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                Microsoft.Win32.SaveFileDialog dlg = new() { Filter = "CSV|*.csv" };
+                if (dlg.ShowDialog() == true)
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendLine("Username,FullName,Email,Role");
+
+                    foreach (UserRow row in UsersDataGrid.ItemsSource as IEnumerable<UserRow> ?? Enumerable.Empty<UserRow>())
+                    {
+                        sb.AppendLine($"{row.Username},{row.FullName},{row.Email},{row.Role}");
+                    }
+
+                    File.WriteAllText(dlg.FileName, sb.ToString());
+                    MessageBox.Show("Export completed", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting data: {ex.Message}", "Error",
+                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

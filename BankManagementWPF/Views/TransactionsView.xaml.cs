@@ -27,12 +27,12 @@ namespace BankManagementSystem.WPF.Views
 
         private void TransferLogs_Click(object sender, RoutedEventArgs e)
         {
-            TransactionContentArea.Content = new TextBlock { Text = "Transfer logs view not implemented." };
+            TransactionContentArea.Content = new TransferLogsView();
         }
 
         private void TotalBalances_Click(object sender, RoutedEventArgs e)
         {
-            TransactionContentArea.Content = new TextBlock { Text = "Total balances view not implemented." };
+            TransactionContentArea.Content = new TotalBalancesView();
         }
 
         private void AllTransactions_Click(object sender, RoutedEventArgs e)

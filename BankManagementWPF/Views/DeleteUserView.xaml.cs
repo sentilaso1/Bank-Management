@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -10,6 +11,7 @@ namespace BankManagementSystem.WPF.Views
         public DeleteUserView()
         {
             InitializeComponent();
+            CurrentUserSession.CheckPermission(Permission.DeleteUser);
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -38,6 +40,16 @@ namespace BankManagementSystem.WPF.Views
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                CurrentUserSession.CheckPermission(Permission.DeleteUser);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You don't have permission to delete users.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (_user == null)
                 return;
 

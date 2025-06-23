@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -8,7 +9,20 @@ namespace BankManagementSystem.WPF.Views
         public UsersView()
         {
             InitializeComponent();
+            ApplyPermissions();
             LoadUsersList();
+        }
+
+        private void ApplyPermissions()
+        {
+            AddNewUserButton.Visibility = CurrentUserSession.HasPermission(Permission.AddUser)
+                ? Visibility.Visible : Visibility.Collapsed;
+            UpdateUserButton.Visibility = CurrentUserSession.HasPermission(Permission.UpdateUser)
+                ? Visibility.Visible : Visibility.Collapsed;
+            DeleteUserButton.Visibility = CurrentUserSession.HasPermission(Permission.DeleteUser)
+                ? Visibility.Visible : Visibility.Collapsed;
+            PermissionsButton.Visibility = CurrentUserSession.HasPermission(Permission.ManagePermissions)
+                ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void AddNewUser_Click(object sender, RoutedEventArgs e)

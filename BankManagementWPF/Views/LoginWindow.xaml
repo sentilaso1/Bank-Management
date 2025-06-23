@@ -100,15 +100,16 @@
             </Setter>
         </Style>
 
-        <!-- TextBox Style -->
+        <!-- TextBox Style - Fixed -->
         <Style x:Key="ModernTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Foreground" Value="#000000"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
             <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Padding" Value="12,0"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="CaretBrush" Value="#4A90E2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -116,12 +117,16 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="8">
-                            <ScrollViewer x:Name="PART_ContentHost" 
-                                        VerticalAlignment="Center"
-                                        Margin="{TemplateBinding Padding}"
-                                        Focusable="False"
-                                        HorizontalScrollBarVisibility="Hidden"
-                                        VerticalScrollBarVisibility="Hidden"/>
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" 
+                                            VerticalAlignment="Center"
+                                            Margin="{TemplateBinding Padding}"
+                                            Focusable="False"
+                                            HorizontalScrollBarVisibility="Hidden"
+                                            VerticalScrollBarVisibility="Hidden"
+                                            BorderThickness="0"
+                                            Background="Transparent"/>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
@@ -137,15 +142,16 @@
             </Setter>
         </Style>
 
-        <!-- PasswordBox Style -->
+        <!-- PasswordBox Style - Fixed -->
         <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Foreground" Value="#000000"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
             <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Padding" Value="12,0"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="CaretBrush" Value="#4A90E2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
@@ -153,12 +159,16 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="8">
-                            <ScrollViewer x:Name="PART_ContentHost" 
-                                        VerticalAlignment="Center"
-                                        Margin="{TemplateBinding Padding}"
-                                        Focusable="False"
-                                        HorizontalScrollBarVisibility="Hidden"
-                                        VerticalScrollBarVisibility="Hidden"/>
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" 
+                                            VerticalAlignment="Center"
+                                            Margin="{TemplateBinding Padding}"
+                                            Focusable="False"
+                                            HorizontalScrollBarVisibility="Hidden"
+                                            VerticalScrollBarVisibility="Hidden"
+                                            BorderThickness="0"
+                                            Background="Transparent"/>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
@@ -225,7 +235,6 @@
 
                     <!-- Header -->
                     <StackPanel Grid.Row="0" HorizontalAlignment="Center">
-                        <!-- Bank Icon -->
                         <!-- Bank Icon -->
                         <Ellipse Width="50" Height="50">
                             <Ellipse.Fill>

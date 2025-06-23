@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -13,6 +14,7 @@ namespace BankManagementSystem.WPF.Views
         public UpdateClientView()
         {
             InitializeComponent();
+            CurrentUserSession.CheckPermission(Permission.UpdateClient);
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -99,6 +101,16 @@ namespace BankManagementSystem.WPF.Views
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                CurrentUserSession.CheckPermission(Permission.UpdateClient);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You don't have permission to update clients.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (!_isUpdateMode)
                 return;
 

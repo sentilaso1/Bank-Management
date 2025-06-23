@@ -16,17 +16,17 @@
 
         <!-- Transaction Type Buttons -->
         <UniformGrid Grid.Row="1" Columns="3" Rows="2" Margin="0,0,0,20">
-            <Button Content="💰 Deposit" Height="80" Margin="10" Click="Deposit_Click"
+            <Button x:Name="DepositButton" Content="💰 Deposit" Height="80" Margin="10" Click="Deposit_Click"
                     Background="#4CAF50" Foreground="White" FontSize="16" FontWeight="Bold"/>
-            <Button Content="💸 Withdraw" Height="80" Margin="10" Click="Withdraw_Click"
+            <Button x:Name="WithdrawButton" Content="💸 Withdraw" Height="80" Margin="10" Click="Withdraw_Click"
                     Background="#F44336" Foreground="White" FontSize="16" FontWeight="Bold"/>
-            <Button Content="🔄 Transfer" Height="80" Margin="10" Click="Transfer_Click"
+            <Button x:Name="TransferButton" Content="🔄 Transfer" Height="80" Margin="10" Click="Transfer_Click"
                     Background="#2196F3" Foreground="White" FontSize="16" FontWeight="Bold"/>
             <Button Content="📊 Transfer Logs" Height="80" Margin="10" Click="TransferLogs_Click"
                     Background="#FF9800" Foreground="White" FontSize="16" FontWeight="Bold"/>
             <Button Content="💼 Total Balances" Height="80" Margin="10" Click="TotalBalances_Click"
                     Background="#9C27B0" Foreground="White" FontSize="16" FontWeight="Bold"/>
-            <Button Content="📈 All Transactions" Height="80" Margin="10" Click="AllTransactions_Click"
+            <Button x:Name="ExportButton" Content="📈 All Transactions" Height="80" Margin="10" Click="AllTransactions_Click"
                     Background="#607D8B" Foreground="White" FontSize="16" FontWeight="Bold"/>
         </UniformGrid>
 

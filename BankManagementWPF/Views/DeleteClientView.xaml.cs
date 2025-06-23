@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -10,6 +11,7 @@ namespace BankManagementSystem.WPF.Views
         public DeleteClientView()
         {
             InitializeComponent();
+            CurrentUserSession.CheckPermission(Permission.DeleteClient);
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -45,6 +47,16 @@ namespace BankManagementSystem.WPF.Views
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                CurrentUserSession.CheckPermission(Permission.DeleteClient);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You don't have permission to delete clients.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (_client == null)
                 return;
 

@@ -17,38 +17,44 @@ namespace BankBusinessLayer
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public int Permission { get; set; }
+        private int _roleId;
+        public int RoleId => _roleId;
+        public string Role { get; set; }
 
-        private User(int userID,string FirstName, string LastName, string Email, string Phone, string username, string password, int permission): 
-            base (userID,FirstName,LastName,Email,Phone)
+        private User(int userID, string FirstName, string LastName, string Email, string Phone,
+            string username, string password, int permission) :
+            base(userID, FirstName, LastName, Email, Phone)
         {
-            
-   
             Username = username;
             Password = password;
-            Permission = permission;
+            _roleId = permission;
+            Role = RoleMapping.GetRoleName(permission);
 
             Mode = enMode.Update;
         }
 
         private bool _AddNewUser()
         {
-            this.UserID = UsersData.AddNewUser(this.Username, this.FirstName, this.LastName,this.Email, this.PhoneNumber, this.Password, this.Permission);
+            int roleId = RoleMapping.GetRoleId(this.Role);
+            this.UserID = UsersData.AddNewUser(this.Username, this.FirstName, this.LastName,
+                this.Email, this.PhoneNumber, this.Password, roleId);
 
             return (UserID != -1);
         }
 
         private bool _UpdateUser()
         {
-            return UsersData.UpdateUser(this.Username, this.FirstName, this.LastName, this.Email, this.PhoneNumber, this.Password, this.Permission);
+            int roleId = RoleMapping.GetRoleId(this.Role);
+            return UsersData.UpdateUser(this.Username, this.FirstName, this.LastName,
+                this.Email, this.PhoneNumber, this.Password, roleId);
         }
 
-        public User(): base()
+        public User() : base()
         {
-
-            Username = "";
-            Password = "";
-            Permission = 0;
+            Username = string.Empty;
+            Password = string.Empty;
+            _roleId = 4;
+            Role = RoleMapping.GetRoleName(_roleId);
 
             Mode = enMode.AddNew;
         }

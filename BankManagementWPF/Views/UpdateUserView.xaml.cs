@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -11,6 +12,7 @@ namespace BankManagementSystem.WPF.Views
         public UpdateUserView()
         {
             InitializeComponent();
+            CurrentUserSession.CheckPermission(Permission.UpdateUser);
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -37,7 +39,7 @@ namespace BankManagementSystem.WPF.Views
             LastNameTextBox.Text = _user.LastName;
             EmailTextBox.Text = _user.Email;
             PhoneTextBox.Text = _user.PhoneNumber;
-            PermissionComboBox.SelectedIndex = _user.Permission - 1;
+            PermissionComboBox.SelectedIndex = RoleMapping.GetRoleId(_user.Role) - 1;
 
             FormGrid.IsEnabled = true;
             UpdateButton.IsEnabled = true;
@@ -46,6 +48,16 @@ namespace BankManagementSystem.WPF.Views
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                CurrentUserSession.CheckPermission(Permission.UpdateUser);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You don't have permission to update users.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (_user == null)
                 return;
 
@@ -54,7 +66,8 @@ namespace BankManagementSystem.WPF.Views
             _user.LastName = LastNameTextBox.Text;
             _user.Email = EmailTextBox.Text;
             _user.PhoneNumber = PhoneTextBox.Text;
-            _user.Permission = PermissionComboBox.SelectedIndex + 1;
+            if (PermissionComboBox.SelectedItem is ComboBoxItem cbItem)
+                _user.Role = cbItem.Content.ToString();
 
             if (MessageBox.Show("Save changes to this user?", "Update", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;

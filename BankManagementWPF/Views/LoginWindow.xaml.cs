@@ -1,6 +1,7 @@
 using System.Windows;
 using BankBusinessLayer;
 using BankManagementSystem.WPF.Views;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -35,10 +36,21 @@ namespace BankManagementSystem.WPF.Views
 
         public async void Login()
         {
-            Global.CurrentUser = User.FindUserByUsernameAndPassword(txtUsername.Text, txtPassword.Password);
-            if (Global.CurrentUser != null)
+            var user = User.FindUserByUsernameAndPassword(txtUsername.Text, txtPassword.Password);
+            if (user != null)
             {
-                User.AddNewLoginRegisters(Global.CurrentUser.Username, System.DateTime.Now);
+                if (string.IsNullOrEmpty(user.Role))
+                {
+                    user.Role = RoleMapping.GetRoleName(user.RoleId);
+                }
+
+                Global.CurrentUser = user;
+                User.AddNewLoginRegisters(user.Username, System.DateTime.Now);
+
+                var permissionService = new PermissionService(user.Role);
+                CurrentUserSession.SetUser(user);
+                CurrentUserSession.SetPermissionService(permissionService);
+
                 var main = new MainWindow();
                 main.Show();
                 this.Close();

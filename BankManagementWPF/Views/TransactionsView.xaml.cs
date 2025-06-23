@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -8,6 +9,19 @@ namespace BankManagementSystem.WPF.Views
         public TransactionsView()
         {
             InitializeComponent();
+            ApplyPermissions();
+        }
+
+        private void ApplyPermissions()
+        {
+            DepositButton.Visibility = CurrentUserSession.HasPermission(Permission.ProcessDeposit)
+                ? Visibility.Visible : Visibility.Collapsed;
+            WithdrawButton.Visibility = CurrentUserSession.HasPermission(Permission.ProcessWithdraw)
+                ? Visibility.Visible : Visibility.Collapsed;
+            TransferButton.Visibility = CurrentUserSession.HasPermission(Permission.ProcessTransfer)
+                ? Visibility.Visible : Visibility.Collapsed;
+            ExportButton.Visibility = CurrentUserSession.HasPermission(Permission.ExportData)
+                ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void Deposit_Click(object sender, RoutedEventArgs e)

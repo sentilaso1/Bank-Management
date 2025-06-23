@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -11,6 +12,7 @@ namespace BankManagementSystem.WPF.Views
         public AddNewUserView()
         {
             InitializeComponent();
+            CurrentUserSession.CheckPermission(Permission.AddUser);
         }
 
         private bool FillData()
@@ -37,23 +39,33 @@ namespace BankManagementSystem.WPF.Views
             _user.Email = EmailTextBox.Text;
             _user.PhoneNumber = PhoneTextBox.Text;
             _user.Password = PasswordBox.Password;
-            _user.Permission = GetSelectedPermission();
+            _user.Role = GetSelectedRole();
             return true;
         }
 
-        private int GetSelectedPermission()
+        private string GetSelectedRole()
         {
             if (AdminRoleRadio.IsChecked == true)
-                return 1;
+                return "Administrator";
             if (ManagerRoleRadio.IsChecked == true)
-                return 2;
+                return "Manager";
             if (CashierRoleRadio.IsChecked == true)
-                return 3;
-            return 4;
+                return "Cashier";
+            return "Viewer";
         }
 
         private void CreateUser_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                CurrentUserSession.CheckPermission(Permission.AddUser);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You don't have permission to add users.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (!FillData())
                 return;
 

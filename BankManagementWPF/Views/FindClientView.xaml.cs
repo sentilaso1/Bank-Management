@@ -27,15 +27,20 @@ namespace BankManagementSystem.WPF.Views
 
             if (SearchByAccountRadio.IsChecked == true)
             {
-                rows = rows.Where(r => r.Field<string>("AccountNumber").Contains(search));
+                rows = rows.Where(r => r.Field<string>("AccountNumber")
+                    .Contains(search, StringComparison.OrdinalIgnoreCase));
             }
             else if (SearchByNameRadio.IsChecked == true)
             {
-                rows = rows.Where(r => r.Field<string>("FirstName").Contains(search) || r.Field<string>("LastName").Contains(search));
+                rows = rows.Where(r => r.Field<string>("FirstName")
+                        .Contains(search, StringComparison.OrdinalIgnoreCase)
+                    || r.Field<string>("LastName")
+                        .Contains(search, StringComparison.OrdinalIgnoreCase));
             }
             else if (SearchByPhoneRadio.IsChecked == true)
             {
-                rows = rows.Where(r => r.Field<string>("Phone").Contains(search));
+                rows = rows.Where(r => r.Field<string>("Phone")
+                    .Contains(search, StringComparison.OrdinalIgnoreCase));
             }
 
             var result = rows.Select(r => new
@@ -48,6 +53,11 @@ namespace BankManagementSystem.WPF.Views
             }).ToList();
 
             SearchResultsDataGrid.ItemsSource = result;
+
+            if (result.Count == 0)
+            {
+                MessageBox.Show("No matching clients found.", "Search", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

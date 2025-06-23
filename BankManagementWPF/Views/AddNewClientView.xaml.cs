@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -12,6 +13,7 @@ namespace BankManagementSystem.WPF.Views
         public AddNewClientView()
         {
             InitializeComponent();
+            CurrentUserSession.CheckPermission(Permission.AddClient);
         }
 
         private bool FillData()
@@ -70,6 +72,16 @@ namespace BankManagementSystem.WPF.Views
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                CurrentUserSession.CheckPermission(Permission.AddClient);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You don't have permission to add clients.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (Client.IsClientExist(txtAccountNumber.Text))
             {
                 MessageBox.Show($"This Account Number Already Exists [{txtAccountNumber.Text}]", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

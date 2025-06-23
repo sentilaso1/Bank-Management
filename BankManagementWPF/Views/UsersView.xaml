@@ -25,17 +25,17 @@
 
         <!-- User management actions -->
         <UniformGrid Grid.Row="1" Columns="4" Rows="2" Margin="0,0,0,20">
-            <Button Content="➕ Add New User" Height="70" Margin="8" Click="AddNewUser_Click"
+            <Button x:Name="AddNewUserButton" Content="➕ Add New User" Height="70" Margin="8" Click="AddNewUser_Click"
                     Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold"/>
-            <Button Content="✏️ Update User" Height="70" Margin="8" Click="UpdateUser_Click"
+            <Button x:Name="UpdateUserButton" Content="✏️ Update User" Height="70" Margin="8" Click="UpdateUser_Click"
                     Background="#2196F3" Foreground="White" FontSize="14" FontWeight="Bold"/>
-            <Button Content="🗑️ Delete User" Height="70" Margin="8" Click="DeleteUser_Click"
+            <Button x:Name="DeleteUserButton" Content="🗑️ Delete User" Height="70" Margin="8" Click="DeleteUser_Click"
                     Background="#F44336" Foreground="White" FontSize="14" FontWeight="Bold"/>
-            <Button Content="🔍 Find User" Height="70" Margin="8" Click="FindUser_Click"
+            <Button x:Name="FindUserButton" Content="🔍 Find User" Height="70" Margin="8" Click="FindUser_Click"
                     Background="#FF9800" Foreground="White" FontSize="14" FontWeight="Bold"/>
-            <Button Content="📋 Users List" Height="70" Margin="8" Click="UsersList_Click"
+            <Button x:Name="UsersListButton" Content="📋 Users List" Height="70" Margin="8" Click="UsersList_Click"
                     Background="#9C27B0" Foreground="White" FontSize="14" FontWeight="Bold"/>
-            <Button Content="🔐 Permissions" Height="70" Margin="8" Click="Permissions_Click"
+            <Button x:Name="PermissionsButton" Content="🔐 Permissions" Height="70" Margin="8" Click="Permissions_Click"
                     Background="#607D8B" Foreground="White" FontSize="14" FontWeight="Bold"/>
             <Button Content="📊 User Analytics" Height="70" Margin="8" Click="UserAnalytics_Click"
                     Background="#795548" Foreground="White" FontSize="14" FontWeight="Bold"/>

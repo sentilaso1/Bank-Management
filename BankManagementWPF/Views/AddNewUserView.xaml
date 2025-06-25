@@ -75,7 +75,7 @@
                             <StackPanel Margin="10">
                                 <RadioButton Content="👑 Administrator - Full system access" x:Name="AdminRoleRadio" GroupName="UserRole" Margin="0,5"/>
                                 <RadioButton Content="👤 Manager - User and client management" x:Name="ManagerRoleRadio" GroupName="UserRole" Margin="0,5"/>
-                                <RadioButton Content="💰 Cashier - Transaction processing only" x:Name="CashierRoleRadio" GroupName="UserRole" Margin="0,5" IsChecked="True"/>
+                                <RadioButton Content="👤 User - Personal transactions" x:Name="UserRoleRadio" GroupName="UserRole" Margin="0,5" IsChecked="True"/>
                                 <RadioButton Content="👁️ Viewer - Read-only access" x:Name="ViewerRoleRadio" GroupName="UserRole" Margin="0,5"/>
                             </StackPanel>
                         </GroupBox>

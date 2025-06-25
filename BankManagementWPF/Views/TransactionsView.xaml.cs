@@ -14,14 +14,35 @@ namespace BankManagementSystem.WPF.Views
 
         private void ApplyPermissions()
         {
-            DepositButton.Visibility = CurrentUserSession.HasPermission(Permission.ProcessDeposit)
-                ? Visibility.Visible : Visibility.Collapsed;
-            WithdrawButton.Visibility = CurrentUserSession.HasPermission(Permission.ProcessWithdraw)
-                ? Visibility.Visible : Visibility.Collapsed;
-            TransferButton.Visibility = CurrentUserSession.HasPermission(Permission.ProcessTransfer)
-                ? Visibility.Visible : Visibility.Collapsed;
-            ExportButton.Visibility = CurrentUserSession.HasPermission(Permission.ExportData)
-                ? Visibility.Visible : Visibility.Collapsed;
+            var role = CurrentUserSession.CurrentUser?.Role;
+
+            if (role == "User")
+            {
+                DepositButton.Visibility = Visibility.Visible;
+                WithdrawButton.Visibility = Visibility.Visible;
+                TransferButton.Visibility = Visibility.Visible;
+                AllTransactionsButton.Visibility = Visibility.Visible;
+                TransferLogsButton.Visibility = Visibility.Collapsed;
+                TotalBalancesButton.Visibility = Visibility.Collapsed;
+            }
+            else if (role == "Administrator" || role == "Manager")
+            {
+                DepositButton.Visibility = Visibility.Collapsed;
+                WithdrawButton.Visibility = Visibility.Collapsed;
+                TransferButton.Visibility = Visibility.Collapsed;
+                AllTransactionsButton.Visibility = Visibility.Collapsed;
+                TransferLogsButton.Visibility = Visibility.Visible;
+                TotalBalancesButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                DepositButton.Visibility = Visibility.Collapsed;
+                WithdrawButton.Visibility = Visibility.Collapsed;
+                TransferButton.Visibility = Visibility.Collapsed;
+                AllTransactionsButton.Visibility = Visibility.Collapsed;
+                TransferLogsButton.Visibility = Visibility.Collapsed;
+                TotalBalancesButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void Deposit_Click(object sender, RoutedEventArgs e)

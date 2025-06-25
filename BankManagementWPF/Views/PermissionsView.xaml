@@ -33,7 +33,7 @@
                         <ListBox x:Name="RolesListBox" SelectionChanged="Role_SelectionChanged">
                             <ListBoxItem Content="👑 Administrator" Tag="Administrator"/>
                             <ListBoxItem Content="👤 Manager" Tag="Manager"/>
-                            <ListBoxItem Content="💰 Cashier" Tag="Cashier"/>
+                            <ListBoxItem Content="👤 User" Tag="User"/>
                             <ListBoxItem Content="👁️ Viewer" Tag="Viewer"/>
                         </ListBox>
                     </GroupBox>

@@ -47,7 +47,7 @@ namespace BankManagementSystem.WPF.Views
         {
             1 => "Administrator",
             2 => "Manager",
-            3 => "Cashier",
+            3 => "User",
             _ => "Viewer"
         };
 

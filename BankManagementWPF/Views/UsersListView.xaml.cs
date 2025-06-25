@@ -207,12 +207,42 @@ namespace BankManagementSystem.WPF.Views
 
         private void BulkLock_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Bulk lock - not implemented", "Lock", MessageBoxButton.OK, MessageBoxImage.Information);
+            var selected = _rows.Where(r => r.IsSelected).ToList();
+            if (!selected.Any())
+            {
+                MessageBox.Show("No users selected", "Lock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int success = 0;
+            foreach (var row in selected)
+            {
+                if (User.LockUser(row.Username))
+                    success++;
+            }
+
+            LoadData();
+            MessageBox.Show($"Locked {success} user(s)", "Lock", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BulkUnlock_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Bulk unlock - not implemented", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
+            var selected = _rows.Where(r => r.IsSelected).ToList();
+            if (!selected.Any())
+            {
+                MessageBox.Show("No users selected", "Unlock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int success = 0;
+            foreach (var row in selected)
+            {
+                if (User.UnlockUser(row.Username))
+                    success++;
+            }
+
+            LoadData();
+            MessageBox.Show($"Unlocked {success} user(s)", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Analytics_Click(object sender, RoutedEventArgs e)

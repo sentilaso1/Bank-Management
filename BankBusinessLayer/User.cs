@@ -23,15 +23,14 @@ namespace BankBusinessLayer
         public bool IsActive { get; set; }
 
         private User(int userID, string FirstName, string LastName, string Email, string Phone,
-            string username, string password, string role, int permission) :
+            string username, string password, string role, int permission, bool isActive = true) :
             base(userID, FirstName, LastName, Email, Phone)
         {
             Username = username;
             Password = password;
             _roleId = permission;
             Role = role;
-            IsActive = true;
-
+            IsActive = isActive;
             Mode = enMode.Update;
         }
 
@@ -67,11 +66,12 @@ namespace BankBusinessLayer
             int Permission = 0, UserID = 0;
             string FirstName = "", LastName = "", Email = "", Phone = "", Password = "", Role = "";
 
-            if (UsersData.GetUserByUsername(username, ref FirstName, ref LastName, ref Email, ref Phone, ref Password, ref Role, ref Permission, ref UserID))
+            bool isActive = true;
+            if (UsersData.GetUserByUsername(username, ref FirstName, ref LastName, ref Email, ref Phone, ref Password, ref Role, ref Permission, ref UserID, ref isActive))
             {
                 if (Role.Equals("Cashier", System.StringComparison.OrdinalIgnoreCase))
                     Role = "User";
-                return new User(UserID, FirstName, LastName, Email, Phone, username, Password, Role, Permission);
+                return new User(UserID, FirstName, LastName, Email, Phone, username, Password, Role, Permission, isActive);
             }
             else
                 return null;
@@ -88,7 +88,7 @@ namespace BankBusinessLayer
             {
                 if (Role.Equals("Cashier", System.StringComparison.OrdinalIgnoreCase))
                     Role = "User";
-                return new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission);
+                return new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission, true);
             }
             else
                 return null;

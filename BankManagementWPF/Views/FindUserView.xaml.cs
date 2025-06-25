@@ -27,6 +27,7 @@ namespace BankManagementSystem.WPF.Views
             public string FullName { get; set; } = string.Empty;
             public string Email { get; set; } = string.Empty;
             public string Role { get; set; } = string.Empty;
+            public bool IsActive { get; set; }
         }
 
         private void LoadAllUsers()
@@ -37,7 +38,8 @@ namespace BankManagementSystem.WPF.Views
                 Username = r.Field<string>("Username"),
                 FullName = r.Field<string>("FirstName") + " " + r.Field<string>("LastName"),
                 Email = r.Field<string>("Email"),
-                Role = PermissionToRole(r.Field<int>("Permission"))
+                Role = PermissionToRole(r.Field<int>("Permission")),
+                IsActive = Convert.ToBoolean(r["IsActive"])
             }).ToList();
             SearchResultsDataGrid.ItemsSource = _rows;
             UpdateStats();
@@ -65,6 +67,10 @@ namespace BankManagementSystem.WPF.Views
                 string role = ((ComboBoxItem)RoleFilterComboBox.SelectedItem).Content.ToString();
                 query = query.Where(r => r.Role == role);
             }
+            if (StatusFilterComboBox.SelectedIndex == 1)
+                query = query.Where(r => r.IsActive);
+            else if (StatusFilterComboBox.SelectedIndex == 2)
+                query = query.Where(r => !r.IsActive);
             SearchResultsDataGrid.ItemsSource = query.ToList();
             UpdateStats();
         }
@@ -166,8 +172,8 @@ namespace BankManagementSystem.WPF.Views
         {
             var list = SearchResultsDataGrid.ItemsSource as IEnumerable<UserRow> ?? new List<UserRow>();
             int total = list.Count();
-            int active = total; // No status info
-            int locked = 0;
+            int active = list.Count(r => r.IsActive);
+            int locked = list.Count(r => !r.IsActive);
             ResultsCountTextBlock.Text = total.ToString();
             TotalUsersTextBlock.Text = total.ToString();
             ActiveUsersTextBlock.Text = active.ToString();

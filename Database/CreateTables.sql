@@ -65,8 +65,8 @@ USE BankDB;
 INSERT INTO Users (Username, Password, FirstName, LastName, Email, Phone, Address, Role, Permission) VALUES
 ('admin', 'admin123', 'Nguyễn', 'Quản Trị', 'admin@bank.com', '0901234567', '123 Đường ABC, TP.HCM', 'Administrator', 1),
 ('manager', 'manager123', 'Trần', 'Giám Đốc', 'manager@bank.com', '0902345678', '456 Đường DEF, TP.HCM', 'Manager', 2),
-('cashier1', 'cashier123', 'Lê', 'Thu Ngân', 'cashier1@bank.com', '0903456789', '789 Đường GHI, TP.HCM', 'Cashier', 3),
-('teller1', 'teller123', 'Phạm', 'Giao Dịch', 'teller1@bank.com', '0904567890', '321 Đường JKL, TP.HCM', 'Cashier', 3),
+('cashier1', 'cashier123', 'Lê', 'Thu Ngân', 'cashier1@bank.com', '0903456789', '789 Đường GHI, TP.HCM', 'User', 3),
+('teller1', 'teller123', 'Phạm', 'Giao Dịch', 'teller1@bank.com', '0904567890', '321 Đường JKL, TP.HCM', 'User', 3),
 ('auditor', 'auditor123', 'Đỗ', 'Kiểm Toán', 'auditor@bank.com', '0906666666', '789 Đường MNO, TP.HCM', 'Viewer', 4),
 ('support', 'support123', 'Vũ', 'Hỗ Trợ', 'support@bank.com', '0907777777', '987 Đường PQR, TP.HCM', 'Viewer', 4);
 

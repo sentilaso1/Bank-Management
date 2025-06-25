@@ -19,7 +19,7 @@
             </StackPanel>
 
             <!-- From Account Section -->
-            <GroupBox Grid.Row="1" Header="From Account (Source)" Margin="0,0,0,15" Background="#E3F2FD">
+            <GroupBox x:Name="FromAccountGroup" Grid.Row="1" Header="From Account (Source)" Margin="0,0,0,15" Background="#E3F2FD">
                 <StackPanel Margin="10">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Account Number:" VerticalAlignment="Center" Width="120"/>
@@ -37,7 +37,7 @@
             </GroupBox>
 
             <!-- To Account Section -->
-            <GroupBox Grid.Row="2" Header="To Account (Destination)" Margin="0,0,0,15" Background="#E8F5E8">
+            <GroupBox x:Name="ToAccountGroup" Grid.Row="2" Header="To Account (Destination)" Margin="0,0,0,15" Background="#E8F5E8">
                 <StackPanel Margin="10">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Account Number:" VerticalAlignment="Center" Width="120"/>

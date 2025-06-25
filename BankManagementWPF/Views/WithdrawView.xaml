@@ -19,7 +19,7 @@
         </StackPanel>
 
         <!-- Account Search -->
-        <GroupBox Grid.Row="1" Header="Select Account" Margin="0,0,0,20">
+        <GroupBox x:Name="AccountSearchGroup" Grid.Row="1" Header="Select Account" Margin="0,0,0,20">
             <StackPanel Margin="10">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                     <TextBlock Text="Account Number:" VerticalAlignment="Center" Width="120"/>

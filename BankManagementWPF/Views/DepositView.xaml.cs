@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -12,21 +13,29 @@ namespace BankManagementSystem.WPF.Views
         public DepositView()
         {
             InitializeComponent();
+
+            if (CurrentUserSession.CurrentUser?.Role == "User")
+            {
+                AccountSearchGroup.Visibility = Visibility.Collapsed;
+                AccountNumberTextBox.Text = CurrentUserSession.CurrentUser.Username;
+                LoadAccount(CurrentUserSession.CurrentUser.Username);
+            }
         }
 
-        private void FindAccount_Click(object sender, RoutedEventArgs e)
+        private void LoadAccount(string accountNumber)
         {
             AccountInfoBorder.Visibility = Visibility.Collapsed;
             DepositFormGroup.IsEnabled = false;
             ProcessDepositButton.IsEnabled = false;
             NewBalanceTextBlock.Text = string.Empty;
-            if (!Client.IsClientExist(AccountNumberTextBox.Text))
+
+            if (!Client.IsClientExist(accountNumber))
             {
-                MessageBox.Show($"Client Not Found [{AccountNumberTextBox.Text}] Try Another One", "Find", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Client Not Found [{accountNumber}] Try Another One", "Find", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            _client = Client.Find(AccountNumberTextBox.Text);
+            _client = Client.Find(accountNumber);
             if (_client == null)
             {
                 MessageBox.Show("Failed to load client info", "Find", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -39,6 +48,11 @@ namespace BankManagementSystem.WPF.Views
             DepositFormGroup.IsEnabled = true;
             ProcessDepositButton.IsEnabled = true;
             DepositAmountTextBox.Focus();
+        }
+
+        private void FindAccount_Click(object sender, RoutedEventArgs e)
+        {
+            LoadAccount(AccountNumberTextBox.Text);
         }
 
         private void ProcessDeposit_Click(object sender, RoutedEventArgs e)

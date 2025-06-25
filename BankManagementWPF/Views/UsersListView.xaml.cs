@@ -67,7 +67,7 @@ namespace BankManagementSystem.WPF.Views
         {
             1 => "Administrator",
             2 => "Manager",
-            3 => "Cashier",
+            3 => "User",
             _ => "Viewer"
         };
 
@@ -80,8 +80,8 @@ namespace BankManagementSystem.WPF.Views
             if (ManagerCountTextBlock != null)
                 ManagerCountTextBlock.Text = _rows.Count(r => r.Role == "Manager").ToString();
 
-            if (CashierCountTextBlock != null)
-                CashierCountTextBlock.Text = _rows.Count(r => r.Role == "Cashier").ToString();
+            if (UserCountTextBlock != null)
+                UserCountTextBlock.Text = _rows.Count(r => r.Role == "User").ToString();
 
             if (ViewerCountTextBlock != null)
                 ViewerCountTextBlock.Text = _rows.Count(r => r.Role == "Viewer").ToString();

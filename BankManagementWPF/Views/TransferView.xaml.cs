@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
+using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -13,19 +14,26 @@ namespace BankManagementSystem.WPF.Views
         public TransferView()
         {
             InitializeComponent();
+
+            if (CurrentUserSession.CurrentUser?.Role == "User")
+            {
+                FromAccountGroup.Visibility = Visibility.Collapsed;
+                FromAccountTextBox.Text = CurrentUserSession.CurrentUser.Username;
+                LoadFromAccount(CurrentUserSession.CurrentUser.Username);
+            }
         }
 
-        private void FindFromAccount_Click(object sender, RoutedEventArgs e)
+        private void LoadFromAccount(string accountNumber)
         {
             FromAccountInfoBorder.Visibility = Visibility.Collapsed;
             TransferDetailsGroup.IsEnabled = false;
             ProcessTransferButton.IsEnabled = false;
-            if (!Client.IsClientExist(FromAccountTextBox.Text))
+            if (!Client.IsClientExist(accountNumber))
             {
                 MessageBox.Show("Source account not found.", "Find", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            _fromClient = Client.Find(FromAccountTextBox.Text);
+            _fromClient = Client.Find(accountNumber);
             if (_fromClient == null)
             {
                 MessageBox.Show("Failed to load source account.", "Find", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -35,6 +43,11 @@ namespace BankManagementSystem.WPF.Views
             FromBalanceTextBlock.Text = _fromClient.Balance.ToString("C");
             FromAccountInfoBorder.Visibility = Visibility.Visible;
             EnableTransferDetails();
+        }
+
+        private void FindFromAccount_Click(object sender, RoutedEventArgs e)
+        {
+            LoadFromAccount(FromAccountTextBox.Text);
         }
 
         private void FindToAccount_Click(object sender, RoutedEventArgs e)

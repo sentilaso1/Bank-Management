@@ -46,7 +46,7 @@ namespace BankManagementSystem.WPF.Views
                     Username = r.Field<string>("Username") ?? string.Empty,
                     FullName = (r.Field<string>("FirstName") ?? "") + " " + (r.Field<string>("LastName") ?? ""),
                     Email = r.Field<string>("Email") ?? string.Empty,
-                    Role = PermissionToRole(r.Field<int?>("Permission") ?? 0)
+                    Role = r.Field<string>("Role") ?? PermissionToRole(r.Field<int?>("Permission") ?? 0)
                 }).ToList();
 
                 if (UsersDataGrid != null)

@@ -6,7 +6,7 @@ namespace BankManagementSystem.WPF.Security
     {
         public static Dictionary<string, List<Permission>> GetRolePermissions()
         {
-            return new Dictionary<string, List<Permission>>
+            return new Dictionary<string, List<Permission>>(System.StringComparer.OrdinalIgnoreCase)
             {
                 ["Administrator"] = new List<Permission>
                 {

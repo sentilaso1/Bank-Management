@@ -35,6 +35,7 @@ namespace BankManagementSystem.WPF.Views
             public string Email { get; set; } = string.Empty;
             public string Role { get; set; } = string.Empty;
             public bool IsActive { get; set; }
+            public string Status => IsActive ? "Active" : "Locked";
         }
 
         private void LoadData()
@@ -202,11 +203,11 @@ namespace BankManagementSystem.WPF.Views
                 if (dlg.ShowDialog() == true)
                 {
                     var sb = new StringBuilder();
-                    sb.AppendLine("Username,FullName,Email,Role");
+                    sb.AppendLine("Username,FullName,Email,Role,Status");
 
                     foreach (UserRow row in UsersDataGrid.ItemsSource as IEnumerable<UserRow> ?? Enumerable.Empty<UserRow>())
                     {
-                        sb.AppendLine($"{row.Username},{row.FullName},{row.Email},{row.Role}");
+                        sb.AppendLine($"{row.Username},{row.FullName},{row.Email},{row.Role},{row.Status}");
                     }
 
                     File.WriteAllText(dlg.FileName, sb.ToString());

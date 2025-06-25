@@ -105,7 +105,7 @@ namespace BankManagementSystem.WPF.Views
             {
                 if (!string.IsNullOrEmpty(filter))
                     filter += " AND ";
-                filter += $"(AccountNumber LIKE '%{SearchAccountTextBox.Text}%' OR FirstName LIKE '%{SearchAccountTextBox.Text}%' OR LastName LIKE '%{SearchAccountTextBox.Text}%')";
+                filter += $"(AccountNumber LIKE '%{SearchAccountTextBox.Text}%' OR ClientFullName LIKE '%{SearchAccountTextBox.Text}%')";
             }
             view.RowFilter = filter;
         }

@@ -54,7 +54,7 @@
                     <ComboBoxItem Content="All Roles"/>
                     <ComboBoxItem Content="Administrator"/>
                     <ComboBoxItem Content="Manager"/>
-                    <ComboBoxItem Content="Cashier"/>
+                    <ComboBoxItem Content="User"/>
                     <ComboBoxItem Content="Viewer"/>
                 </ComboBox>
 

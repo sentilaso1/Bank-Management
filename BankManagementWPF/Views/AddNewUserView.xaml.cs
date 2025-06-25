@@ -50,8 +50,8 @@ namespace BankManagementSystem.WPF.Views
                 return "Administrator";
             if (ManagerRoleRadio.IsChecked == true)
                 return "Manager";
-            if (CashierRoleRadio.IsChecked == true)
-                return "Cashier";
+            if (UserRoleRadio.IsChecked == true)
+                return "User";
             return "Viewer";
         }
 

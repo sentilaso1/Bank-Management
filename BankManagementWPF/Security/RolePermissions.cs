@@ -24,8 +24,14 @@ namespace BankManagementSystem.WPF.Security
                     Permission.ProcessDeposit, Permission.ProcessWithdraw, Permission.ProcessTransfer,
                     Permission.ViewTransactions, Permission.ApproveTransactions
                 },
-                // Other roles have no special permissions and are limited to the Home tab
-                ["Cashier"] = new List<Permission>(),
+                // Regular users can manage their own transactions
+                ["User"] = new List<Permission>
+                {
+                    Permission.ProcessDeposit,
+                    Permission.ProcessWithdraw,
+                    Permission.ProcessTransfer,
+                    Permission.ViewTransactions
+                },
                 ["Viewer"] = new List<Permission>()
             };
         }

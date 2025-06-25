@@ -8,7 +8,7 @@ namespace BankBusinessLayer
         {
             { 1, "Administrator" },
             { 2, "Manager" },
-            { 3, "Cashier" },
+            { 3, "User" },
             { 4, "Viewer" }
         };
 
@@ -16,7 +16,7 @@ namespace BankBusinessLayer
         {
             { "Administrator", 1 },
             { "Manager", 2 },
-            { "Cashier", 3 },
+            { "User", 3 },
             { "Viewer", 4 }
         };
 

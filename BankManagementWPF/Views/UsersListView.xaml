@@ -35,8 +35,8 @@
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
                     <TextBlock Text="💰" FontSize="20" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Cashiers" FontWeight="Bold" HorizontalAlignment="Center" FontSize="12"/>
-                    <TextBlock x:Name="CashierCountTextBlock" FontSize="16" Foreground="#4CAF50" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Users" FontWeight="Bold" HorizontalAlignment="Center" FontSize="12"/>
+                    <TextBlock x:Name="UserCountTextBlock" FontSize="16" Foreground="#4CAF50" HorizontalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center">
                     <TextBlock Text="👁️" FontSize="20" HorizontalAlignment="Center"/>
@@ -65,7 +65,7 @@
                         <ComboBoxItem Content="All Roles"/>
                         <ComboBoxItem Content="Administrator"/>
                         <ComboBoxItem Content="Manager"/>
-                        <ComboBoxItem Content="Cashier"/>
+                        <ComboBoxItem Content="User"/>
                         <ComboBoxItem Content="Viewer"/>
                     </ComboBox>
 

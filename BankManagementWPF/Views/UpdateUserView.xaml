@@ -68,7 +68,7 @@
             <ComboBox Grid.Row="3" Grid.Column="1" x:Name="PermissionComboBox" Width="150">
                 <ComboBoxItem Content="Administrator"/>
                 <ComboBoxItem Content="Manager"/>
-                <ComboBoxItem Content="Cashier"/>
+                <ComboBoxItem Content="User"/>
                 <ComboBoxItem Content="Viewer"/>
             </ComboBox>
         </Grid>

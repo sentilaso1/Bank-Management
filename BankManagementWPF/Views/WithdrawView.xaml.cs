@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,9 +17,17 @@ namespace BankManagementSystem.WPF.Views
 
             if (CurrentUserSession.CurrentUser?.Role == "User")
             {
-                AccountSearchGroup.Visibility = Visibility.Collapsed;
-                AccountNumberTextBox.Text = CurrentUserSession.CurrentUser.Username;
-                LoadAccount(CurrentUserSession.CurrentUser.Username);
+                var username = CurrentUserSession.CurrentUser.Username;
+                if (Client.IsClientExist(username))
+                {
+                    AccountSearchGroup.Visibility = Visibility.Collapsed;
+                    AccountNumberTextBox.Text = username;
+                    LoadAccount(username);
+                }
+                else
+                {
+                    AccountSearchGroup.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -104,6 +113,16 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Withdrawal failed. Please check amount and try again.", "Withdraw", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+            var log = new TransferLogs
+            {
+                Date = DateTime.Now,
+                AccountForom = _client.AccountNumber,
+                AccountTo = null,
+                Amount = amount,
+                PerformedBy = CurrentUserSession.CurrentUser?.Username
+            };
+            log.AddTrnasferLog();
 
             _client = Client.Find(_client.AccountNumber);
             _currentBalance = _client.Balance;

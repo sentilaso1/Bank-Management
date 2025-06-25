@@ -70,6 +70,16 @@ INSERT INTO Users (Username, Password, FirstName, LastName, Email, Phone, Addres
 ('auditor', 'auditor123', 'Đỗ', 'Kiểm Toán', 'auditor@bank.com', '0906666666', '789 Đường MNO, TP.HCM', 'Viewer', 4),
 ('support', 'support123', 'Vũ', 'Hỗ Trợ', 'support@bank.com', '0907777777', '987 Đường PQR, TP.HCM', 'Viewer', 4);
 
+-- Users for clients
+INSERT INTO Users (Username, Password, FirstName, LastName, Email, Phone, Address, Role, Permission) VALUES
+('ACC001', '1234', 'Nguyễn', 'Văn An', 'nguyenvanan@email.com', '0911111111', '100 Lê Lợi, Q1, TP.HCM', 'User', 3),
+('ACC002', '2345', 'Trần', 'Thị Bình', 'tranthibinh@email.com', '0922222222', '200 Nguyễn Huệ, Q1, TP.HCM', 'User', 3),
+('ACC003', '3456', 'Lê', 'Hoàng Cường', 'lehoangcuong@email.com', '0933333333', '300 Đồng Khởi, Q1, TP.HCM', 'User', 3),
+('ACC004', '4567', 'Phạm', 'Thị Dung', 'phamthidung@email.com', '0944444444', '400 Hai Bà Trưng, Q3, TP.HCM', 'User', 3),
+('ACC005', '5678', 'Hoàng', 'Văn Em', 'hoangvanem@email.com', '0955555555', '500 Cách Mạng Tháng 8, Q10, TP.HCM', 'User', 3),
+('ACC006', '6789', 'Ngô', 'Thanh Phong', 'ngothanhphong@email.com', '0966666666', '600 Lạc Long Quân, Q11, TP.HCM', 'User', 3),
+('ACC007', '7890', 'Đặng', 'Thúy Hà', 'dangthuyha@email.com', '0977777777', '700 Pasteur, Q3, TP.HCM', 'User', 3);
+
 -- Thêm dữ liệu Clients (Khách hàng)
 INSERT INTO Clients (FirstName, LastName, Email, Phone, Address, DateOfBirth, NationalID, AccountNumber, PinCode, Balance) VALUES
 ('Nguyễn', 'Văn An', 'nguyenvanan@email.com', '0911111111', '100 Lê Lợi, Q1, TP.HCM', '1990-05-15', '123456789', 'ACC001', '1234', 5000000.00),

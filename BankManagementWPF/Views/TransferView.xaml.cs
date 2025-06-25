@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,17 @@ namespace BankManagementSystem.WPF.Views
 
             if (CurrentUserSession.CurrentUser?.Role == "User")
             {
-                FromAccountGroup.Visibility = Visibility.Collapsed;
-                FromAccountTextBox.Text = CurrentUserSession.CurrentUser.Username;
-                LoadFromAccount(CurrentUserSession.CurrentUser.Username);
+                var username = CurrentUserSession.CurrentUser.Username;
+                if (Client.IsClientExist(username))
+                {
+                    FromAccountGroup.Visibility = Visibility.Collapsed;
+                    FromAccountTextBox.Text = username;
+                    LoadFromAccount(username);
+                }
+                else
+                {
+                    FromAccountGroup.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -145,6 +154,16 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Transfer failed.", "Transfer", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+            var log = new TransferLogs
+            {
+                Date = DateTime.Now,
+                AccountForom = _fromClient.AccountNumber,
+                AccountTo = _toClient.AccountNumber,
+                Amount = amount,
+                PerformedBy = CurrentUserSession.CurrentUser?.Username
+            };
+            log.AddTrnasferLog();
 
             _fromClient = Client.Find(_fromClient.AccountNumber);
             _toClient = Client.Find(_toClient.AccountNumber);

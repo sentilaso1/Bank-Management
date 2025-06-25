@@ -20,6 +20,7 @@ namespace BankBusinessLayer
         private int _roleId;
         public int RoleId => _roleId;
         public string Role { get; set; }
+        public bool IsActive { get; set; }
 
         private User(int userID, string FirstName, string LastName, string Email, string Phone,
             string username, string password, string role, int permission) :
@@ -29,6 +30,7 @@ namespace BankBusinessLayer
             Password = password;
             _roleId = permission;
             Role = role;
+            IsActive = true;
 
             Mode = enMode.Update;
         }
@@ -55,6 +57,7 @@ namespace BankBusinessLayer
             Password = string.Empty;
             _roleId = 4;
             Role = RoleMapping.GetRoleName(_roleId);
+            IsActive = true;
 
             Mode = enMode.AddNew;
         }
@@ -146,6 +149,16 @@ namespace BankBusinessLayer
         public static int GetTotalUsers()
         {
             return UsersData.GetTotalUsers();
+        }
+
+        public static bool LockUser(string username)
+        {
+            return UsersData.SetUserActive(username, false);
+        }
+
+        public static bool UnlockUser(string username)
+        {
+            return UsersData.SetUserActive(username, true);
         }
 
         public static bool AddNewLoginRegisters(string Username, DateTime date)

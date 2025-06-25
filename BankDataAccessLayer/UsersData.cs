@@ -381,5 +381,34 @@ namespace BankDataAccessLayer
 
             return totalUsers;
         }
+
+        public static bool SetUserActive(string Username, bool isActive)
+        {
+            int rowsAffected = 0;
+
+            MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
+
+            string query = @"UPDATE Users SET IsActive = @IsActive WHERE Username = @Username";
+
+            MySqlCommand command = new MySqlCommand(query, connection);
+            command.Parameters.AddWithValue("@IsActive", isActive);
+            command.Parameters.AddWithValue("@Username", Username);
+
+            try
+            {
+                connection.Open();
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return rowsAffected > 0;
+        }
     }
 }

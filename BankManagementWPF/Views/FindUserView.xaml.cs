@@ -119,12 +119,42 @@ namespace BankManagementSystem.WPF.Views
 
         private void LockSelected_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Lock selected users - not implemented", "Lock", MessageBoxButton.OK, MessageBoxImage.Information);
+            var selected = (_rows.Where(r => r.IsSelected)).ToList();
+            if (!selected.Any())
+            {
+                MessageBox.Show("No users selected", "Lock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int success = 0;
+            foreach (var row in selected)
+            {
+                if (User.LockUser(row.Username))
+                    success++;
+            }
+
+            LoadAllUsers();
+            MessageBox.Show($"Locked {success} user(s)", "Lock", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void UnlockSelected_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Unlock selected users - not implemented", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
+            var selected = (_rows.Where(r => r.IsSelected)).ToList();
+            if (!selected.Any())
+            {
+                MessageBox.Show("No users selected", "Unlock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int success = 0;
+            foreach (var row in selected)
+            {
+                if (User.UnlockUser(row.Username))
+                    success++;
+            }
+
+            LoadAllUsers();
+            MessageBox.Show($"Unlocked {success} user(s)", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ViewDetails_Click(object sender, RoutedEventArgs e)

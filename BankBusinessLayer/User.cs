@@ -22,13 +22,13 @@ namespace BankBusinessLayer
         public string Role { get; set; }
 
         private User(int userID, string FirstName, string LastName, string Email, string Phone,
-            string username, string password, int permission) :
+            string username, string password, string role, int permission) :
             base(userID, FirstName, LastName, Email, Phone)
         {
             Username = username;
             Password = password;
             _roleId = permission;
-            Role = RoleMapping.GetRoleName(permission);
+            Role = role;
 
             Mode = enMode.Update;
         }
@@ -37,7 +37,7 @@ namespace BankBusinessLayer
         {
             int roleId = RoleMapping.GetRoleId(this.Role);
             this.UserID = UsersData.AddNewUser(this.Username, this.FirstName, this.LastName,
-                this.Email, this.PhoneNumber, this.Password, roleId);
+                this.Email, this.PhoneNumber, this.Password, this.Role, roleId);
 
             return (UserID != -1);
         }
@@ -46,7 +46,7 @@ namespace BankBusinessLayer
         {
             int roleId = RoleMapping.GetRoleId(this.Role);
             return UsersData.UpdateUser(this.Username, this.FirstName, this.LastName,
-                this.Email, this.PhoneNumber, this.Password, roleId);
+                this.Email, this.PhoneNumber, this.Password, this.Role, roleId);
         }
 
         public User() : base()
@@ -62,11 +62,11 @@ namespace BankBusinessLayer
         static public User FindUserByUsername(string username)
         {
             int Permission = 0, UserID = 0;
-            string FirstName = "", LastName = "", Email = "", Phone = "", Password = "";
+            string FirstName = "", LastName = "", Email = "", Phone = "", Password = "", Role = "";
 
-            if (UsersData.GetUserByUsername(username, ref FirstName, ref LastName, ref Email, ref Phone, ref Password, ref Permission, ref UserID))
+            if (UsersData.GetUserByUsername(username, ref FirstName, ref LastName, ref Email, ref Phone, ref Password, ref Role, ref Permission, ref UserID))
             {
-                return new User(UserID, FirstName, LastName, Email, Phone, username, Password, Permission);
+                return new User(UserID, FirstName, LastName, Email, Phone, username, Password, Role, Permission);
             }
             else
                 return null;
@@ -76,12 +76,12 @@ namespace BankBusinessLayer
 
         static public User FindUserByUsernameAndPassword(string username, string password)
         {
-            int Permission = 0, UserID = 0; 
-            string FirstName = "", LastName = "", Email = "", Phone = "";
+            int Permission = 0, UserID = 0;
+            string FirstName = "", LastName = "", Email = "", Phone = "", Role = "";
 
-            if (UsersData.GetUserByUsernameAndPassword(username, password, ref Permission))
+            if (UsersData.GetUserByUsernameAndPassword(username, password, ref Role, ref Permission))
             {
-                return new User(UserID, FirstName, LastName, Email, Phone, username, password, Permission);
+                return new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission);
             }
             else
                 return null;

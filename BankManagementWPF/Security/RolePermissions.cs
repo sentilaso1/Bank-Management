@@ -18,24 +18,15 @@ namespace BankManagementSystem.WPF.Security
                 },
                 ["Manager"] = new List<Permission>
                 {
-                    Permission.AddUser, Permission.UpdateUser, Permission.ViewUsers,
+                    // Managers can work with clients
                     Permission.AddClient, Permission.UpdateClient, Permission.DeleteClient, Permission.ViewClients,
-                    Permission.ProcessDeposit, Permission.ProcessWithdraw, Permission.ProcessTransfer, Permission.ViewTransactions, Permission.ApproveTransactions,
-                    Permission.ViewReports, Permission.ExportData, Permission.ViewAuditLogs
+                    // Managers handle transactions
+                    Permission.ProcessDeposit, Permission.ProcessWithdraw, Permission.ProcessTransfer,
+                    Permission.ViewTransactions, Permission.ApproveTransactions
                 },
-                ["Cashier"] = new List<Permission>
-                {
-                    Permission.AddClient, Permission.UpdateClient, Permission.ViewClients,
-                    Permission.ProcessDeposit, Permission.ProcessWithdraw, Permission.ProcessTransfer, Permission.ViewTransactions,
-                    Permission.ViewReports
-                },
-                ["Viewer"] = new List<Permission>
-                {
-                    Permission.ViewUsers,
-                    Permission.ViewClients,
-                    Permission.ViewTransactions,
-                    Permission.ViewReports
-                }
+                // Other roles have no special permissions and are limited to the Home tab
+                ["Cashier"] = new List<Permission>(),
+                ["Viewer"] = new List<Permission>()
             };
         }
     }

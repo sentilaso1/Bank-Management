@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Background="White">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-    <Grid Margin="20">
-        <TextBlock Text="Home" FontSize="24"/>
+    <Grid Margin="20" RowDefinitions="Auto,Auto,Auto">
+        <TextBlock Text="🏦 Welcome to the Bank Management System" FontSize="24" FontWeight="Bold"/>
+        <TextBlock Grid.Row="1" Text="Use the navigation menu to manage clients, users and transactions." Margin="0,10,0,0"/>
+        <TextBlock Grid.Row="2" Text="Your available options depend on your assigned role." Margin="0,5,0,0"/>
     </Grid>
     </ScrollViewer>
 </UserControl>

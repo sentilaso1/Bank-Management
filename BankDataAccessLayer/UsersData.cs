@@ -12,12 +12,12 @@ namespace BankDataAccessLayer
     public class UsersData
     {
 
-        public static bool GetUserByID(int UserID, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Username, ref string Password, ref int Permission)
+        public static bool GetUserByID(int UserID, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Username, ref string Password, ref string Role, ref int Permission)
         {
             bool isFound = false;
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Permission
+            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Role, Permission
                             from Users
                             where UserID = @UserID";
 
@@ -41,6 +41,7 @@ namespace BankDataAccessLayer
                     email = (string)reader["Email"];
                     phoneNumber = (string)reader["Phone"];
                     Password = (string)reader["Password"];
+                    Role = (string)reader["Role"];
                     Permission = (int)reader["Permission"];
 
 
@@ -59,12 +60,12 @@ namespace BankDataAccessLayer
             return isFound;
         }
 
-        public static bool GetUserByUsername(string Username, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Password, ref int Permission, ref int UserID)
+        public static bool GetUserByUsername(string Username, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Password, ref string Role, ref int Permission, ref int UserID)
         {
             bool isFound = false;
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Permission, UserID
+            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Role, Permission, UserID
                             from Users
                             where Username = @Username";
 
@@ -88,6 +89,7 @@ namespace BankDataAccessLayer
                     email = (string)reader["Email"];
                     phoneNumber = (string)reader["Phone"];
                     Password = (string)reader["Password"];
+                    Role = (string)reader["Role"];
                     Permission = (int)reader["Permission"];
                     UserID = (int)reader["UserID"];
 
@@ -106,7 +108,7 @@ namespace BankDataAccessLayer
             return isFound;
         }
 
-        public static bool GetUserByUsernameAndPassword(string Username, string Password, ref int Permission)
+        public static bool GetUserByUsernameAndPassword(string Username, string Password, ref string Role, ref int Permission)
         {
             bool isFound = false;
 
@@ -128,6 +130,7 @@ namespace BankDataAccessLayer
                 if (Reader.Read())
                 {
                     isFound = true;
+                    Role = Reader["Role"].ToString();
                     Permission = (int)Reader["Permission"];
 
                 }
@@ -182,21 +185,22 @@ namespace BankDataAccessLayer
             return (RowsAffected > 0);
         }
 
-        public static bool UpdateUser(string Username, string firstName, string lastName, string email, string phoneNumber, string Password, int Permission)
+        public static bool UpdateUser(string Username, string firstName, string lastName, string email, string phoneNumber, string Password, string Role, int Permission)
         {
             int RowsAffected = 0;
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
             string query = @"Update Users
-                            Set 
+                            Set
                                 FirstName = @FirstName,
                                  LastName = @LastName,
                                  Email = @Email,
                                  Phone = @Phone,
-	                            Permission = @Permission,
-	                            Password = @Password
-	                            where (Username = @Username)
+                                 Role = @Role,
+                                 Permission = @Permission,
+                                 Password = @Password
+                                    where (Username = @Username)
                             ";
 
             MySqlCommand Command = new MySqlCommand(query, connection);
@@ -207,6 +211,7 @@ namespace BankDataAccessLayer
             Command.Parameters.AddWithValue("@Email", email);
             Command.Parameters.AddWithValue("@Phone", phoneNumber);
             Command.Parameters.AddWithValue("@Username", Username);
+            Command.Parameters.AddWithValue("@Role", Role);
             Command.Parameters.AddWithValue("@Permission", Permission);
             Command.Parameters.AddWithValue("@Password", Password);
 
@@ -234,7 +239,7 @@ namespace BankDataAccessLayer
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"select FirstName, LastName, Email, Phone , Username, Password, Permission from Users
+            string query = @"select FirstName, LastName, Email, Phone , Username, Password, Role, Permission from Users
                           ";
 
             MySqlCommand command = new MySqlCommand(query, connection);
@@ -301,15 +306,15 @@ namespace BankDataAccessLayer
             return isFound;
         }
 
-        public static int AddNewUser(string Username, string FirstName, string LastName, string Email, string Phone, string Password, int Permission)
+        public static int AddNewUser(string Username, string FirstName, string LastName, string Email, string Phone, string Password, string Role, int Permission)
         {
             int UserID = -1;
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
             string query = @"
-                            Insert into Users(FirstName, LastName, Email, Phone, Username, Password, Permission)
-                            Values (@FirstName, @LastName, @Email, @Phone,@Username,@Password,@Permission);
+                            Insert into Users(FirstName, LastName, Email, Phone, Username, Password, Role, Permission)
+                            Values (@FirstName, @LastName, @Email, @Phone,@Username,@Password,@Role,@Permission);
                             Select LAST_INSERT_ID()";
 
             MySqlCommand Command = new MySqlCommand(query, connection);
@@ -320,6 +325,7 @@ namespace BankDataAccessLayer
             Command.Parameters.AddWithValue("@Phone", Phone);
             Command.Parameters.AddWithValue("@Username", Username);
             Command.Parameters.AddWithValue("@Password", Password);
+            Command.Parameters.AddWithValue("@Role", Role);
             Command.Parameters.AddWithValue("@Permission", Permission);
 
             try

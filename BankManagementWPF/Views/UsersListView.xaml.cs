@@ -34,6 +34,7 @@ namespace BankManagementSystem.WPF.Views
             public string FullName { get; set; } = string.Empty;
             public string Email { get; set; } = string.Empty;
             public string Role { get; set; } = string.Empty;
+            public bool IsActive { get; set; }
         }
 
         private void LoadData()
@@ -46,7 +47,8 @@ namespace BankManagementSystem.WPF.Views
                     Username = r.Field<string>("Username") ?? string.Empty,
                     FullName = (r.Field<string>("FirstName") ?? "") + " " + (r.Field<string>("LastName") ?? ""),
                     Email = r.Field<string>("Email") ?? string.Empty,
-                    Role = r.Field<string>("Role") ?? PermissionToRole(r.Field<int?>("Permission") ?? 0)
+                    Role = r.Field<string>("Role") ?? PermissionToRole(r.Field<int?>("Permission") ?? 0),
+                    IsActive = Convert.ToBoolean(r["IsActive"])
                 }).ToList();
 
                 if (UsersDataGrid != null)
@@ -87,7 +89,7 @@ namespace BankManagementSystem.WPF.Views
                 ViewerCountTextBlock.Text = _rows.Count(r => r.Role == "Viewer").ToString();
 
             if (LockedCountTextBlock != null)
-                LockedCountTextBlock.Text = "0"; // no status info
+                LockedCountTextBlock.Text = _rows.Count(r => !r.IsActive).ToString();
         }
 
         private void RoleFilter_Changed(object sender, SelectionChangedEventArgs e)
@@ -144,7 +146,20 @@ namespace BankManagementSystem.WPF.Views
                     }
                 }
 
-                // Dòng code đã sửa với null check
+                if (StatusFilterComboBox != null)
+                {
+                    switch (StatusFilterComboBox.SelectedIndex)
+                    {
+                        case 1: // Active
+                            query = query.Where(r => r.IsActive);
+                            break;
+                        case 2: // Locked
+                            query = query.Where(r => !r.IsActive);
+                            break;
+                    }
+                }
+
+                // Search filter
                 if (SearchTextBox != null && !string.IsNullOrWhiteSpace(SearchTextBox.Text) && SearchTextBox.Text != "Search users...")
                 {
                     string searchText = SearchTextBox.Text;
@@ -207,12 +222,42 @@ namespace BankManagementSystem.WPF.Views
 
         private void BulkLock_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Bulk lock - not implemented", "Lock", MessageBoxButton.OK, MessageBoxImage.Information);
+            var selected = _rows.Where(r => r.IsSelected).ToList();
+            if (!selected.Any())
+            {
+                MessageBox.Show("No users selected", "Lock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int success = 0;
+            foreach (var row in selected)
+            {
+                if (User.LockUser(row.Username))
+                    success++;
+            }
+
+            LoadData();
+            MessageBox.Show($"Locked {success} user(s)", "Lock", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BulkUnlock_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Bulk unlock - not implemented", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
+            var selected = _rows.Where(r => r.IsSelected).ToList();
+            if (!selected.Any())
+            {
+                MessageBox.Show("No users selected", "Unlock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int success = 0;
+            foreach (var row in selected)
+            {
+                if (User.UnlockUser(row.Username))
+                    success++;
+            }
+
+            LoadData();
+            MessageBox.Show($"Unlocked {success} user(s)", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Analytics_Click(object sender, RoutedEventArgs e)

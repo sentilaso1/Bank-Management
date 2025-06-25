@@ -21,8 +21,6 @@ namespace BankManagementSystem.WPF.Views
                 ? Visibility.Visible : Visibility.Collapsed;
             DeleteUserButton.Visibility = CurrentUserSession.HasPermission(Permission.DeleteUser)
                 ? Visibility.Visible : Visibility.Collapsed;
-            PermissionsButton.Visibility = CurrentUserSession.HasPermission(Permission.ManagePermissions)
-                ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void AddNewUser_Click(object sender, RoutedEventArgs e)
@@ -50,10 +48,6 @@ namespace BankManagementSystem.WPF.Views
             LoadUsersList();
         }
 
-        private void Permissions_Click(object sender, RoutedEventArgs e)
-        {
-            UserContentArea.Content = new PermissionsView();
-        }
 
         private void UserAnalytics_Click(object sender, RoutedEventArgs e)
         {

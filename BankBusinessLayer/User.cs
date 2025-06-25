@@ -20,15 +20,17 @@ namespace BankBusinessLayer
         private int _roleId;
         public int RoleId => _roleId;
         public string Role { get; set; }
+        public bool IsActive { get; set; }
 
         private User(int userID, string FirstName, string LastName, string Email, string Phone,
-            string username, string password, string role, int permission) :
+            string username, string password, string role, int permission, bool isActive = true) :
             base(userID, FirstName, LastName, Email, Phone)
         {
             Username = username;
             Password = password;
             _roleId = permission;
             Role = role;
+            IsActive = isActive;
 
             Mode = enMode.Update;
         }
@@ -55,6 +57,7 @@ namespace BankBusinessLayer
             Password = string.Empty;
             _roleId = 4;
             Role = RoleMapping.GetRoleName(_roleId);
+            IsActive = true;
 
             Mode = enMode.AddNew;
         }
@@ -64,11 +67,12 @@ namespace BankBusinessLayer
             int Permission = 0, UserID = 0;
             string FirstName = "", LastName = "", Email = "", Phone = "", Password = "", Role = "";
 
-            if (UsersData.GetUserByUsername(username, ref FirstName, ref LastName, ref Email, ref Phone, ref Password, ref Role, ref Permission, ref UserID))
+            bool isActive = true;
+            if (UsersData.GetUserByUsername(username, ref FirstName, ref LastName, ref Email, ref Phone, ref Password, ref Role, ref Permission, ref UserID, ref isActive))
             {
                 if (Role.Equals("Cashier", System.StringComparison.OrdinalIgnoreCase))
                     Role = "User";
-                return new User(UserID, FirstName, LastName, Email, Phone, username, Password, Role, Permission);
+                return new User(UserID, FirstName, LastName, Email, Phone, username, Password, Role, Permission, isActive);
             }
             else
                 return null;
@@ -85,7 +89,7 @@ namespace BankBusinessLayer
             {
                 if (Role.Equals("Cashier", System.StringComparison.OrdinalIgnoreCase))
                     Role = "User";
-                return new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission);
+                return new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission, true);
             }
             else
                 return null;
@@ -146,6 +150,16 @@ namespace BankBusinessLayer
         public static int GetTotalUsers()
         {
             return UsersData.GetTotalUsers();
+        }
+
+        public static bool LockUser(string username)
+        {
+            return UsersData.SetUserActive(username, false);
+        }
+
+        public static bool UnlockUser(string username)
+        {
+            return UsersData.SetUserActive(username, true);
         }
 
         public static bool AddNewLoginRegisters(string Username, DateTime date)

@@ -60,12 +60,12 @@ namespace BankDataAccessLayer
             return isFound;
         }
 
-        public static bool GetUserByUsername(string Username, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Password, ref string Role, ref int Permission, ref int UserID)
+        public static bool GetUserByUsername(string Username, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Password, ref string Role, ref int Permission, ref int UserID, ref bool IsActive)
         {
             bool isFound = false;
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Role, Permission, UserID
+            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Role, Permission, UserID, IsActive
                             from Users
                             where Username = @Username";
 
@@ -92,6 +92,7 @@ namespace BankDataAccessLayer
                     Role = (string)reader["Role"];
                     Permission = (int)reader["Permission"];
                     UserID = (int)reader["UserID"];
+                    IsActive = Convert.ToBoolean(reader["IsActive"]);
 
                 }
             }
@@ -114,7 +115,7 @@ namespace BankDataAccessLayer
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"Select * from Users where Username = @Username AND Password = @Password";
+            string query = @"Select * from Users where Username = @Username AND Password = @Password AND IsActive = 1";
 
             MySqlCommand command = new MySqlCommand(query, connection);
 
@@ -239,8 +240,7 @@ namespace BankDataAccessLayer
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"select FirstName, LastName, Email, Phone , Username, Password, Role, Permission from Users
-                          ";
+            string query = @"select FirstName, LastName, Email, Phone , Username, Password, Role, Permission, IsActive from Users";
 
             MySqlCommand command = new MySqlCommand(query, connection);
 
@@ -380,6 +380,35 @@ namespace BankDataAccessLayer
             }
 
             return totalUsers;
+        }
+
+        public static bool SetUserActive(string Username, bool isActive)
+        {
+            int rowsAffected = 0;
+
+            MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
+
+            string query = @"UPDATE Users SET IsActive = @IsActive WHERE Username = @Username";
+
+            MySqlCommand command = new MySqlCommand(query, connection);
+            command.Parameters.AddWithValue("@IsActive", isActive);
+            command.Parameters.AddWithValue("@Username", Username);
+
+            try
+            {
+                connection.Open();
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return rowsAffected > 0;
         }
     }
 }

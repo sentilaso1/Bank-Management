@@ -31,7 +31,6 @@ namespace BankBusinessLayer
             _roleId = permission;
             Role = role;
             IsActive = isActive;
-
             Mode = enMode.Update;
         }
 

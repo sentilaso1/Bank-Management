@@ -21,14 +21,10 @@ namespace BankManagementSystem.WPF.Views
 
             var permissionService = CurrentUserSession.PermissionService;
 
-            btnUsers.Visibility = permissionService.HasPermission(Permission.ViewUsers)
-                ? Visibility.Visible : Visibility.Collapsed;
-            btnClients.Visibility = permissionService.HasPermission(Permission.ViewClients)
-                ? Visibility.Visible : Visibility.Collapsed;
-            btnTransactions.Visibility = permissionService.HasPermission(Permission.ViewTransactions)
-                ? Visibility.Visible : Visibility.Collapsed;
-            btnLoginRegisters.Visibility = permissionService.HasPermission(Permission.ViewAuditLogs)
-                ? Visibility.Visible : Visibility.Collapsed;
+            btnUsers.IsEnabled = permissionService.HasPermission(Permission.ViewUsers);
+            btnClients.IsEnabled = permissionService.HasPermission(Permission.ViewClients);
+            btnTransactions.IsEnabled = permissionService.HasPermission(Permission.ViewTransactions);
+            btnLoginRegisters.IsEnabled = permissionService.HasPermission(Permission.ViewAuditLogs);
         }
 
 

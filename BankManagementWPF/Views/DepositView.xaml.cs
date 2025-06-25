@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,9 +17,17 @@ namespace BankManagementSystem.WPF.Views
 
             if (CurrentUserSession.CurrentUser?.Role == "User")
             {
-                AccountSearchGroup.Visibility = Visibility.Collapsed;
-                AccountNumberTextBox.Text = CurrentUserSession.CurrentUser.Username;
-                LoadAccount(CurrentUserSession.CurrentUser.Username);
+                var username = CurrentUserSession.CurrentUser.Username;
+                if (Client.IsClientExist(username))
+                {
+                    AccountSearchGroup.Visibility = Visibility.Collapsed;
+                    AccountNumberTextBox.Text = username;
+                    LoadAccount(username);
+                }
+                else
+                {
+                    AccountSearchGroup.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -80,6 +89,16 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Deposit failed. The amount must be a positive number. Please try again.", "Deposit", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+            var log = new TransferLogs
+            {
+                Date = DateTime.Now,
+                AccountForom = null,
+                AccountTo = _client.AccountNumber,
+                Amount = amount,
+                PerformedBy = CurrentUserSession.CurrentUser?.Username
+            };
+            log.AddTrnasferLog();
 
             _client = Client.Find(_client.AccountNumber);
             CurrentBalanceTextBlock.Text = $"Current Balance: {_client.Balance:C}";

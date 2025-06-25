@@ -37,14 +37,53 @@ namespace BankBusinessLayer
 
         private bool _AddNewClient()
         {
-            this.ClientID = ClientsData.AddNewClient(this.FirstName, this.LastName , this.Email, this.PhoneNumber, this.AccountNumber, this.PinCode,this.Balance);
+            this.ClientID = ClientsData.AddNewClient(this.FirstName, this.LastName, this.Email,
+                this.PhoneNumber, this.AccountNumber, this.PinCode, this.Balance);
 
-            return (ClientID != -1);
+            if (ClientID == -1)
+                return false;
+
+            // ensure a corresponding user exists
+            if (!User.IsUserExists(this.AccountNumber))
+            {
+                User user = new User
+                {
+                    Username = this.AccountNumber,
+                    Password = this.PinCode,
+                    FirstName = this.FirstName,
+                    LastName = this.LastName,
+                    Email = this.Email,
+                    PhoneNumber = this.PhoneNumber,
+                    Role = "User"
+                };
+
+                user.Save();
+            }
+
+            return true;
         }
 
         private bool _UpdateClient()
         {
-            return ClientsData.UpdateClient(this.FirstName, this.LastName, this.Email, this.PhoneNumber, this.AccountNumber, this.PinCode, this.Balance);
+            bool result = ClientsData.UpdateClient(this.FirstName, this.LastName, this.Email,
+                this.PhoneNumber, this.AccountNumber, this.PinCode, this.Balance);
+
+            if (result && User.IsUserExists(this.AccountNumber))
+            {
+                User user = User.FindUserByUsername(this.AccountNumber);
+                if (user != null)
+                {
+                    user.FirstName = this.FirstName;
+                    user.LastName = this.LastName;
+                    user.Email = this.Email;
+                    user.PhoneNumber = this.PhoneNumber;
+                    user.Password = this.PinCode;
+                    user.Role = "User";
+                    user.Save();
+                }
+            }
+
+            return result;
         }
         public Client() 
         {

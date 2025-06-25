@@ -72,7 +72,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void AllTransactions_Click(object sender, RoutedEventArgs e)
         {
-            TransactionContentArea.Content = new TextBlock { Text = "All transactions view not implemented." };
+            TransactionContentArea.Content = new AllTransactionsView();
         }
     }
 }

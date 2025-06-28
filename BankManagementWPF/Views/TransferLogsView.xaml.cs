@@ -91,11 +91,6 @@ namespace BankManagementSystem.WPF.Views
             ApplyFilters();
         }
 
-        private void Filter_Changed(object sender, EventArgs e)
-        {
-            ApplyFilters();
-        }
-
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             FromDatePicker.SelectedDate = null;

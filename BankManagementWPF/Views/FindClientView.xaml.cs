@@ -14,36 +14,34 @@ namespace BankManagementSystem.WPF.Views
             InitializeComponent();
         }
 
-        private void ApplySearch(bool showEmptyMessage = false)
+        private void Search_Click(object sender, RoutedEventArgs e)
         {
             string search = SearchTextBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                MessageBox.Show("Please enter search text.");
+                return;
+            }
 
             DataTable dt = Client.GetAllClients();
             var rows = dt.AsEnumerable();
 
-            if (!string.IsNullOrWhiteSpace(search))
+            if (SearchByAccountRadio.IsChecked == true)
             {
-                if (SearchByAccountRadio.IsChecked == true)
-                {
-                    rows = rows.Where(r => r.Field<string>("AccountNumber")
-                        .Contains(search, StringComparison.OrdinalIgnoreCase));
-                }
-                else if (SearchByNameRadio.IsChecked == true)
-                {
-                    rows = rows.Where(r => r.Field<string>("FirstName")
-                            .Contains(search, StringComparison.OrdinalIgnoreCase)
-                        || r.Field<string>("LastName")
-                            .Contains(search, StringComparison.OrdinalIgnoreCase));
-                }
-                else if (SearchByPhoneRadio.IsChecked == true)
-                {
-                    rows = rows.Where(r => r.Field<string>("Phone")
-                        .Contains(search, StringComparison.OrdinalIgnoreCase));
-                }
+                rows = rows.Where(r => r.Field<string>("AccountNumber")
+                    .Contains(search, StringComparison.OrdinalIgnoreCase));
             }
-            else if (showEmptyMessage)
+            else if (SearchByNameRadio.IsChecked == true)
             {
-                MessageBox.Show("Please enter search text.");
+                rows = rows.Where(r => r.Field<string>("FirstName")
+                        .Contains(search, StringComparison.OrdinalIgnoreCase)
+                    || r.Field<string>("LastName")
+                        .Contains(search, StringComparison.OrdinalIgnoreCase));
+            }
+            else if (SearchByPhoneRadio.IsChecked == true)
+            {
+                rows = rows.Where(r => r.Field<string>("Phone")
+                    .Contains(search, StringComparison.OrdinalIgnoreCase));
             }
 
             var result = rows.Select(r => new
@@ -56,21 +54,11 @@ namespace BankManagementSystem.WPF.Views
             }).ToList();
 
             SearchResultsDataGrid.ItemsSource = result;
-        }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            ApplySearch(true);
-        }
-
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ApplySearch();
-        }
-
-        private void SearchOptions_Changed(object sender, RoutedEventArgs e)
-        {
-            ApplySearch();
+            if (result.Count == 0)
+            {
+                MessageBox.Show("No matching clients found.", "Search", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

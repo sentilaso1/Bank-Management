@@ -53,7 +53,7 @@ namespace BankManagementSystem.WPF.Views
             _ => "Viewer"
         };
 
-        private void Search_Click(object sender, RoutedEventArgs e)
+        private void ApplyFilters()
         {
             IEnumerable<UserRow> query = _rows;
             if (!string.IsNullOrWhiteSpace(UsernameSearchTextBox.Text))
@@ -73,6 +73,16 @@ namespace BankManagementSystem.WPF.Views
                 query = query.Where(r => !r.IsActive);
             SearchResultsDataGrid.ItemsSource = query.ToList();
             UpdateStats();
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void SearchFields_Changed(object sender, EventArgs e)
+        {
+            ApplyFilters();
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)

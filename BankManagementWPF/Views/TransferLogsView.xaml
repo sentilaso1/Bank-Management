@@ -56,20 +56,20 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Date Range:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <DatePicker Grid.Row="0" Grid.Column="1" x:Name="FromDatePicker" Margin="0,5" SelectedDateChanged="Filter_Changed"/>
+                <DatePicker Grid.Row="0" Grid.Column="1" x:Name="FromDatePicker" Margin="0,5"/>
                 <TextBlock Grid.Row="0" Grid.Column="2" Text="to" VerticalAlignment="Center" Margin="10,0"/>
-                <DatePicker Grid.Row="0" Grid.Column="3" x:Name="ToDatePicker" Margin="0,5" SelectedDateChanged="Filter_Changed"/>
+                <DatePicker Grid.Row="0" Grid.Column="3" x:Name="ToDatePicker" Margin="0,5"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="From Account:" VerticalAlignment="Center" Margin="0,10,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="FromAccountFilterTextBox" Height="25" Margin="0,10,0,5" TextChanged="Filter_Changed"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="FromAccountFilterTextBox" Height="25" Margin="0,10,0,5"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" Text="To Account:" VerticalAlignment="Center" Margin="10,10,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="3" x:Name="ToAccountFilterTextBox" Height="25" Margin="0,10,0,5" TextChanged="Filter_Changed"/>
+                <TextBox Grid.Row="1" Grid.Column="3" x:Name="ToAccountFilterTextBox" Height="25" Margin="0,10,0,5"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Amount Range:" VerticalAlignment="Center" Margin="0,10,10,0"/>
                 <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,10,0,5">
-                    <TextBox x:Name="MinAmountTextBox" Width="80" Height="25" TextChanged="Filter_Changed"/>
+                    <TextBox x:Name="MinAmountTextBox" Width="80" Height="25"/>
                     <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0"/>
-                    <TextBox x:Name="MaxAmountTextBox" Width="80" Height="25" TextChanged="Filter_Changed"/>
+                    <TextBox x:Name="MaxAmountTextBox" Width="80" Height="25"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Horizontal" Margin="20,10,0,0">

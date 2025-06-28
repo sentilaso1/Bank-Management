@@ -38,19 +38,19 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="User ID:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox Grid.Row="0" Grid.Column="1" x:Name="UserIdSearchTextBox" Height="25"/>
+                <TextBox Grid.Row="0" Grid.Column="1" x:Name="UserIdSearchTextBox" Height="25" TextChanged="SearchFields_Changed"/>
 
                 <TextBlock Grid.Row="0" Grid.Column="3" Text="Username:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox Grid.Row="0" Grid.Column="4" x:Name="UsernameSearchTextBox" Height="25"/>
+                <TextBox Grid.Row="0" Grid.Column="4" x:Name="UsernameSearchTextBox" Height="25" TextChanged="SearchFields_Changed"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Full Name:" VerticalAlignment="Center" Margin="0,10,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="FullNameSearchTextBox" Height="25" Margin="0,10,0,5"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="FullNameSearchTextBox" Height="25" Margin="0,10,0,5" TextChanged="SearchFields_Changed"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="Email:" VerticalAlignment="Center" Margin="0,10,10,0"/>
-                <TextBox Grid.Row="1" Grid.Column="4" x:Name="EmailSearchTextBox" Height="25" Margin="0,10,0,5"/>
+                <TextBox Grid.Row="1" Grid.Column="4" x:Name="EmailSearchTextBox" Height="25" Margin="0,10,0,5" TextChanged="SearchFields_Changed"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Role:" VerticalAlignment="Center" Margin="0,10,10,0"/>
-                <ComboBox Grid.Row="2" Grid.Column="1" x:Name="RoleFilterComboBox" Height="25" Margin="0,10,0,5" SelectedIndex="0">
+                <ComboBox Grid.Row="2" Grid.Column="1" x:Name="RoleFilterComboBox" Height="25" Margin="0,10,0,5" SelectedIndex="0" SelectionChanged="SearchFields_Changed">
                     <ComboBoxItem Content="All Roles"/>
                     <ComboBoxItem Content="Administrator"/>
                     <ComboBoxItem Content="Manager"/>
@@ -59,7 +59,7 @@
                 </ComboBox>
 
                 <TextBlock Grid.Row="2" Grid.Column="3" Text="Status:" VerticalAlignment="Center" Margin="0,10,10,0"/>
-                <ComboBox Grid.Row="2" Grid.Column="4" x:Name="StatusFilterComboBox" Height="25" Margin="0,10,0,5" SelectedIndex="0">
+                <ComboBox Grid.Row="2" Grid.Column="4" x:Name="StatusFilterComboBox" Height="25" Margin="0,10,0,5" SelectedIndex="0" SelectionChanged="SearchFields_Changed">
                     <ComboBoxItem Content="All Status"/>
                     <ComboBoxItem Content="Active"/>
                     <ComboBoxItem Content="Inactive"/>
@@ -69,9 +69,9 @@
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Created Date:" VerticalAlignment="Center" Margin="0,10,10,0"/>
                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,10,0,5">
-                    <DatePicker x:Name="CreatedFromDatePicker" Width="120"/>
+                    <DatePicker x:Name="CreatedFromDatePicker" Width="120" SelectedDateChanged="SearchFields_Changed"/>
                     <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0"/>
-                    <DatePicker x:Name="CreatedToDatePicker" Width="120"/>
+                    <DatePicker x:Name="CreatedToDatePicker" Width="120" SelectedDateChanged="SearchFields_Changed"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Horizontal" Margin="0,10,0,5">

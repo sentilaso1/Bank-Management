@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
 using BankManagementSystem.WPF.Security;
+using BankDataAccessLayer;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -15,19 +16,27 @@ namespace BankManagementSystem.WPF.Views
         {
             InitializeComponent();
 
+            // Load current user's account automatically
             if (CurrentUserSession.CurrentUser?.Role == "User")
             {
                 var username = CurrentUserSession.CurrentUser.Username;
                 if (Client.IsClientExist(username))
                 {
-                    AccountSearchGroup.Visibility = Visibility.Collapsed;
-                    AccountNumberTextBox.Text = username;
+                    AccountNumberTextBlock.Text = username;
                     LoadAccount(username);
                 }
                 else
                 {
-                    AccountSearchGroup.Visibility = Visibility.Visible;
+                    MessageBox.Show("No client account found for this user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DepositFormGroup.IsEnabled = false;
+                    ProcessDepositButton.IsEnabled = false;
                 }
+            }
+            else
+            {
+                MessageBox.Show("User role not supported for deposit.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                DepositFormGroup.IsEnabled = false;
+                ProcessDepositButton.IsEnabled = false;
             }
         }
 
@@ -40,14 +49,14 @@ namespace BankManagementSystem.WPF.Views
 
             if (!Client.IsClientExist(accountNumber))
             {
-                MessageBox.Show($"Client Not Found [{accountNumber}] Try Another One", "Find", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Client Not Found [{accountNumber}]", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             _client = Client.Find(accountNumber);
             if (_client == null)
             {
-                MessageBox.Show("Failed to load client info", "Find", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Failed to load client info", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -59,22 +68,40 @@ namespace BankManagementSystem.WPF.Views
             DepositAmountTextBox.Focus();
         }
 
-        private void FindAccount_Click(object sender, RoutedEventArgs e)
+        private bool VerifyPinCode(string enteredPin)
         {
-            LoadAccount(AccountNumberTextBox.Text);
+            string firstName = string.Empty, lastName = string.Empty, email = string.Empty, phoneNumber = string.Empty, pinCode = string.Empty;
+            decimal balance = 0m;
+            int clientId = -1;
+
+            bool isFound = ClientsData.GetClientInfoByAccountNumber(_client.AccountNumber, ref firstName, ref lastName, ref email, ref phoneNumber, ref pinCode, ref balance, ref clientId);
+
+            return isFound && pinCode == enteredPin;
         }
 
         private void ProcessDeposit_Click(object sender, RoutedEventArgs e)
         {
             if (_client == null)
             {
-                MessageBox.Show("Search for a client first", "Deposit", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("No client account loaded.", "Deposit", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (!decimal.TryParse(DepositAmountTextBox.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal amount))
+            if (!decimal.TryParse(DepositAmountTextBox.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal amount) || amount <= 0)
             {
-                MessageBox.Show("Please enter a valid amount.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a valid positive amount.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(PinCodeTextBox.Password))
+            {
+                MessageBox.Show("Please enter your PIN code.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!VerifyPinCode(PinCodeTextBox.Password))
+            {
+                MessageBox.Show("Invalid PIN code.", "Validation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -86,7 +113,7 @@ namespace BankManagementSystem.WPF.Views
 
             if (!Client.Deposit(_client.AccountNumber, amount))
             {
-                MessageBox.Show("Deposit failed. The amount must be a positive number. Please try again.", "Deposit", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Deposit failed. Please try again.", "Deposit", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -105,20 +132,16 @@ namespace BankManagementSystem.WPF.Views
             NewBalanceTextBlock.Text = _client.Balance.ToString("C");
             MessageBox.Show("Amount Deposited Successfully", "Deposit", MessageBoxButton.OK, MessageBoxImage.Information);
             DepositAmountTextBox.Clear();
+            PinCodeTextBox.Clear();
+            DescriptionTextBox.Clear();
         }
 
         private void ClearForm_Click(object sender, RoutedEventArgs e)
         {
-            AccountNumberTextBox.Clear();
             DepositAmountTextBox.Clear();
+            PinCodeTextBox.Clear();
             DescriptionTextBox.Clear();
-            AccountInfoBorder.Visibility = Visibility.Collapsed;
-            DepositFormGroup.IsEnabled = false;
-            ProcessDepositButton.IsEnabled = false;
             NewBalanceTextBlock.Text = string.Empty;
-            ClientNameTextBlock.Text = string.Empty;
-            CurrentBalanceTextBlock.Text = string.Empty;
-            _client = null;
         }
     }
 }

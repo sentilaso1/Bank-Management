@@ -106,8 +106,6 @@ namespace BankManagementSystem.WPF.Views
             {
                 TransferFeeTextBlock.Text = string.Empty;
                 TotalDeductedTextBlock.Text = string.Empty;
-                FromNewBalanceTextBlock.Text = string.Empty;
-                ToNewBalanceTextBlock.Text = string.Empty;
                 ProcessTransferButton.IsEnabled = false;
                 return;
             }
@@ -116,8 +114,6 @@ namespace BankManagementSystem.WPF.Views
             decimal totalDeducted = amount + fee;
             TransferFeeTextBlock.Text = fee.ToString("C");
             TotalDeductedTextBlock.Text = totalDeducted.ToString("C");
-            FromNewBalanceTextBlock.Text = (_fromClient.Balance - totalDeducted).ToString("C");
-            ToNewBalanceTextBlock.Text = (_toClient.Balance + amount).ToString("C");
             ProcessTransferButton.IsEnabled = amount > 0 && totalDeducted <= _fromClient.Balance;
         }
 
@@ -183,8 +179,6 @@ namespace BankManagementSystem.WPF.Views
             TransferDescriptionTextBox.Clear();
             TransferFeeTextBlock.Text = string.Empty;
             TotalDeductedTextBlock.Text = string.Empty;
-            FromNewBalanceTextBlock.Text = string.Empty;
-            ToNewBalanceTextBlock.Text = string.Empty;
             FromAccountInfoBorder.Visibility = Visibility.Collapsed;
             ToAccountInfoBorder.Visibility = Visibility.Collapsed;
             TransferDetailsGroup.IsEnabled = false;

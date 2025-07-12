@@ -22,11 +22,9 @@ namespace BankManagementSystem.WPF.Views
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AddNewUserWindow
-            {
-                Owner = this
-            };
-            window.ShowDialog();
+            var registerWindow = new RegisterWindow();
+            registerWindow.Show();
+            this.Close();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

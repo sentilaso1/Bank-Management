@@ -80,20 +80,6 @@
 
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="Description:" VerticalAlignment="Top" Margin="0,10,10,0"/>
                     <TextBox Grid.Row="3" Grid.Column="1" x:Name="TransferDescriptionTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,10,0,5"/>
-
-                    <Border Grid.Row="4" Grid.ColumnSpan="2" Background="#F5F5F5" Padding="10" Margin="0,15,0,0">
-                        <StackPanel>
-                            <TextBlock Text="Balance Preview:" FontWeight="Bold" Margin="0,0,0,5"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="From Account: " Width="100"/>
-                                <TextBlock x:Name="FromNewBalanceTextBlock" FontWeight="Bold"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="To Account: " Width="100"/>
-                                <TextBlock x:Name="ToNewBalanceTextBlock" FontWeight="Bold"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
                 </Grid>
             </GroupBox>
 

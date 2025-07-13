@@ -45,6 +45,43 @@ namespace BankDataAccessLayer
 
         }
 
+        public static DataTable GetAllLoginRegisterIncludeAllColumn()
+        {
+            DataTable dt = new DataTable();
+
+            MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
+
+            string query = @"Select LoginRegisters.LoginDateTime, Users.Username, Users.Password, Users.Permission, LoginRegisters.LoginDateTime, LoginRegisters.LogoutDateTime, LoginRegisters.IsSuccessful
+                            from LoginRegisters
+                            Join Users on LoginRegisters.UserID = Users.UserID";
+
+            MySqlCommand command = new MySqlCommand(query, connection);
+
+            try
+            {
+                connection.Open();
+
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    dt.Load(reader);
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return dt;
+        }
+
         public static int AddNewLoginRegister(string Username, DateTime LoginDate)
         {
             int LoginRegisterID = -1;

@@ -8,6 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using BankBusinessLayer;
+using LiveCharts;
+using LiveCharts.Wpf;
+using System.Windows.Media;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -151,7 +154,95 @@ namespace BankManagementSystem.WPF.Views
 
         private void ViewCharts_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Chart view is not implemented.", "Charts", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (_balancesTable == null || _logsTable == null)
+            {
+                MessageBox.Show("No data available to display charts.", "Charts", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Create a new window to display charts
+            Window chartWindow = new Window
+            {
+                Title = "Bank Financial Charts",
+                Width = 800,
+                Height = 600,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+
+            // Create a grid to hold charts
+            Grid chartGrid = new Grid
+            {
+                Margin = new Thickness(20)
+            };
+            chartGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            chartGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+
+            // Bar Chart for Deposits, Withdrawals, and Transfers
+            var deposits = _logsTable.AsEnumerable().Where(r => string.IsNullOrEmpty(r["FromAccountNumber"].ToString()));
+            var withdrawals = _logsTable.AsEnumerable().Where(r => string.IsNullOrEmpty(r["ToAccountNumber"].ToString()));
+            var transfers = _logsTable.AsEnumerable().Where(r => !string.IsNullOrEmpty(r["FromAccountNumber"].ToString()) && !string.IsNullOrEmpty(r["ToAccountNumber"].ToString()));
+
+            decimal depSum = deposits.Sum(r => r.Field<decimal>("Amount"));
+            decimal withSum = withdrawals.Sum(r => r.Field<decimal>("Amount"));
+            decimal transSum = transfers.Sum(r => r.Field<decimal>("Amount"));
+
+            CartesianChart barChart = new CartesianChart
+            {
+                Series = new SeriesCollection
+                {
+                    new ColumnSeries
+                    {
+                        Title = "Deposits",
+                        Values = new ChartValues<decimal> { depSum },
+                        Fill = Brushes.Green
+                    },
+                    new ColumnSeries
+                    {
+                        Title = "Withdrawals",
+                        Values = new ChartValues<decimal> { withSum },
+                        Fill = Brushes.Red
+                    },
+                    new ColumnSeries
+                    {
+                        Title = "Transfers",
+                        Values = new ChartValues<decimal> { transSum },
+                        Fill = Brushes.Blue
+                    }
+                },
+                AxisX = new AxesCollection
+                {
+                    new Axis { Title = "Transaction Type", Labels = new[] { "Deposits", "Withdrawals", "Transfers" } }
+                },
+                AxisY = new AxesCollection
+                {
+                    new Axis { Title = "Amount", LabelFormatter = value => value.ToString("C", CultureInfo.CurrentCulture) }
+                }
+            };
+            Grid.SetRow(barChart, 0);
+
+            // Pie Chart for Balance Distribution
+            int highBalance = _balancesTable.AsEnumerable().Count(r => r.Field<decimal>("Balance") > 50000);
+            int mediumBalance = _balancesTable.AsEnumerable().Count(r => r.Field<decimal>("Balance") >= 10000 && r.Field<decimal>("Balance") <= 50000);
+            int lowBalance = _balancesTable.AsEnumerable().Count(r => r.Field<decimal>("Balance") < 10000 && r.Field<decimal>("Balance") > 0);
+            int zeroBalance = _balancesTable.AsEnumerable().Count(r => r.Field<decimal>("Balance") == 0);
+
+            PieChart pieChart = new PieChart
+            {
+                Series = new SeriesCollection
+                {
+                    new PieSeries { Title = "High Balance (>50,000)", Values = new ChartValues<int> { highBalance }, DataLabels = true, Fill = Brushes.Purple },
+                    new PieSeries { Title = "Medium Balance (10,000-50,000)", Values = new ChartValues<int> { mediumBalance }, DataLabels = true, Fill = Brushes.Orange },
+                    new PieSeries { Title = "Low Balance (<10,000)", Values = new ChartValues<int> { lowBalance }, DataLabels = true, Fill = Brushes.Yellow },
+                    new PieSeries { Title = "Zero Balance", Values = new ChartValues<int> { zeroBalance }, DataLabels = true, Fill = Brushes.Gray }
+                },
+                LegendLocation = LegendLocation.Right
+            };
+            Grid.SetRow(pieChart, 1);
+
+            chartGrid.Children.Add(barChart);
+            chartGrid.Children.Add(pieChart);
+            chartWindow.Content = chartGrid;
+            chartWindow.ShowDialog();
         }
 
         private void FilterAccounts_Click(object sender, RoutedEventArgs e)

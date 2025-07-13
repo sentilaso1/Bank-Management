@@ -84,13 +84,11 @@
                     <Button Content="🔄 Refresh" Width="80" Height="30" Click="Refresh_Click"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
-                    <Button Content="➕ Add User" Width="90" Height="30" Click="AddUser_Click" Background="#4CAF50" Foreground="White"/>
-                    <Button Content="📊 Export List" Width="90" Height="30" Margin="10,0,0,0" Click="ExportList_Click" Background="#2196F3" Foreground="White"/>
-                    <Button Content="🔒 Bulk Lock" Width="90" Height="30" Margin="10,0,0,0" Click="BulkLock_Click" Background="#FF9800" Foreground="White"/>
-                    <Button Content="🔓 Bulk Unlock" Width="90" Height="30" Margin="10,0,0,0" Click="BulkUnlock_Click" Background="#4CAF50" Foreground="White"/>
-                    <Button Content="📈 Analytics" Width="90" Height="30" Margin="10,0,0,0" Click="Analytics_Click" Background="#9C27B0" Foreground="White"/>
-                </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="📊 Export List" Width="90" Height="30" Click="ExportList_Click" Background="#2196F3" Foreground="White"/>
+                        <Button Content="🔒 Bulk Lock" Width="90" Height="30" Margin="10,0,0,0" Click="BulkLock_Click" Background="#FF9800" Foreground="White"/>
+                        <Button Content="🔓 Bulk Unlock" Width="90" Height="30" Margin="10,0,0,0" Click="BulkUnlock_Click" Background="#4CAF50" Foreground="White"/>
+                    </StackPanel>
             </Grid>
         </GroupBox>
 

@@ -184,11 +184,6 @@ namespace BankManagementSystem.WPF.Views
             LoadData();
         }
 
-        private void AddUser_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Add user - not implemented", "Add", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
         private void ExportList_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -259,11 +254,6 @@ namespace BankManagementSystem.WPF.Views
 
             LoadData();
             MessageBox.Show($"Unlocked {success} user(s)", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void Analytics_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Analytics view - not implemented", "Analytics", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

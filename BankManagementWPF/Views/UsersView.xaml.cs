@@ -48,10 +48,9 @@ namespace BankManagementSystem.WPF.Views
             LoadUsersList();
         }
 
-
         private void UserAnalytics_Click(object sender, RoutedEventArgs e)
         {
-            UserContentArea.Content = new TextBlock { Text = "User analytics view not implemented." };
+            UserContentArea.Content = new UserAnalyticsView();
         }
 
         private void SecurityLogs_Click(object sender, RoutedEventArgs e)

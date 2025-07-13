@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using BankBusinessLayer;
 using BankManagementSystem.WPF.Security;
+using BankDataAccessLayer;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -11,23 +12,32 @@ namespace BankManagementSystem.WPF.Views
     {
         private Client _client;
         private decimal _currentBalance;
+
         public WithdrawView()
         {
             InitializeComponent();
 
+            // Load current user's account automatically
             if (CurrentUserSession.CurrentUser?.Role == "User")
             {
                 var username = CurrentUserSession.CurrentUser.Username;
                 if (Client.IsClientExist(username))
                 {
-                    AccountSearchGroup.Visibility = Visibility.Collapsed;
-                    AccountNumberTextBox.Text = username;
+                    AccountNumberTextBlock.Text = username;
                     LoadAccount(username);
                 }
                 else
                 {
-                    AccountSearchGroup.Visibility = Visibility.Visible;
+                    MessageBox.Show("No client account found for this user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    WithdrawFormGroup.IsEnabled = false;
+                    ProcessWithdrawButton.IsEnabled = false;
                 }
+            }
+            else
+            {
+                MessageBox.Show("User role not supported for withdrawal.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                WithdrawFormGroup.IsEnabled = false;
+                ProcessWithdrawButton.IsEnabled = false;
             }
         }
 
@@ -41,18 +51,18 @@ namespace BankManagementSystem.WPF.Views
 
             if (!Client.IsClientExist(accountNumber))
             {
-                MessageBox.Show($"Client Not Found [{accountNumber}] Try Another One", "Find", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Client Not Found [{accountNumber}]", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             _client = Client.Find(accountNumber);
             if (_client == null)
             {
-                MessageBox.Show("Failed to load client info", "Find", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Failed to load client info", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            ClientNameTextBlock.Text = _client.FirstName;
+            ClientNameTextBlock.Text = $"{_client.FirstName} {_client.LastName}";
             CurrentBalanceTextBlock.Text = _client.Balance.ToString("C");
             _currentBalance = _client.Balance;
             MaxAmountTextBlock.Text = $"Max: {_currentBalance:C}";
@@ -63,9 +73,15 @@ namespace BankManagementSystem.WPF.Views
             WithdrawAmountTextBox.Focus();
         }
 
-        private void FindAccount_Click(object sender, RoutedEventArgs e)
+        private bool VerifyPinCode(string enteredPin)
         {
-            LoadAccount(AccountNumberTextBox.Text);
+            string firstName = string.Empty, lastName = string.Empty, email = string.Empty, phoneNumber = string.Empty, pinCode = string.Empty;
+            decimal balance = 0m;
+            int clientId = -1;
+
+            bool isFound = ClientsData.GetClientInfoByAccountNumber(_client.AccountNumber, ref firstName, ref lastName, ref email, ref phoneNumber, ref pinCode, ref balance, ref clientId);
+
+            return isFound && pinCode == enteredPin;
         }
 
         private void WithdrawAmount_TextChanged(object sender, TextChangedEventArgs e)
@@ -85,17 +101,29 @@ namespace BankManagementSystem.WPF.Views
         {
             if (_client == null)
             {
-                MessageBox.Show("Search for a client first", "Withdraw", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("No client account loaded.", "Withdraw", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (!decimal.TryParse(WithdrawAmountTextBox.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal amount))
+            if (!decimal.TryParse(WithdrawAmountTextBox.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal amount) || amount <= 0)
             {
-                MessageBox.Show("Please enter a valid amount.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a valid positive amount.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (amount <= 0 || amount > _currentBalance)
+            if (string.IsNullOrWhiteSpace(PinCodeTextBox.Password))
+            {
+                MessageBox.Show("Please enter your PIN code.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!VerifyPinCode(PinCodeTextBox.Password))
+            {
+                MessageBox.Show("Invalid PIN code.", "Validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (amount > _currentBalance)
             {
                 ValidationMessageTextBlock.Text = "Insufficient balance";
                 ValidationMessageTextBlock.Visibility = Visibility.Visible;
@@ -131,25 +159,17 @@ namespace BankManagementSystem.WPF.Views
             MaxAmountTextBlock.Text = $"Max: {_currentBalance:C}";
             MessageBox.Show("Amount Withdrawn Successfully", "Withdraw", MessageBoxButton.OK, MessageBoxImage.Information);
             WithdrawAmountTextBox.Clear();
+            PinCodeTextBox.Clear();
             DescriptionTextBox.Clear();
         }
 
         private void ClearForm_Click(object sender, RoutedEventArgs e)
         {
-            AccountNumberTextBox.Clear();
             WithdrawAmountTextBox.Clear();
+            PinCodeTextBox.Clear();
             DescriptionTextBox.Clear();
-            AccountInfoBorder.Visibility = Visibility.Collapsed;
-            WithdrawFormGroup.IsEnabled = false;
-            ProcessWithdrawButton.IsEnabled = false;
             NewBalanceTextBlock.Text = string.Empty;
-            ClientNameTextBlock.Text = string.Empty;
-            CurrentBalanceTextBlock.Text = string.Empty;
-            MaxAmountTextBlock.Text = string.Empty;
-            BalanceWarningTextBlock.Visibility = Visibility.Collapsed;
             ValidationMessageTextBlock.Visibility = Visibility.Collapsed;
-            _client = null;
-            _currentBalance = 0;
         }
     }
 }

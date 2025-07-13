@@ -20,6 +20,8 @@ namespace BankManagementSystem.WPF.Views
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            var loginWindow = new LoginWindow();
+            loginWindow.Show();
             this.Close();
         }
 
@@ -29,7 +31,7 @@ namespace BankManagementSystem.WPF.Views
             string accountNumber;
             do
             {
-                accountNumber = random.Next(100000, 999999).ToString(); // Tạo số 6 chữ số
+                accountNumber = "ACC" + random.Next(0, 999).ToString(); // Tạo số 6 chữ số
             } while (ClientsData.isClientExist(accountNumber));
             return accountNumber;
         }

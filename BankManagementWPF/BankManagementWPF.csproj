@@ -10,9 +10,6 @@
     <ProjectReference Include="../BankDataAccessLayer/BankDataAccessLayer.csproj" />
   </ItemGroup>
     <ItemGroup>
-    <Content Include="Resources\**\*.*" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-    <ItemGroup>
       <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     </ItemGroup>
 </Project>

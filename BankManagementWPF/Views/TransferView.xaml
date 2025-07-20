@@ -83,7 +83,7 @@
 
             <!-- Action Buttons -->
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                <Button Content="Process Transfer" Width="130" Height="35" Margin="5" Click="ProcessTransfer_Click" x:Name="ProcessTransferButton" IsEnabled="False" Background="#2196F3" Foreground="White"/>
+                <Button Content="Process Transfer" Width="130" Height="35" Margin="5" Click="ProcessTransfer_Click" x:Name="ProcessTransferButton" IsEnabled="False" Background="#2196F3" />
                 <Button Content="Clear All" Width="100" Height="35" Margin="5" Click="ClearAll_Click"/>
             </StackPanel>
         </Grid>

@@ -147,7 +147,6 @@ namespace UserCRUD.Tests
             // Arrange
             var user = new User { UserID = 999, Username = "nonexistent" };
 
-            // Act & Assert
             var exception = Assert.Throws<Exception>(() => _userService.UpdateUser(user));
             Assert.Equal("User not found", exception.Message);
         }

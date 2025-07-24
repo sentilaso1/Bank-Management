@@ -69,8 +69,6 @@ namespace BankBusinessLayer
             bool isActive = true;
             if (UsersData.GetUserByUsername(username, ref FirstName, ref LastName, ref Email, ref Phone, ref Password, ref Role, ref Permission, ref UserID, ref isActive))
             {
-                if (Role.Equals("Cashier", System.StringComparison.OrdinalIgnoreCase))
-                    Role = "User";
                 return new User(UserID, FirstName, LastName, Email, Phone, username, Password, Role, Permission, isActive);
             }
             else
@@ -86,8 +84,6 @@ namespace BankBusinessLayer
 
             if (UsersData.GetUserByUsernameAndPassword(username, password, ref Role, ref Permission))
             {
-                if (Role.Equals("Cashier", System.StringComparison.OrdinalIgnoreCase))
-                    Role = "User";
                 return new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission, true);
             }
             else

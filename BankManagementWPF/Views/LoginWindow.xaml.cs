@@ -59,7 +59,7 @@ namespace BankManagementSystem.WPF.Views
                 int Remaining = MaxAttempts - Attempts;
                 if (Remaining > 0)
                 {
-                    lblAttempts.Text = $"Login Failed. Try again. You have {Remaining} trial(s) left.";
+                    lblAttempts.Text = $"Login Failed Or Your Account has been locked. Try again. You have {Remaining} trial(s) left.";
                     lblAttempts.Visibility = Visibility.Visible;
                 }
                 else

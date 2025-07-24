@@ -228,6 +228,11 @@ namespace BankManagementSystem.WPF.Views
             int success = 0;
             foreach (var row in selected)
             {
+                if(row.Role.Equals("Administrator"))
+                {
+                    MessageBox.Show($"Cannot lock Administrator: {row.Username}", "Lock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    continue;
+                }
                 if (User.LockUser(row.Username))
                     success++;
             }

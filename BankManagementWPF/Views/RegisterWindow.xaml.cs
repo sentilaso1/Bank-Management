@@ -31,7 +31,7 @@ namespace BankManagementSystem.WPF.Views
             string accountNumber;
             do
             {
-                accountNumber = "ACC" + random.Next(0, 999).ToString(); // Tạo số 6 chữ số
+                accountNumber = "ACC" + random.Next(0, 999).ToString(); 
             } while (ClientsData.isClientExist(accountNumber));
             return accountNumber;
         }

@@ -86,7 +86,6 @@ namespace BankManagementSystem.WPF.Views
 
         private void ClearForm_Click(object sender, RoutedEventArgs e)
         {
-            UserIdTextBox.Clear();
             UsernameTextBox.Clear();
             FirstNameTextBox.Clear();
             LastNameTextBox.Clear();

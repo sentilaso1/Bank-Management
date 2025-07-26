@@ -11,7 +11,8 @@
             </Grid.RowDefinitions>  
             <TextBlock Text="🏦 Welcome to the Bank Management System" FontSize="24" FontWeight="Bold"/>  
             <TextBlock Grid.Row="1" Text="Use the navigation menu to manage clients, users and transactions." Margin="0,10,0,0"/>  
-            <TextBlock Grid.Row="2" Text="Your available options depend on your assigned role." Margin="0,5,0,0"/>  
+            <TextBlock Grid.Row="2" Text="Your available options depend on your assigned role." Margin="0,5,0,0"/>
+            <Button x:Name="DeleteAccountButton" Content="Delete Your Account" HorizontalAlignment="Left" Margin="10,62,0,0" Grid.Row="2" VerticalAlignment="Top" Click="DeleteAccountButton_Click" Visibility="Visible"/>
         </Grid>  
     </ScrollViewer>  
 </UserControl>

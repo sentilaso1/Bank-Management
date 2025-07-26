@@ -44,6 +44,9 @@ A comprehensive desktop application for managing bank accounts, users, and trans
 - **Transaction Logging**
   - All deposits, withdrawals, and transfers are logged.
   - View transaction history for auditing.
+- **Revenue View**
+  - Show system revenue in day,month,year
+  - Export to pdf 
 
 - **Responsive WPF UI**
   - Modern, user-friendly interface.

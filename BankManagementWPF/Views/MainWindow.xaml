@@ -10,6 +10,7 @@
             <Button x:Name="btnUsers" Content="Users" Click="btnUsers_Click" Margin="5"/>
             <Button x:Name="btnTransactions" Content="Transactions" Click="btnTransactions_Click" Margin="5"/>
             <Button x:Name="btnLoginRegisters" Content="LoginRegisters" Click="btnLoginRegisters_Click" Margin="5"/>
+                <Button x:Name="btnRevenue" Content="System Revenue" Click="btnRevenue_Click" Margin="5"/>
             <Button x:Name="btnLogout" Content="Logout" Click="btnLogout_Click" Margin="5"/>
         </StackPanel>
             <ContentControl x:Name="MainContent"/>

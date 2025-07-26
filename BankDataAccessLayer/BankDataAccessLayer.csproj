@@ -97,6 +97,7 @@
     <Compile Include="LoginRegistersData.cs" />
     <Compile Include="clsDataAccessSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RevenueData.cs" />
     <Compile Include="TransferLogsData.cs" />
     <Compile Include="UsersData.cs" />
   </ItemGroup>

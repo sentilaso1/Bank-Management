@@ -97,6 +97,7 @@
     <Compile Include="Global.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Revenue.cs" />
     <Compile Include="TransferLogs.cs" />
     <Compile Include="User.cs" />
     <Compile Include="RoleMapping.cs" />

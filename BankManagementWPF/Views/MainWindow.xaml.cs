@@ -25,6 +25,7 @@ namespace BankManagementSystem.WPF.Views
             btnClients.IsEnabled = permissionService.HasPermission(Permission.ViewClients);
             btnTransactions.IsEnabled = permissionService.HasPermission(Permission.ViewTransactions);
             btnLoginRegisters.IsEnabled = permissionService.HasPermission(Permission.ViewAuditLogs);
+            btnRevenue.IsEnabled = CurrentUserSession.CurrentUser.Role == "Manager" ? true : false;
         }
 
 
@@ -51,6 +52,11 @@ namespace BankManagementSystem.WPF.Views
         private void btnLoginRegisters_Click(object sender, RoutedEventArgs e)
         {
             MainContent.Content = new LoginRegistersView();
+        }
+
+        private void btnRevenue_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new RevenueView();
         }
 
         private void btnLogout_Click(object sender, RoutedEventArgs e)

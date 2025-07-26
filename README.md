@@ -140,7 +140,6 @@ BankManagementWPF/
 ├── Models/                # Chứa các ViewModels và DTOs (Data Transfer Objects)
 ├── BankBusinessLayer/     # Lớp nghiệp vụ, xử lý logic chính của ứng dụng
 ├── BankDataAccessLayer/   # Lớp truy cập dữ liệu, kết nối với cơ sở dữ liệu
-├── Resources/             # Tài nguyên như hình ảnh, biểu tượng,...
 ├── DatabaseScripts/       # Các script SQL dùng để khởi tạo hoặc cập nhật cơ sở dữ liệu
 └── README.md              # Tài liệu mô tả dự án
 </pre>

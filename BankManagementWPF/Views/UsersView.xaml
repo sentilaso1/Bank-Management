@@ -35,11 +35,9 @@
                     Background="#FF9800" Foreground="White" FontSize="14" FontWeight="Bold"/>
             <Button x:Name="UsersListButton" Content="📋 Users List" Height="70" Margin="8" Click="UsersList_Click"
                     Background="#9C27B0" Foreground="White" FontSize="14" FontWeight="Bold"/>
-            <Button Content="📊 User Analytics" Height="70" Margin="8" Click="UserAnalytics_Click"
+                <Button Content="📊 User Analytics" Height="70" Margin="8" Click="UserAnalytics_Click"
                     Background="#795548" Foreground="White" FontSize="14" FontWeight="Bold"/>
-            <Button Content="🔒 Security Logs" Height="70" Margin="8" Click="SecurityLogs_Click"
-                    Background="#E91E63" Foreground="White" FontSize="14" FontWeight="Bold"/>
-        </UniformGrid>
+            </UniformGrid>
 
         <!-- Content area -->
         <ContentControl Grid.Row="2" x:Name="UserContentArea" />

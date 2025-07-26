@@ -53,11 +53,6 @@ namespace BankManagementSystem.WPF.Views
             UserContentArea.Content = new UserAnalyticsView();
         }
 
-        private void SecurityLogs_Click(object sender, RoutedEventArgs e)
-        {
-            UserContentArea.Content = new TextBlock { Text = "Security logs view not implemented." };
-        }
-
         private void LoadUsersList()
         {
             UserContentArea.Content = new UsersListView();

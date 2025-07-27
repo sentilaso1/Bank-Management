@@ -106,6 +106,19 @@
             <Setter Property="RowBackground" Value="White"/>
             <Setter Property="AlternatingRowBackground" Value="#F8F9FA"/>
         </Style>
+
+        <Style x:Key="AIAnalysisPanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#E0E0E0" ShadowDepth="2" BlurRadius="8" Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -115,6 +128,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!-- Header -->
@@ -127,6 +141,15 @@
                         Click="btnExportPDF_Click" Height="37" Width="88">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Export to PDF" Height="23"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnAIAnalysis" Style="{StaticResource CustomButtonStyle}"
+                        Background="#8E44AD" BorderBrush="#8E44AD"
+                        Click="btnAIAnalysis_Click" Height="37" Width="100">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M12,4 A8,8 0 0,1 12,20 A8,8 0 0,1 12,4 M8,8 L16,16" 
+                              Stroke="#FFFFFF" StrokeThickness="2" Width="16" Height="16" Margin="0,0,5,0"/>
+                        <TextBlock Text="AI Analysis"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -295,6 +318,23 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
+            <!-- AI Analysis Panel -->
+            <Border x:Name="aiAnalysisPanel" Grid.Row="4" Style="{StaticResource AIAnalysisPanelStyle}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="AI Analysis Results" Style="{StaticResource SubHeaderTextStyle}"/>
+                        <Button x:Name="btnExportAIAnalysis" Style="{StaticResource CustomButtonStyle}"
+                                Background="#E74C3C" BorderBrush="#E74C3C"
+                                Click="btnExportAIAnalysis_Click" Height="37" Width="88" IsEnabled="False">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Export AI Analysis" Height="23"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock x:Name="aiAnalysisContent" TextWrapping="Wrap" FontSize="12" Foreground="#34495E"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </ScrollViewer>
 </UserControl>

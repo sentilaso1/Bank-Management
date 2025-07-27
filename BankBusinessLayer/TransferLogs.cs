@@ -16,7 +16,7 @@ namespace BankBusinessLayer
         public decimal Amount { get; set; }
         
         public string PerformedBy {  get; set; }
-
+        public string Tin { get; set; }
         public DateTime Date { get; set; }
 
         public TransferLogs()
@@ -34,7 +34,7 @@ namespace BankBusinessLayer
 
         public bool AddTrnasferLog()
         {
-            ID = TransferLogsData.AddNewTransferLog(this.Date, this.AccountForom, this.AccountTo, this.Amount, this.PerformedBy);
+            ID = TransferLogsData.AddNewTransferLog(this.Date, this.AccountForom, this.AccountTo, this.Amount, this.PerformedBy, this.Tin);
 
             return (ID != -1);
         }

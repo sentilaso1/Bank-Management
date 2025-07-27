@@ -45,14 +45,14 @@ namespace BankDataAccessLayer
             return dt;
         }
 
-        public static int AddNewTransferLog(DateTime TransferDate, string FromAccountNumber, string ToAccountNumber, decimal Amount, string PerformedBy)
+        public static int AddNewTransferLog(DateTime TransferDate, string FromAccountNumber, string ToAccountNumber, decimal Amount, string PerformedBy, string tin)
         {
             int TransferLogID = -1;
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"INSERT INTO TransferLogs (TransferDate, FromAccountNumber, ToAccountNumber, Amount, PerformedBy)
-                            VALUES(@TransferDate, @FromAccountNumber, @ToAccountNumber, @Amount, @PerformedBy);
+            string query = @"INSERT INTO TransferLogs (TransferDate, FromAccountNumber, ToAccountNumber, Amount, PerformedBy, tin)
+                            VALUES(@TransferDate, @FromAccountNumber, @ToAccountNumber, @Amount, @PerformedBy, @tin);
                             SELECT LAST_INSERT_ID();";
 
             MySqlCommand Command = new MySqlCommand(query, connection);
@@ -62,7 +62,7 @@ namespace BankDataAccessLayer
             Command.Parameters.AddWithValue("@ToAccountNumber", ToAccountNumber);
             Command.Parameters.AddWithValue("@Amount", Amount);
             Command.Parameters.AddWithValue("@PerformedBy", PerformedBy);
-
+            Command.Parameters.AddWithValue("@tin", tin);
             try
             {
                 connection.Open();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,9 +15,38 @@ namespace BankManagementSystem.WPF.Views
         private Client _toClient;
         private decimal _feePercent = 0.02m; // 2% fee
 
+        // Dictionary for transfer purpose suggestions
+        private readonly Dictionary<string, List<string>> _transferSuggestions = new Dictionary<string, List<string>>
+        {
+            { "Personal", new List<string> {
+                "Gift for family member",
+                "Personal expense reimbursement",
+                "Loan repayment to friend"
+            }},
+            { "Business", new List<string> {
+                "Payment for services",
+                "Invoice settlement",
+                "Business expense reimbursement"
+            }},
+            { "Charity", new List<string> {
+                "Donation to non-profit",
+                "Charitable contribution",
+                "Support for community event"
+            }},
+            { "Other", new List<string> {
+                "Miscellaneous payment",
+                "General transfer",
+                "Other purpose"
+            }}
+        };
+
         public TransferView()
         {
             InitializeComponent();
+
+            // Populate transfer purpose combo box
+            TransferPurposeComboBox.ItemsSource = _transferSuggestions.Keys;
+            TransferPurposeComboBox.SelectedIndex = 0;
 
             // Load current user's account automatically as source account
             if (CurrentUserSession.CurrentUser?.Role == "User")
@@ -172,6 +202,11 @@ namespace BankManagementSystem.WPF.Views
 
             decimal fee = amount * _feePercent;
             decimal totalDeducted = amount + fee;
+            if (totalDeducted <= 0)
+            {
+                MessageBox.Show("Total amount to be transferred must be greater than zero.", "Transfer", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             if (totalDeducted > _fromClient.Balance)
             {
                 MessageBox.Show("Insufficient balance in source account.", "Transfer", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -198,6 +233,7 @@ namespace BankManagementSystem.WPF.Views
                 Amount = amount,
                 PerformedBy = CurrentUserSession.CurrentUser?.accountNumber
             };
+            log.Tin = TransferDescriptionTextBox.Text.Trim();
             log.AddTrnasferLog();
 
             _fromClient = Client.Find(_fromClient.AccountNumber);
@@ -207,6 +243,7 @@ namespace BankManagementSystem.WPF.Views
             TransferAmountTextBox.Clear();
             PinCodeTextBox.Clear();
             TransferDescriptionTextBox.Clear();
+            TransferPurposeComboBox.SelectedIndex = 0;
             UpdatePreview();
         }
 
@@ -216,12 +253,59 @@ namespace BankManagementSystem.WPF.Views
             TransferAmountTextBox.Clear();
             PinCodeTextBox.Clear();
             TransferDescriptionTextBox.Clear();
+            TransferPurposeComboBox.SelectedIndex = 0;
             TransferFeeTextBlock.Text = string.Empty;
             TotalDeductedTextBlock.Text = string.Empty;
             ToAccountInfoBorder.Visibility = Visibility.Collapsed;
             TransferDetailsGroup.IsEnabled = false;
             ProcessTransferButton.IsEnabled = false;
             _toClient = null;
+        }
+
+        private void SuggestDescription_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPurpose = TransferPurposeComboBox.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedPurpose) || !_transferSuggestions.ContainsKey(selectedPurpose))
+            {
+                MessageBox.Show("Please select a valid transfer purpose.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var suggestions = _transferSuggestions[selectedPurpose];
+            var suggestionWindow = new Window
+            {
+                Title = "Transfer Description Suggestions",
+                Width = 300,
+                Height = 200,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = Window.GetWindow(this)
+            };
+
+            var stackPanel = new StackPanel { Margin = new Thickness(10) };
+            var listBox = new ListBox { ItemsSource = suggestions, Margin = new Thickness(0, 0, 0, 10) };
+            listBox.SelectionChanged += (s, args) =>
+            {
+                if (listBox.SelectedItem != null)
+                {
+                    TransferDescriptionTextBox.Text = listBox.SelectedItem.ToString();
+                    suggestionWindow.Close();
+                }
+            };
+
+            var closeButton = new Button
+            {
+                Content = "Close",
+                Width = 80,
+                Height = 30,
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
+            closeButton.Click += (s, args) => suggestionWindow.Close();
+
+            stackPanel.Children.Add(new TextBlock { Text = "Select a suggestion:", Margin = new Thickness(0, 0, 0, 10) });
+            stackPanel.Children.Add(listBox);
+            stackPanel.Children.Add(closeButton);
+            suggestionWindow.Content = stackPanel;
+            suggestionWindow.ShowDialog();
         }
     }
 }

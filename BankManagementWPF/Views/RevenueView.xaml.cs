@@ -11,9 +11,13 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Newtonsoft.Json;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -29,6 +33,8 @@ namespace BankManagementSystem.WPF.Views
         private List<RevenueChartData> currentDailyData;
         private List<MonthlyRevenueData> currentMonthlyData;
         private DataTable currentTopAccountsData;
+        private string aiAnalysisResult;
+        private bool isAnalyzing;
 
         public RevenueView()
         {
@@ -37,6 +43,8 @@ namespace BankManagementSystem.WPF.Views
             InitializeDateFilters();
             LoadRevenueData();
             DataContext = this;
+            aiAnalysisResult = string.Empty;
+            isAnalyzing = false;
         }
 
         private void InitializeChart()
@@ -255,6 +263,109 @@ namespace BankManagementSystem.WPF.Views
             }
         }
 
+        private async void btnAIAnalysis_Click(object sender, RoutedEventArgs e)
+        {
+            if (isAnalyzing)
+                return;
+
+            isAnalyzing = true;
+            aiAnalysisContent.Text = "Analyzing... Please wait.";
+            aiAnalysisPanel.Visibility = Visibility.Visible;
+            btnExportAIAnalysis.IsEnabled = false;
+
+            try
+            {
+                // Prepare data for AI analysis
+                var analysisData = new
+                {
+                    TotalRevenue = txtTotalRevenue.Text,
+                    TodayRevenue = txtTodayRevenue.Text,
+                    MonthRevenue = txtMonthRevenue.Text,
+                    DailyAverage = txtAvgDaily.Text,
+                    DailyData = currentDailyData.Select(d => new { d.Date, d.Revenue }).ToList(),
+                    MonthlyData = currentMonthlyData.Select(m => new { m.MonthName, m.Revenue }).ToList(),
+                    TopAccounts = currentTopAccountsData.AsEnumerable().Select(row => new
+                    {
+                        AccountNumber = row["AccountNumber"].ToString(),
+                        Revenue = Convert.ToDecimal(row["Revenue"]),
+                        TransferCount = Convert.ToInt32(row["TransferCount"])
+                    }).ToList()
+                };
+
+                string jsonData = JsonConvert.SerializeObject(analysisData);
+
+                // Call Gemini API
+                string apiKey = "YOUR_GEMINI_API_KEY"; // Replace with actual API key
+                string apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("X-goog-api-key", $"{apiKey}");
+                    var requestBody = new
+                    {
+                        contents = new[]
+                        {
+                            new
+                            {
+                                parts = new[]
+                                {
+                                    new
+                                    {
+                                        text = $"Analyze this bank revenue data and provide insights:\n{jsonData}"
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    string jsonRequest = JsonConvert.SerializeObject(requestBody);
+                    var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(apiUrl, content);
+                    response.EnsureSuccessStatusCode();
+
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    var responseObject = JsonConvert.DeserializeObject<dynamic>(responseString);
+                    aiAnalysisResult = responseObject.candidates[0].content.parts[0].text.ToString();
+
+                    aiAnalysisContent.Text = aiAnalysisResult;
+                    btnExportAIAnalysis.IsEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                aiAnalysisContent.Text = $"Error during AI analysis: {ex.Message}";
+            }
+            finally
+            {
+                isAnalyzing = false;
+            }
+        }
+
+        private void btnExportAIAnalysis_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog
+                {
+                    Filter = "PDF files (*.pdf)|*.pdf",
+                    FileName = $"AI_Analysis_Report_{DateTime.Now:yyyyMMdd_HHmmss}.pdf"
+                };
+
+                if (saveDialog.ShowDialog() == true)
+                {
+                    ExportAIAnalysisToPDF(saveDialog.FileName);
+                    MessageBox.Show("AI Analysis PDF exported successfully!", "Success",
+                                  MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting AI Analysis to PDF: {ex.Message}", "Error",
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void ExportToPDF(string filePath)
         {
             iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4.Rotate(), 25, 25, 30, 30);
@@ -406,6 +517,47 @@ namespace BankManagementSystem.WPF.Views
 
             // Footer
             Paragraph footer = new Paragraph($"Report generated by Bank Management System - {DateTime.Now:yyyy}", dateFont);
+            footer.Alignment = Element.ALIGN_CENTER;
+            footer.SpacingBefore = 30f;
+            document.Add(footer);
+
+            document.Close();
+        }
+
+        private void ExportAIAnalysisToPDF(string filePath)
+        {
+            iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4, 25, 25, 30, 30);
+            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+
+            document.Open();
+
+            // Title
+            Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.DARK_GRAY);
+            Paragraph title = new Paragraph("AI Revenue Analysis Report", titleFont);
+            title.Alignment = Element.ALIGN_CENTER;
+            title.SpacingAfter = 20f;
+            document.Add(title);
+
+            // Report Date
+            Font dateFont = FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.GRAY);
+            Paragraph dateInfo = new Paragraph($"Generated on: {DateTime.Now:yyyy-MM-dd HH:mm:ss}", dateFont);
+            dateInfo.Alignment = Element.ALIGN_RIGHT;
+            dateInfo.SpacingAfter = 20f;
+            document.Add(dateInfo);
+
+            // AI Analysis Section
+            Font sectionFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK);
+            Paragraph analysisTitle = new Paragraph("AI Analysis Results", sectionFont);
+            analysisTitle.SpacingAfter = 10f;
+            document.Add(analysisTitle);
+
+            Font analysisFont = FontFactory.GetFont(FontFactory.HELVETICA, 11, BaseColor.BLACK);
+            Paragraph analysisContent = new Paragraph(aiAnalysisResult, analysisFont);
+            analysisContent.SpacingAfter = 20f;
+            document.Add(analysisContent);
+
+            // Footer
+            Paragraph footer = new Paragraph($"Report generated by Bank Management System - AI Analysis - {DateTime.Now:yyyy}", dateFont);
             footer.Alignment = Element.ALIGN_CENTER;
             footer.SpacingBefore = 30f;
             document.Add(footer);

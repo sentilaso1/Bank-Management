@@ -57,6 +57,7 @@ CREATE TABLE TransferLogs (
     ToAccountNumber VARCHAR(20),
     Amount DECIMAL(15,2) NOT NULL,
     PerformedBy VARCHAR(50)
+    tin Text
 );
 
 -- SeedData.sql

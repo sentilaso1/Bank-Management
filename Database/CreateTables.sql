@@ -33,7 +33,9 @@ CREATE TABLE Clients (
     PinCode VARCHAR(10) NOT NULL,
     Balance DECIMAL(15,2) DEFAULT 0.00,
     IsActive BOOLEAN DEFAULT TRUE,
-    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP
+    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UserID INT,
+    CONSTRAINT FK_Clients_Users FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 -- Tạo bảng LoginRegisters
@@ -61,7 +63,7 @@ CREATE TABLE TransferLogs (
 -- SeedData.sql
 USE BankDB;
 
--- Thêm dữ liệu Users (Nhân viên)
+-- Thêm dữ liệu Users (Nhân viên và khách hàng)
 INSERT INTO Users (Username, Password, FirstName, LastName, Email, Phone, Address, Role, Permission) VALUES
 ('admin', 'admin123', 'Nguyễn', 'Quản Trị', 'admin@bank.com', '0901234567', '123 Đường ABC, TP.HCM', 'Administrator', 1),
 ('manager', 'manager123', 'Trần', 'Giám Đốc', 'manager@bank.com', '0902345678', '456 Đường DEF, TP.HCM', 'Manager', 2),
@@ -73,17 +75,17 @@ INSERT INTO Users (Username, Password, FirstName, LastName, Email, Phone, Addres
 ('ACC004', '4567', 'Phạm', 'Thị Dung', 'phamthidung@email.com', '0944444444', '400 Hai Bà Trưng, Q3, TP.HCM', 'User', 3),
 ('ACC005', '5678', 'Hoàng', 'Văn Em', 'hoangvanem@email.com', '0955555555', '500 Cách Mạng Tháng 8, Q10, TP.HCM', 'User', 3),
 ('ACC006', '6789', 'Ngô', 'Thanh Phong', 'ngothanhphong@email.com', '0966666666', '600 Lạc Long Quân, Q11, TP.HCM', 'User', 3),
-('ACC007', '7890', 'Đặng', 'Thúy Hà', 'dangthuyha@email.com', '0977777777', '700 Pasteur, Q3, TP.HCM', 'User', 3);
+('ACC007', '7890', 'Đặng', 'Thúy Hà', 'dangthuyha@email.com', '0977777777', '700 Pasteur, Q3, TP.HCM', 'User', 3),
 
 -- Thêm dữ liệu Clients (Khách hàng)
-INSERT INTO Clients (FirstName, LastName, Email, Phone, Address, DateOfBirth, NationalID, AccountNumber, PinCode, Balance) VALUES
-('Nguyễn', 'Văn An', 'nguyenvanan@email.com', '0911111111', '100 Lê Lợi, Q1, TP.HCM', '1990-05-15', '123456789', 'ACC001', '1234', 5000000.00),
-('Trần', 'Thị Bình', 'tranthibinh@email.com', '0922222222', '200 Nguyễn Huệ, Q1, TP.HCM', '1985-08-20', '987654321', 'ACC002', '2345', 3500000.00),
-('Lê', 'Hoàng Cường', 'lehoangcuong@email.com', '0933333333', '300 Đồng Khởi, Q1, TP.HCM', '1992-12-10', '456789123', 'ACC003', '3456', 7500000.00),
-('Phạm', 'Thị Dung', 'phamthidung@email.com', '0944444444', '400 Hai Bà Trưng, Q3, TP.HCM', '1988-03-25', '789123456', 'ACC004', '4567', 2800000.00),
-('Hoàng', 'Văn Em', 'hoangvanem@email.com', '0955555555', '500 Cách Mạng Tháng 8, Q10, TP.HCM', '1995-07-08', '321654987', 'ACC005', '5678', 4200000.00),
-('Ngô', 'Thanh Phong', 'ngothanhphong@email.com', '0966666666', '600 Lạc Long Quân, Q11, TP.HCM', '1991-09-15', '852741963', 'ACC006', '6789', 6300000.00),
-('Đặng', 'Thúy Hà', 'dangthuyha@email.com', '0977777777', '700 Pasteur, Q3, TP.HCM', '1987-11-20', '963852741', 'ACC007', '7890', 8100000.00);
+INSERT INTO Clients (FirstName, LastName, Email, Phone, Address, DateOfBirth, NationalID, AccountNumber, PinCode, Balance, UserID) VALUES
+('Nguyễn', 'Văn An', 'nguyenvanan@email.com', '0911111111', '100 Lê Lợi, Q1, TP.HCM', '1990-05-15', '123456789', 'ACC001', '1234', 5000000.00, 5),
+('Trần', 'Thị Bình', 'tranthibinh@email.com', '0922222222', '200 Nguyễn Huệ, Q1, TP.HCM', '1985-08-20', '987654321', 'ACC002', '2345', 3500000.00, 6),
+('Lê', 'Hoàng Cường', 'lehoangcuong@email.com', '0933333333', '300 Đồng Khởi, Q1, TP.HCM', '1992-12-10', '456789123', 'ACC003', '3456', 7500000.00, 7),
+('Phạm', 'Thị Dung', 'phamthidung@email.com', '0944444444', '400 Hai Bà Trưng, Q3, TP.HCM', '1988-03-25', '789123456', 'ACC004', '4567', 2800000.00, 8),
+('Hoàng', 'Văn Em', 'hoangvanem@email.com', '0955555555', '500 Cách Mạng Tháng 8, Q10, TP.HCM', '1995-07-08', '321654987', 'ACC005', '5678', 4200000.00, 9),
+('Ngô', 'Thanh Phong', 'ngothanhphong@email.com', '0966666666', '600 Lạc Long Quân, Q11, TP.HCM', '1991-09-15', '852741963', 'ACC006', '6789', 6300000.00, 10),
+('Đặng', 'Thúy Hà', 'dangthuyha@email.com', '0977777777', '700 Pasteur, Q3, TP.HCM', '1987-11-20', '963852741', 'ACC007', '7890', 8100000.00, 11),
 
 -- Thêm dữ liệu LoginRegisters (Lịch sử đăng nhập mẫu)
 INSERT INTO LoginRegisters (UserID, Username, LoginDateTime, IPAddress) VALUES

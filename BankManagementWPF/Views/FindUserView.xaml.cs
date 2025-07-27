@@ -118,11 +118,6 @@ namespace BankManagementSystem.WPF.Views
             SearchResultsDataGrid.Items.Refresh();
         }
 
-        private void EditSelected_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Edit selected user - not implemented", "Edit", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
         private void LockSelected_Click(object sender, RoutedEventArgs e)
         {
             var selected = (_rows.Where(r => r.IsSelected)).ToList();
@@ -135,6 +130,11 @@ namespace BankManagementSystem.WPF.Views
             int success = 0;
             foreach (var row in selected)
             {
+                if (row.Role.Equals("Administrator"))
+                {
+                    MessageBox.Show($"Cannot lock Administrator: {row.Username}", "Lock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    continue;
+                }
                 if (User.LockUser(row.Username))
                     success++;
             }
@@ -161,11 +161,6 @@ namespace BankManagementSystem.WPF.Views
 
             LoadAllUsers();
             MessageBox.Show($"Unlocked {success} user(s)", "Unlock", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void ViewDetails_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("View user details - not implemented", "Details", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void UpdateStats()

@@ -22,6 +22,8 @@ namespace BankBusinessLayer
         public string Role { get; set; }
         public bool IsActive { get; set; }
 
+        public string accountNumber { get; set; }
+
         private User(int userID, string FirstName, string LastName, string Email, string Phone,
             string username, string password, string role, int permission, bool isActive = true) :
             base(userID, FirstName, LastName, Email, Phone)
@@ -38,7 +40,7 @@ namespace BankBusinessLayer
         {
             int roleId = RoleMapping.GetRoleId(this.Role);
             this.UserID = UsersData.AddNewUser(this.Username, this.FirstName, this.LastName,
-                this.Email, this.PhoneNumber, this.Password, this.Role, roleId);
+                this.Email, this.PhoneNumber, this.Password, this.Role, roleId, this.accountNumber);
 
             return (UserID != -1);
         }
@@ -80,11 +82,14 @@ namespace BankBusinessLayer
         static public User FindUserByUsernameAndPassword(string username, string password)
         {
             int Permission = 0, UserID = 0;
+            string AccountNumber = "";
             string FirstName = "", LastName = "", Email = "", Phone = "", Role = "";
 
-            if (UsersData.GetUserByUsernameAndPassword(username, password, ref Role, ref Permission))
+            if (UsersData.GetUserByUsernameAndPassword(username, password, ref Role, ref Permission, ref AccountNumber))
             {
-                return new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission, true);
+                User temp = new User(UserID, FirstName, LastName, Email, Phone, username, password, Role, Permission, true);
+                temp.accountNumber = AccountNumber;
+                return temp;
             }
             else
                 return null;

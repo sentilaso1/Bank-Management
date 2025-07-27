@@ -56,8 +56,8 @@ namespace BankManagementSystem.WPF.Views
 
             if (MessageBox.Show("Are you sure you want to delete this user?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 return;
-
-            if (User.DeleteUser(_user.Username))
+            int clientId = CurrentUserSession.CurrentUser.Id - 4;
+            if (User.DeleteUser(_user.Username) && Client.DeleteClient(clientId))
             {
                 MessageBox.Show("User deleted successfully", "Delete", MessageBoxButton.OK, MessageBoxImage.Information);
                 Clear_Click(sender, e);

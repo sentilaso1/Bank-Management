@@ -19,7 +19,7 @@ namespace BankManagementSystem.WPF.Views
             // Load current user's account automatically
             if (CurrentUserSession.CurrentUser?.Role == "User")
             {
-                var username = CurrentUserSession.CurrentUser.Username;
+                var username = CurrentUserSession.CurrentUser.accountNumber;
                 if (Client.IsClientExist(username))
                 {
                     AccountNumberTextBlock.Text = username;
@@ -123,7 +123,7 @@ namespace BankManagementSystem.WPF.Views
                 AccountForom = null,
                 AccountTo = _client.AccountNumber,
                 Amount = amount,
-                PerformedBy = CurrentUserSession.CurrentUser?.Username
+                PerformedBy = CurrentUserSession.CurrentUser?.accountNumber
             };
             log.AddTrnasferLog();
 

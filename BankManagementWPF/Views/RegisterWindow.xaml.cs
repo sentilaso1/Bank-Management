@@ -68,7 +68,8 @@ namespace BankManagementSystem.WPF.Views
                 txtPhone.Text,
                 txtPassword.Password,
                 "User", 
-                1       
+                1,
+                accountNumber
             );
 
             if (userId == -1)

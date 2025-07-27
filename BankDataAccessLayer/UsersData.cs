@@ -12,12 +12,12 @@ namespace BankDataAccessLayer
     public class UsersData
     {
 
-        public static bool GetUserByID(int UserID, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Username, ref string Password, ref string Role, ref int Permission)
+        public static bool GetUserByID(int UserID, ref string firstName, ref string lastName, ref string email, ref string phoneNumber, ref string Username, ref string Password, ref string Role, ref int Permission, ref string AccountNumber)
         {
             bool isFound = false;
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
-            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Role, Permission
+            string query = @"Select FirstName, LastName, Email, Phone, Username, Password, Role, Permission, AccountNumber
                             from Users
                             where UserID = @UserID";
 
@@ -35,7 +35,6 @@ namespace BankDataAccessLayer
                 {
                     isFound = true;
 
-
                     firstName = (string)reader["FirstName"];
                     lastName = (string)reader["LastName"];
                     email = (string)reader["Email"];
@@ -43,8 +42,7 @@ namespace BankDataAccessLayer
                     Password = (string)reader["Password"];
                     Role = (string)reader["Role"];
                     Permission = (int)reader["Permission"];
-
-
+                    AccountNumber = (string)reader["AccountNumber"];
                 }
             }
 
@@ -109,7 +107,7 @@ namespace BankDataAccessLayer
             return isFound;
         }
 
-        public static bool GetUserByUsernameAndPassword(string Username, string Password, ref string Role, ref int Permission)
+        public static bool GetUserByUsernameAndPassword(string Username, string Password, ref string Role, ref int Permission, ref string AccountNumber)
         {
             bool isFound = false;
 
@@ -133,7 +131,7 @@ namespace BankDataAccessLayer
                     isFound = true;
                     Role = Reader["Role"].ToString();
                     Permission = (int)Reader["Permission"];
-
+                    AccountNumber = (string)Reader["AccountNumber"];
                 }
             }
 
@@ -306,15 +304,15 @@ namespace BankDataAccessLayer
             return isFound;
         }
 
-        public static int AddNewUser(string Username, string FirstName, string LastName, string Email, string Phone, string Password, string Role, int Permission)
+        public static int AddNewUser(string Username, string FirstName, string LastName, string Email, string Phone, string Password, string Role, int Permission, string AccountNumber)
         {
             int UserID = -1;
 
             MySqlConnection connection = new MySqlConnection(clsDataAccessSettings.ConnectionString);
 
             string query = @"
-                            Insert into Users(FirstName, LastName, Email, Phone, Username, Password, Role, Permission)
-                            Values (@FirstName, @LastName, @Email, @Phone,@Username,@Password,@Role,@Permission);
+                            Insert into Users(FirstName, LastName, Email, Phone, Username, Password, Role, Permission, AccountNumber)
+                            Values (@FirstName, @LastName, @Email, @Phone,@Username,@Password,@Role,@Permission, @AccountNumber);
                             Select LAST_INSERT_ID()";
 
             MySqlCommand Command = new MySqlCommand(query, connection);
@@ -327,7 +325,7 @@ namespace BankDataAccessLayer
             Command.Parameters.AddWithValue("@Password", Password);
             Command.Parameters.AddWithValue("@Role", Role);
             Command.Parameters.AddWithValue("@Permission", Permission);
-
+            Command.Parameters.AddWithValue("@AccountNumber", AccountNumber);
             try
             {
                 connection.Open();

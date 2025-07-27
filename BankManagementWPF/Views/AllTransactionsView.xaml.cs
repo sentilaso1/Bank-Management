@@ -16,7 +16,7 @@ namespace BankManagementSystem.WPF.Views
 
         private void LoadTransactions()
         {
-            string username = CurrentUserSession.CurrentUser?.Username;
+            string username = CurrentUserSession.CurrentUser?.accountNumber;
             DataTable allLogs = TransferLogs.GetAllTransferLogs();
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -25,7 +25,7 @@ namespace BankManagementSystem.WPF.Views
             else
             {
                 var rows = allLogs.AsEnumerable()
-                    .Where(r => r.Field<string>("PerformedBy") == username);
+                    .Where(r => r.Field<string>("PerformedBy") == username || r.Field<string>("ToAccountNumber") == username);
                 DataTable table = rows.Any() ? rows.CopyToDataTable() : allLogs.Clone();
                 TransactionsDataGrid.ItemsSource = table.DefaultView;
             }

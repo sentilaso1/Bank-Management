@@ -44,8 +44,6 @@ namespace BankManagementSystem.WPF.Views
             LastNameTextBox.Text = _client.LastName;
             EmailTextBox.Text = _client.Email;
             PhoneTextBox.Text = _client.PhoneNumber;
-            BalanceTextBox.Text = _client.Balance.ToString(CultureInfo.InvariantCulture);
-            PinCodePasswordBox.Password = _client.PinCode;
 
             UpdateFormGroup.IsEnabled = true;
             UpdateButton.IsEnabled = true;
@@ -82,20 +80,6 @@ namespace BankManagementSystem.WPF.Views
                 return false;
             }
             _client.PhoneNumber = PhoneTextBox.Text;
-
-            if (!decimal.TryParse(BalanceTextBox.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal balance))
-            {
-                MessageBox.Show("Invalid Balance Value!", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-            _client.Balance = balance;
-
-            if (string.IsNullOrWhiteSpace(PinCodePasswordBox.Password) || PinCodePasswordBox.Password.Length != 4)
-            {
-                MessageBox.Show("Invalid PinCode!", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-            _client.PinCode = PinCodePasswordBox.Password;
 
             return true;
         }
@@ -147,8 +131,6 @@ namespace BankManagementSystem.WPF.Views
             LastNameTextBox.Clear();
             EmailTextBox.Clear();
             PhoneTextBox.Clear();
-            BalanceTextBox.Clear();
-            PinCodePasswordBox.Clear();
             UpdateFormGroup.IsEnabled = false;
             UpdateButton.IsEnabled = false;
         }

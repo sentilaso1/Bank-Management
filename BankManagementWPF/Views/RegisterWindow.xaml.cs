@@ -58,6 +58,30 @@ namespace BankManagementSystem.WPF.Views
                 return;
             }
 
+            if(txtEmail.Text.Length < 5 || !txtEmail.Text.Contains("@"))
+            {
+                MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if(txtPhone.Text.Length != 10 || !long.TryParse(txtPhone.Text, out _))
+            {
+                MessageBox.Show("Phone number must be exactly 10 digits.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (txtPassword.Password.Length < 6)
+            {
+                MessageBox.Show("Password must be at least 6 characters long.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (txtPinCode.Password.Length != 4 || !int.TryParse(txtPinCode.Password, out _))
+            {
+                MessageBox.Show("PIN code must be exactly 4 digits.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             string accountNumber = GenerateUniqueAccountNumber();
 
             int userId = UsersData.AddNewUser(

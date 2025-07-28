@@ -34,6 +34,14 @@ namespace BankManagementSystem.WPF.Views
 
         public async void Login()
         {
+            if (string.IsNullOrEmpty(txtUsername.Text) || string.IsNullOrEmpty(txtPassword.Password))
+            {
+                lblAttempts.Text = "Please enter both username and password.";
+                lblAttempts.Visibility = Visibility.Visible;
+                return;
+            }
+            txtPassword.Password = txtPassword.Password.Trim();
+            txtUsername.Text = txtUsername.Text.Trim();
             var user = User.FindUserByUsernameAndPassword(txtUsername.Text, txtPassword.Password);
             if (user != null)
             {
@@ -64,7 +72,8 @@ namespace BankManagementSystem.WPF.Views
                 }
                 else
                 {
-                    lblAttempts.Text = "Maximum login attempts exceeded.";
+                    lblAttempts.Text = "Maximum login attempts exceeded";
+                    lblAttempts.Visibility = Visibility.Visible;
                     MessageBox.Show(lblAttempts.Text, "Locked", MessageBoxButton.OK, MessageBoxImage.Error);
                     await System.Threading.Tasks.Task.Delay(1500);
                     Application.Current.Shutdown();

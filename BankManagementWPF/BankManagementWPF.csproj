@@ -10,8 +10,18 @@
     <ProjectReference Include="../BankDataAccessLayer/BankDataAccessLayer.csproj" />
   </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="Emgu.CV" Version="4.11.0.5746" />
+      <PackageReference Include="Emgu.CV.Bitmap" Version="4.11.0.5746" />
+      <PackageReference Include="Emgu.CV.runtime.windows" Version="4.11.0.5746" />
       <PackageReference Include="iTextSharp" Version="5.5.13.4" />
       <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+      <PackageReference Include="MySql.Data" Version="9.3.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="System.Drawing.Common" Version="9.0.7" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="haarcascade_frontalface_default.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

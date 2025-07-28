@@ -6,6 +6,14 @@ using System.Windows.Controls;
 using BankBusinessLayer;
 using BankManagementSystem.WPF.Security;
 using BankDataAccessLayer;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using System.Drawing;
+using System.IO;
+using MySql.Data.MySqlClient;
+using System.Windows.Media.Imaging;
+using Emgu.CV;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -15,7 +23,6 @@ namespace BankManagementSystem.WPF.Views
         private Client _toClient;
         private decimal _feePercent = 0.02m; // 2% fee
 
-        // Dictionary for transfer purpose suggestions
         private readonly Dictionary<string, List<string>> _transferSuggestions = new Dictionary<string, List<string>>
         {
             { "Personal", new List<string> {
@@ -44,11 +51,9 @@ namespace BankManagementSystem.WPF.Views
         {
             InitializeComponent();
 
-            // Populate transfer purpose combo box
             TransferPurposeComboBox.ItemsSource = _transferSuggestions.Keys;
             TransferPurposeComboBox.SelectedIndex = 0;
 
-            // Load current user's account automatically as source account
             if (CurrentUserSession.CurrentUser?.Role == "User")
             {
                 var username = CurrentUserSession.CurrentUser.accountNumber;
@@ -174,6 +179,226 @@ namespace BankManagementSystem.WPF.Views
             return isFound && pinCode == enteredPin;
         }
 
+        private bool VerifyFace()
+        {
+            string cascadePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "haarcascade_frontalface_default.xml");
+            if (!File.Exists(cascadePath))
+            {
+                MessageBox.Show($"Haar cascade file not found at: {cascadePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            CascadeClassifier faceCascade;
+            try
+            {
+                faceCascade = new CascadeClassifier(cascadePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load Haar cascade: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            var capture = new VideoCapture(0);
+            if (!capture.IsOpened)
+            {
+                MessageBox.Show("Failed to open webcam.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            var verifyWindow = new Window
+            {
+                Title = "Verify Face",
+                Width = 640,
+                Height = 480,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = Window.GetWindow(this)
+            };
+
+            var imageControl = new System.Windows.Controls.Image();
+            var verifyButton = new Button { Content = "Verify Face", Width = 120, Height = 30, Margin = new Thickness(10) };
+            var stackPanel = new StackPanel { Margin = new Thickness(10) };
+            stackPanel.Children.Add(imageControl);
+            stackPanel.Children.Add(verifyButton);
+            verifyWindow.Content = stackPanel;
+
+            bool isVerified = false;
+            capture.ImageGrabbed += (s, args) =>
+            {
+                using (var frame = capture.QueryFrame())
+                {
+                    if (frame == null)
+                        return;
+
+                    using (var grayFrame = new Mat())
+                    {
+                        CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
+                        var faces = faceCascade.DetectMultiScale(grayFrame, 1.1, 3, System.Drawing.Size.Empty);
+                        if (faces.Length > 0)
+                        {
+                            var face = faces[0];
+                            using (var faceImage = frame.ToBitmap())
+                            {
+                                var croppedFace = new Bitmap(face.Width, face.Height);
+                                using (var graphics = Graphics.FromImage(croppedFace))
+                                {
+                                    graphics.DrawImage(faceImage, 0, 0, new Rectangle(face.X, face.Y, face.Width, face.Height), GraphicsUnit.Pixel);
+                                }
+                                Dispatcher.Invoke(() =>
+                                {
+                                    imageControl.Source = BitmapToImageSource(croppedFace);
+                                });
+                            }
+                        }
+                    }
+                }
+            };
+            capture.Start();
+
+            verifyButton.Click += (s, args) =>
+            {
+                using (var frame = capture.QueryFrame())
+                {
+                    if (frame == null)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            MessageBox.Show("Failed to capture frame from webcam.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            capture.Stop();
+                            verifyWindow.Close();
+                        });
+                        return;
+                    }
+
+                    using (var grayFrame = new Mat())
+                    {
+                        CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
+                        var faces = faceCascade.DetectMultiScale(grayFrame, 1.1, 3, System.Drawing.Size.Empty);
+                        if (faces.Length > 0)
+                        {
+                            var face = faces[0];
+                            using (var faceImage = frame.ToBitmap())
+                            {
+                                var croppedFace = new Bitmap(face.Width, face.Height);
+                                using (var graphics = Graphics.FromImage(croppedFace))
+                                {
+                                    graphics.DrawImage(faceImage, 0, 0, new Rectangle(face.X, face.Y, face.Width, face.Height), GraphicsUnit.Pixel);
+                                }
+                                byte[] capturedFaceBytes;
+                                using (var ms = new MemoryStream())
+                                {
+                                    croppedFace.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                    capturedFaceBytes = ms.ToArray();
+                                }
+
+                                // Retrieve stored face
+                                byte[] storedFaceBytes = null;
+                                string connectionString = "Server=localhost;Database=bankdb;Uid=root;Pwd=senti123;";
+                                using (var conn = new MySqlConnection(connectionString))
+                                {
+                                    try
+                                    {
+                                        conn.Open();
+                                        string query = "SELECT faceImage FROM FaceData WHERE clientId = @clientId ORDER BY createdAt DESC LIMIT 1";
+                                        using (var cmd = new MySqlCommand(query, conn))
+                                        {
+                                            int clientId = GetClientIdByAccountNumber(_fromClient.AccountNumber);
+                                            cmd.Parameters.AddWithValue("@clientId", clientId);
+                                            using (var reader = cmd.ExecuteReader())
+                                            {
+                                                if (reader.Read())
+                                                {
+                                                    storedFaceBytes = (byte[])reader["faceImage"];
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Dispatcher.Invoke(() =>
+                                        {
+                                            MessageBox.Show($"Failed to retrieve face data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                            capture.Stop();
+                                            verifyWindow.Close();
+                                        });
+                                        return;
+                                    }
+                                }
+
+                                if (storedFaceBytes == null)
+                                {
+                                    Dispatcher.Invoke(() =>
+                                    {
+                                        MessageBox.Show("No face data found for this user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                        capture.Stop();
+                                        verifyWindow.Close();
+                                    });
+                                    return;
+                                }
+
+                                // Convert byte arrays to Mat
+                                using (var capturedBitmap = new Bitmap(new MemoryStream(capturedFaceBytes)))
+                                using (var storedBitmap = new Bitmap(new MemoryStream(storedFaceBytes)))
+                                using (var capturedMat = capturedBitmap.ToMat())
+                                using (var storedMat = storedBitmap.ToMat())
+                                {
+                                    using (var capturedGray = new Mat())
+                                    using (var storedGray = new Mat())
+                                    {
+                                        CvInvoke.CvtColor(capturedMat, capturedGray, ColorConversion.Bgr2Gray);
+                                        CvInvoke.CvtColor(storedMat, storedGray, ColorConversion.Bgr2Gray);
+
+                                        if (capturedGray.Size != storedGray.Size)
+                                        {
+                                            CvInvoke.Resize(storedGray, storedGray, capturedGray.Size);
+                                        }
+
+                                        using (var result = new Mat())
+                                        {
+                                            CvInvoke.MatchTemplate(capturedGray, storedGray, result, TemplateMatchingType.CcoeffNormed);
+                                            double[] minValues, maxValues;
+                                            System.Drawing.Point[] minLocations, maxLocations;
+                                            result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
+                                            if (maxValues[0] > 0.3) // Threshold for similarity
+                                            {
+                                                isVerified = true;
+                                                Dispatcher.Invoke(() =>
+                                                {
+                                                    MessageBox.Show("Face verified successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                                                    capture.Stop();
+                                                    verifyWindow.Close();
+                                                });
+                                            }
+                                            else
+                                            {
+                                                Dispatcher.Invoke(() =>
+                                                {
+                                                    MessageBox.Show("Face verification failed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                                    capture.Stop();
+                                                    verifyWindow.Close();
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                MessageBox.Show("No face detected. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            });
+                        }
+                    }
+                }
+            };
+
+            verifyWindow.Closed += (s, args) => capture.Stop();
+            verifyWindow.ShowDialog();
+            return isVerified;
+        }
+
         private void ProcessTransfer_Click(object sender, RoutedEventArgs e)
         {
             if (_fromClient == null || _toClient == null)
@@ -211,6 +436,15 @@ namespace BankManagementSystem.WPF.Views
             {
                 MessageBox.Show("Insufficient balance in source account.", "Transfer", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
+            }
+
+            if (amount > 30000)
+            {
+                if (!VerifyFace())
+                {
+                    MessageBox.Show("Face verification required for transfers over 30,000.", "Transfer", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
             }
 
             if (MessageBox.Show($"Transfer {amount:C} (+{fee:C} fee) from {_fromClient.AccountNumber} to {_toClient.AccountNumber}?",
@@ -306,6 +540,31 @@ namespace BankManagementSystem.WPF.Views
             stackPanel.Children.Add(closeButton);
             suggestionWindow.Content = stackPanel;
             suggestionWindow.ShowDialog();
+        }
+
+        private System.Windows.Media.Imaging.BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (var memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                var bitmapImage = new System.Windows.Media.Imaging.BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+                return bitmapImage;
+            }
+        }
+
+        private int GetClientIdByAccountNumber(string accountNumber)
+        {
+            string firstName = string.Empty, lastName = string.Empty, email = string.Empty, phoneNumber = string.Empty, pinCode = string.Empty;
+            decimal balance = 0m;
+            int clientId = -1;
+            ClientsData.GetClientInfoByAccountNumber(accountNumber, ref firstName, ref lastName, ref email, ref phoneNumber, ref pinCode, ref balance, ref clientId);
+            return clientId;
         }
     }
 }

@@ -53,7 +53,22 @@ namespace BankManagementSystem.WPF.Views
 
             if (_user == null)
                 return;
-
+            if (_user.Role == "Administrator" && _user.Role == "Manager")
+            {
+                MessageBox.Show("You can't delete Administrator or Manager.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (_user.IsActive == true)
+            {
+                MessageBox.Show("You cannot delete an active user. Please deactivate the user first.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            Client a = Client.Find(_user.accountNumber);
+            if (a.Balance > 0)
+            {
+                MessageBox.Show("You cannot delete a user with a balance in your bank.", "Access Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             if (MessageBox.Show("Are you sure you want to delete this user?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 return;
             int clientId = CurrentUserSession.CurrentUser.Id - 4;

@@ -26,14 +26,14 @@ A comprehensive desktop application for managing bank accounts, users, and trans
   - Account lockout after multiple failed login attempts.
 
 - **Client Management**
-  - Add, update, delete, and search clients.
+  - Update and search clients.
   - View client details and balances.
-  - Role-based access for users and administrators.
+  - Role-based access for manager and administrators.
 
 - **Account Operations**
   - Deposit: Add funds to an account with PIN verification.
   - Withdraw: Remove funds with balance validation and warnings.
-  - Transfer: Move funds between accounts, including fee calculation and validation.
+  - Transfer: Move funds between accounts, including fee calculation and validation.With higher certain amount, it need to verify by face authentication.
 
 - **User Management**
   - List all users with filtering by role and status.
@@ -44,10 +44,15 @@ A comprehensive desktop application for managing bank accounts, users, and trans
 - **Transaction Logging**
   - All deposits, withdrawals, and transfers are logged.
   - View transaction history for auditing.
+    
 - **Revenue View**
   - Show system revenue in day,month,year
-  - Export to pdf 
-
+  - Export to pdf
+    
+- **Home View**
+  - Show system description
+  - Add user face authentication 
+    
 - **Responsive WPF UI**
   - Modern, user-friendly interface.
   - Real-time feedback and validation.
@@ -75,6 +80,7 @@ Communication between layers is handled via project references and shared models
 - .NET 8 SDK
 - .NET Framework 4.8 Developer Pack
 - MySQL Server (for database)
+- Emgu.CV package
 
 ### Build & Run
 

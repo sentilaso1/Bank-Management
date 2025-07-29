@@ -61,7 +61,31 @@ namespace BankManagementSystem.WPF.Views
 
             if (_user == null)
                 return;
-
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || UsernameTextBox.Text.Length < 3)
+            {
+                MessageBox.Show("Username is too short. Please enter a valid username.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(FirstNameTextBox.Text) || FirstNameTextBox.Text.Length < 3)
+            {
+                MessageBox.Show("First Name is too short. Please enter a valid first name.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(LastNameTextBox.Text) || LastNameTextBox.Text.Length < 3)
+            {
+                MessageBox.Show("Last Name is too short. Please enter a valid last name.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if(EmailTextBox.Text.Length < 8 || !EmailTextBox.Text.Contains("@") || !EmailTextBox.Text.Contains("."))
+            {
+                MessageBox.Show("Email is invalid. Please enter a valid email address.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(PhoneTextBox.Text) || PhoneTextBox.Text.Length != 10)
+            {
+                MessageBox.Show("Phone Number is invalid. Please enter a valid phone number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             _user.Username = UsernameTextBox.Text;
             _user.FirstName = FirstNameTextBox.Text;
             _user.LastName = LastNameTextBox.Text;
@@ -75,6 +99,12 @@ namespace BankManagementSystem.WPF.Views
 
             if (_user.Save())
             {
+                Client a = Client.Find(_user.accountNumber);
+                a.FirstName = FirstNameTextBox.Text;
+                a.LastName = LastNameTextBox.Text;
+                a.Email = EmailTextBox.Text;
+                a.PhoneNumber = PhoneTextBox.Text;
+                a.Save();
                 MessageBox.Show("User updated successfully", "Update", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else

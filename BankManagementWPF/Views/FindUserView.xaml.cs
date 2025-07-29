@@ -136,7 +136,10 @@ namespace BankManagementSystem.WPF.Views
                     continue;
                 }
                 if (User.LockUser(row.Username))
+                {
                     success++;
+                }
+                    
             }
 
             LoadAllUsers();

@@ -1,8 +1,10 @@
+using BankBusinessLayer;
+using BankDataAccessLayer;
+using BankManagementSystem.WPF.Security;
 using System;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Controls;
-using BankBusinessLayer;
-using BankManagementSystem.WPF.Security;
 
 namespace BankManagementSystem.WPF.Views
 {
@@ -33,7 +35,20 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Passwords do not match", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-
+            if (PhoneTextBox.Text.Length != 10)
+            {
+                MessageBox.Show("Phone number must be 10 digits", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            if (string.IsNullOrWhiteSpace(FirstNameTextBox.Text) || string.IsNullOrWhiteSpace(LastNameTextBox.Text))
+            {
+                MessageBox.Show("First name and Last name are required", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(EmailTextBox.Text) || !EmailTextBox.Text.Contains("@"))
+            {
+                MessageBox.Show("Valid email is required", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
             _user.Username = UsernameTextBox.Text;
             _user.FirstName = FirstNameTextBox.Text;
             _user.LastName = LastNameTextBox.Text;
@@ -75,6 +90,23 @@ namespace BankManagementSystem.WPF.Views
 
             if (_user.Save())
             {
+                if (_user.Role == "User")
+                {
+                    Client client = new Client
+                    {
+                        FirstName = _user.FirstName,
+                        LastName = _user.LastName,
+                        Email = _user.Email,
+                        PhoneNumber = _user.PhoneNumber,
+                        AccountNumber = _user.accountNumber
+                    };
+                    Random random = new Random();
+                    client.Balance = 0;
+                    string accountNumber = GenerateUniqueAccountNumber();
+                    client.AccountNumber = accountNumber;
+                    client.PinCode = random.Next(1000, 9999).ToString();
+                    client.Save();
+                }
                 MessageBox.Show("User added successfully", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
                 ClearForm_Click(sender, e);
             }
@@ -83,7 +115,16 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Failed to add user", "Save", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        private string GenerateUniqueAccountNumber()
+        {
+            Random random = new Random();
+            string accountNumber;
+            do
+            {
+                accountNumber = "ACC" + random.Next(0, 999).ToString();
+            } while (ClientsData.isClientExist(accountNumber));
+            return accountNumber;
+        }
         private void ClearForm_Click(object sender, RoutedEventArgs e)
         {
             UsernameTextBox.Clear();

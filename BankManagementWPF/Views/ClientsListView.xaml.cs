@@ -39,7 +39,7 @@ namespace BankManagementSystem.WPF.Views
                     view = view.Where(r => r.Field<decimal>("Balance") > 0);
                     break;
                 case 2: // High Balance
-                    view = view.Where(r => r.Field<decimal>("Balance") > 10000);
+                    view = view.Where(r => r.Field<decimal>("Balance") > 1000000);
                     break;
                 default:
                     break;

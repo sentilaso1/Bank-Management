@@ -125,6 +125,7 @@ namespace BankManagementSystem.WPF.Views
                 Amount = amount,
                 PerformedBy = CurrentUserSession.CurrentUser?.accountNumber
             };
+            log.Tin = string.IsNullOrWhiteSpace(DescriptionTextBox.Text) ? "Deposit" : DescriptionTextBox.Text;
             log.AddTrnasferLog();
 
             _client = Client.Find(_client.AccountNumber);

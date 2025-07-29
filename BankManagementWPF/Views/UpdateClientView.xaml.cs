@@ -72,9 +72,14 @@ namespace BankManagementSystem.WPF.Views
                 MessageBox.Show("Email is invalid!");
                 return false;
             }
+            if (!EmailTextBox.Text.Contains("@") || !EmailTextBox.Text.Contains("."))
+            {
+                MessageBox.Show("Email format is invalid!");
+                return false;
+            }
             _client.Email = EmailTextBox.Text;
 
-            if (string.IsNullOrWhiteSpace(PhoneTextBox.Text) || PhoneTextBox.Text.Length < 8)
+            if (string.IsNullOrWhiteSpace(PhoneTextBox.Text) || PhoneTextBox.Text.Length != 10)
             {
                 MessageBox.Show("Phone Number is invalid!");
                 return false;
@@ -107,6 +112,12 @@ namespace BankManagementSystem.WPF.Views
 
             if (_client.Save())
             {
+                User user = User.FindById(_client.ClientID + 4);
+                user.FirstName = _client.FirstName;
+                user.LastName = _client.LastName;
+                user.Email = _client.Email;
+                user.PhoneNumber = _client.PhoneNumber;
+                user.Save();
                 MessageBox.Show($"Client Updated Successfully [{_client.AccountNumber}]", "Update", MessageBoxButton.OK, MessageBoxImage.Information);
                 _isUpdateMode = false;
                 ClearFields();

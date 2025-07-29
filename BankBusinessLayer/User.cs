@@ -79,6 +79,19 @@ namespace BankBusinessLayer
 
         }
 
+        static public User FindById(int userId)
+        {
+            int Permission = 0;
+            string FirstName = "", LastName = "", Email = "", Phone = "", Username = "", Password = "", Role = "", AccountNumber = "";
+            bool isActive = true;
+            if (UsersData.GetUserByID(userId, ref FirstName, ref LastName, ref Email, ref Phone, ref Username, ref Password, ref Role, ref Permission, ref AccountNumber))
+            {
+                return new User(userId, FirstName, LastName, Email, Phone, Username, Password, Role, Permission, isActive);
+            }
+            else
+                return null;
+        }
+
         static public User FindUserByUsernameAndPassword(string username, string password)
         {
             int Permission = 0, UserID = 0;
